@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::apiResources([
+    'player' => 'PlayerController',
+    'game' => 'GameController'
+]);
