@@ -12,10 +12,10 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('reacthome');
 });
 
 Route::apiResources([
-    'player' => 'PlayerController',
-    'game' => 'GameController'
+    'api/player' => 'PlayerController',
+    'api/game' => 'GameController'
 ]);
