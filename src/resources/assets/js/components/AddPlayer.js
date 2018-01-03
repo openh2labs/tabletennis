@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-class AddProduct extends Component {
+class AddPlayer extends Component {
 
     constructor(props) {
         super(props);
         /* Initialize the state. */
         this.state = {
-            newProduct: {
+            newPlayer: {
                 title: '',
                 description: '',
                 price: 0,
@@ -23,9 +23,9 @@ class AddProduct extends Component {
     handleInput(key, e) {
 
         /*Duplicating and updating the state */
-        var state = Object.assign({}, this.state.newProduct);
+        var state = Object.assign({}, this.state.newPlayer);
         state[key] = e.target.value;
-        this.setState({newProduct: state });
+        this.setState({newPlayer: state });
     }
     /* This method is invoked when submit button is pressed */
     handleSubmit(e) {
@@ -35,7 +35,7 @@ class AddProduct extends Component {
          *to the parent component. The current state is passed
          *as a param
          */
-        this.props.onAdd(this.state.newProduct);
+        this.props.onAdd(this.state.newPlayer);
     }
 
     render() {
@@ -55,7 +55,7 @@ class AddProduct extends Component {
             <div>
 
             <div style={divStyle}>
-            <h2> Add new product </h2>
+            <h2> Add new player </h2>
         {/*when Submit button is pressed, the control is passed to
          *handleSubmit method
          */}
@@ -84,4 +84,4 @@ class AddProduct extends Component {
     }
 }
 
-export default AddProduct;
+export default AddPlayer;

@@ -41022,8 +41022,8 @@ module.exports = function spread(callback) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Product__ = __webpack_require__(229);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__AddProduct__ = __webpack_require__(230);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Player__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__AddPlayer__ = __webpack_require__(232);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -41051,11 +41051,11 @@ var Main = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this));
 
         _this.state = {
-            products: [],
-            currentProduct: null
+            players: [],
+            currentPlayer: null
 
         };
-        _this.handleAddProduct = _this.handleAddProduct.bind(_this);
+        _this.handleAddPlayer = _this.handleAddPlayer.bind(_this);
         return _this;
     }
     /*componentDidMount() is a lifecycle method
@@ -41071,14 +41071,14 @@ var Main = function (_Component) {
             /* fetch API in action */
             fetch('/api/player').then(function (response) {
                 return response.json();
-            }).then(function (products) {
-                //Fetched product is stored in the state
-                _this2.setState({ products: products });
+            }).then(function (players) {
+                //Fetched player is stored in the state
+                _this2.setState({ players: players });
             });
         }
     }, {
-        key: 'renderProducts',
-        value: function renderProducts() {
+        key: 'renderPlayers',
+        value: function renderPlayers() {
             var _this3 = this;
 
             var listStyle = {
@@ -41086,7 +41086,7 @@ var Main = function (_Component) {
                 fontSize: '18px',
                 lineHeight: '1.8em'
             };
-            return this.state.products.map(function (product) {
+            return this.state.players.map(function (player) {
                 return (
                     /* When using list you need to specify a key
                      * attribute that is unique for each list item
@@ -41094,28 +41094,28 @@ var Main = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'li',
                         { style: listStyle, onClick: function onClick() {
-                                return _this3.handleClick(product);
-                            }, key: product.id },
-                        product.name
+                                return _this3.handleClick(player);
+                            }, key: player.id },
+                        player.name
                     )
                 );
             });
         }
     }, {
         key: 'handleClick',
-        value: function handleClick(product) {
+        value: function handleClick(player) {
 
             //handleClick is used to set the state
-            this.setState({ currentProduct: product });
+            this.setState({ currentPlayer: player });
         }
     }, {
-        key: 'handleAddProduct',
-        value: function handleAddProduct(product) {
+        key: 'handleAddPlayer',
+        value: function handleAddPlayer(player) {
             var _this4 = this;
 
-            product.price = Number(product.price);
+            player.price = Number(player.price);
             /*Fetch API for post request */
-            fetch('api/products/', {
+            fetch('api/players/', {
                 method: 'post',
                 /* headers are important*/
                 headers: {
@@ -41123,19 +41123,19 @@ var Main = function (_Component) {
                     'Content-Type': 'application/json'
                 },
 
-                body: JSON.stringify(product)
+                body: JSON.stringify(player)
             }).then(function (response) {
                 return response.json();
             }).then(function (data) {
 
                 _this4.setState(function (prevState) {
                     return {
-                        products: prevState.products.concat(data),
-                        currentProduct: data
+                        players: prevState.players.concat(data),
+                        currentPlayer: data
                     };
                 });
             });
-            //update the state of products and currentProduct
+            //update the state of players and currentPlayer
         }
     }, {
         key: 'render',
@@ -41167,16 +41167,16 @@ var Main = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'h3',
                             null,
-                            ' All products '
+                            ' All players '
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'ul',
                             null,
-                            this.renderProducts()
+                            this.renderPlayers()
                         )
                     ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Product__["a" /* default */], { product: this.state.currentProduct }),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__AddProduct__["a" /* default */], { onAdd: this.handleAddProduct })
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Player__["a" /* default */], { player: this.state.currentPlayer }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__AddPlayer__["a" /* default */], { onAdd: this.handleAddPlayer })
                 )
             );
         }
@@ -53700,7 +53700,9 @@ if (document.getElementById('example')) {
 /* 226 */,
 /* 227 */,
 /* 228 */,
-/* 229 */
+/* 229 */,
+/* 230 */,
+/* 231 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -53709,10 +53711,10 @@ if (document.getElementById('example')) {
 
 
 /* Stateless component or pure component
- * { product } syntax is the object destructing
+ * { player } syntax is the object destructing
  */
-var Product = function Product(_ref) {
-    var product = _ref.product;
+var Player = function Player(_ref) {
+    var player = _ref.player;
 
 
     var divStyle = {
@@ -53721,8 +53723,8 @@ var Product = function Product(_ref) {
         width: '65%',
         margin: '30px 10px 10px 30px'
 
-        //if the props for product is null, return Product doesn't exist
-    };if (!product) {
+        //if the props for player is null, return player doesn't exist
+    };if (!player) {
 
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
@@ -53730,7 +53732,7 @@ var Product = function Product(_ref) {
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'h2',
                 null,
-                '  No Product was selected '
+                '  No Player was selected '
             ),
             ' '
         );
@@ -53744,37 +53746,37 @@ var Product = function Product(_ref) {
             'h2',
             null,
             ' ',
-            product.name,
+            player.name,
             ' '
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'p',
             null,
             ' ',
-            product.description,
+            player.description,
             ' '
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'h3',
             null,
             ' Status ',
-            product.availability ? 'Available' : 'Out of stock',
+            player.availability ? 'Available' : 'scorecard',
             ' '
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'h3',
             null,
-            ' Price : ',
-            product.price,
+            ' Wins : ',
+            player.price,
             ' '
         )
     );
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (Product);
+/* harmony default export */ __webpack_exports__["a"] = (Player);
 
 /***/ }),
-/* 230 */
+/* 232 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -53790,17 +53792,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var AddProduct = function (_Component) {
-    _inherits(AddProduct, _Component);
+var AddPlayer = function (_Component) {
+    _inherits(AddPlayer, _Component);
 
-    function AddProduct(props) {
-        _classCallCheck(this, AddProduct);
+    function AddPlayer(props) {
+        _classCallCheck(this, AddPlayer);
 
         /* Initialize the state. */
-        var _this = _possibleConstructorReturn(this, (AddProduct.__proto__ || Object.getPrototypeOf(AddProduct)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (AddPlayer.__proto__ || Object.getPrototypeOf(AddPlayer)).call(this, props));
 
         _this.state = {
-            newProduct: {
+            newPlayer: {
                 title: '',
                 description: '',
                 price: 0,
@@ -53816,14 +53818,14 @@ var AddProduct = function (_Component) {
     /* This method dynamically accepts inputs and stores it in the state */
 
 
-    _createClass(AddProduct, [{
+    _createClass(AddPlayer, [{
         key: 'handleInput',
         value: function handleInput(key, e) {
 
             /*Duplicating and updating the state */
-            var state = Object.assign({}, this.state.newProduct);
+            var state = Object.assign({}, this.state.newPlayer);
             state[key] = e.target.value;
-            this.setState({ newProduct: state });
+            this.setState({ newPlayer: state });
         }
         /* This method is invoked when submit button is pressed */
 
@@ -53836,7 +53838,7 @@ var AddProduct = function (_Component) {
              *to the parent component. The current state is passed
              *as a param
              */
-            this.props.onAdd(this.state.newProduct);
+            this.props.onAdd(this.state.newPlayer);
         }
     }, {
         key: 'render',
@@ -53864,7 +53866,7 @@ var AddProduct = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'h2',
                         null,
-                        ' Add new product '
+                        ' Add new player '
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'form',
@@ -53900,10 +53902,10 @@ var AddProduct = function (_Component) {
         }
     }]);
 
-    return AddProduct;
+    return AddPlayer;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
-/* harmony default export */ __webpack_exports__["a"] = (AddProduct);
+/* harmony default export */ __webpack_exports__["a"] = (AddPlayer);
 
 /***/ })
 /******/ ]);

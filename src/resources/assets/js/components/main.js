@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Product from './Product';
-import AddProduct from './AddProduct';
+import Player from './Player';
+import AddPlayer from './AddPlayer';
 
 /* Main Component */
 class Main extends Component {
@@ -11,11 +11,11 @@ class Main extends Component {
         super();
         //Initialize the state in the constructor
         this.state = {
-            products: [],
-            currentProduct: null
+            players: [],
+            currentPlayer: null
 
         }
-        this.handleAddProduct = this.handleAddProduct.bind(this);
+        this.handleAddPlayer = this.handleAddPlayer.bind(this);
     }
     /*componentDidMount() is a lifecycle method
      * that gets called after the component is rendered
@@ -26,43 +26,43 @@ class Main extends Component {
             .then(response => {
             return response.json();
     })
-    .then(products => {
-            //Fetched product is stored in the state
-            this.setState({ products });
+    .then(players => {
+            //Fetched player is stored in the state
+            this.setState({ players });
     });
     }
 
-    renderProducts() {
+    renderPlayers() {
         const listStyle = {
             listStyle: 'none',
             fontSize: '18px',
             lineHeight: '1.8em',
         }
-        return this.state.products.map(product => {
+        return this.state.players.map(player => {
                 return (
             /* When using list you need to specify a key
              * attribute that is unique for each list item
             */
             <li style={listStyle} onClick={
-        () =>this.handleClick(product)} key={product.id} >
-        { product.name }
+        () =>this.handleClick(player)} key={player.id} >
+        { player.name }
     </li>
     );
     })
     }
 
-    handleClick(product) {
+    handleClick(player) {
 
         //handleClick is used to set the state
-        this.setState({currentProduct:product});
+        this.setState({currentPlayer:player});
 
     }
 
-    handleAddProduct(product) {
+    handleAddPlayer(player) {
 
-        product.price = Number(product.price);
+        player.price = Number(player.price);
         /*Fetch API for post request */
-        fetch( 'api/products/', {
+        fetch( 'api/players/', {
             method:'post',
             /* headers are important*/
             headers: {
@@ -70,7 +70,7 @@ class Main extends Component {
                 'Content-Type': 'application/json'
             },
 
-            body: JSON.stringify(product)
+            body: JSON.stringify(player)
         })
             .then(response => {
             return response.json();
@@ -78,11 +78,11 @@ class Main extends Component {
     .then( data => {
 
             this.setState((prevState)=> ({
-            products: prevState.products.concat(data),
-            currentProduct : data
+            players: prevState.players.concat(data),
+            currentPlayer : data
         }))
     })
-        //update the state of products and currentProduct
+        //update the state of players and currentPlayer
     }
 
     render() {
@@ -107,14 +107,14 @@ class Main extends Component {
             <div>
             <div style= {mainDivStyle}>
             <div style={divStyle}>
-            <h3> All products </h3>
+            <h3> All players </h3>
         <ul>
-        { this.renderProducts() }
+        { this.renderPlayers() }
     </ul>
 
         </div>
-        <Product product={this.state.currentProduct} />
-        <AddProduct onAdd={this.handleAddProduct} />
+        <Player player={this.state.currentPlayer} />
+        <AddPlayer onAdd={this.handleAddPlayer} />
         </div>
 
         </div>
