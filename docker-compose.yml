@@ -3,6 +3,9 @@ version: "2"
 services:
  php-fpm:
     container_name: tabletennis-php-fpm
+    build:
+              context: .
+              dockerfile: Dockerfile
     image: richarvey/nginx-php-fpm
     volumes:
      - ./src:/var/www/html
@@ -10,7 +13,7 @@ services:
      - "9001:9001"
 
  nginx:
-    container_name: tablettennis-nginx
+    container_name: tabletennis-nginx
     image: nginx
     ports:
       - "90:80"
