@@ -1,0 +1,35 @@
+version: "2"
+
+services:
+ php-fpm:
+    container_name: tabletennis-php-fpm
+    image: richarvey/nginx-php-fpm
+    volumes:
+     - ./src:/var/www/html
+    ports:
+     - "9001:9001"
+
+ nginx:
+    container_name: tablettennis-nginx
+    image: nginx
+    ports:
+      - "90:80"
+    links:
+      - "php-fpm"
+    volumes_from:
+      - php-fpm:ro
+        # from search-php-fpm container
+        # /etc/nginx/conf.d/default.conf
+        # /var/www/html [ image default = /usr/share/nginx/html ]
+
+ mysql:
+    container_name: tabletennis-mysql
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: tabletennis
+      MYSQL_ROOT_PASSWORD: "passwordhere"
+    ports:
+      - "3306:3306"
+    logging:
+      driver: none
