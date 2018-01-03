@@ -22,12 +22,12 @@ const Player = ({player}) => {
     return(
         <div style={divStyle}>
         <h2> {player.name} </h2>
-    <p> {player.description} </p>
-    <h3> Status {player.availability ? 'Available' : 'scorecard'} </h3>
-    <h3> Wins : {player.price} </h3>
+        <p> {player.description} </p>
+        <h3> Status {player.availability ? 'Available' : 'scorecard'} </h3>
+        <h3> Wins : {player.price} </h3>
 
-    </div>
-)
+        </div>
+    )
 }
 
 export default Player ;

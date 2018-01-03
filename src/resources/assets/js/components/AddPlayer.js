@@ -7,10 +7,7 @@ class AddPlayer extends Component {
         /* Initialize the state. */
         this.state = {
             newPlayer: {
-                title: '',
-                description: '',
-                price: 0,
-                availability: 0
+                name: ''
             }
         }
 
@@ -62,25 +59,15 @@ class AddPlayer extends Component {
     <form onSubmit={this.handleSubmit}>
 
     <label>
-        Title:
+        name:
         {/*On every keystroke, the handeInput method is invoked */}
-    <input style={inputStyle} type="text" onChange={(e)=>this.handleInput('title',e)} />
+    <input style={inputStyle} type="text" onChange={(e)=>this.handleInput('name',e)} />
         </label>
-
-        <label>
-        Description:
-    <input style={inputStyle}  type="text" onChange={(e)=>this.handleInput('description',e)} />
-        </label>
-
-        <label>
-        Price:
-    <input style={inputStyle}  type="number" onChange={(e)=>this.handleInput('price', e)}/>
-        </label>
-
         <input style={inputStyle}  type="submit" value="Submit" />
             </form>
             </div>
-            </div>)
+            </div>
+        )
     }
 }
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Player from './Player';
 import AddPlayer from './AddPlayer';
+import MainNav from './MainNav';
 
 /* Main Component */
 class Main extends Component {
@@ -25,11 +26,11 @@ class Main extends Component {
         fetch('/api/player')
             .then(response => {
             return response.json();
-    })
-    .then(players => {
-            //Fetched player is stored in the state
-            this.setState({ players });
-    });
+        })
+        .then(players => {
+                //Fetched player is stored in the state
+                this.setState({ players });
+        });
     }
 
     renderPlayers() {
@@ -60,9 +61,9 @@ class Main extends Component {
 
     handleAddPlayer(player) {
 
-        player.price = Number(player.price);
+        //player.price = Number(player.price);
         /*Fetch API for post request */
-        fetch( 'api/players/', {
+        fetch( 'api/player/', {
             method:'post',
             /* headers are important*/
             headers: {
@@ -87,7 +88,9 @@ class Main extends Component {
 
     render() {
 
+
         const mainDivStyle =  {
+
             display: "flex",
             flexDirection: "row"
         }
@@ -104,22 +107,23 @@ class Main extends Component {
         }
 
         return (
+
             <div>
-            <div style= {mainDivStyle}>
-            <div style={divStyle}>
-            <h3> All players </h3>
-        <ul>
-        { this.renderPlayers() }
-    </ul>
+            <MainNav></MainNav>
+                <div style= {mainDivStyle}>
+                    <div style={divStyle}>
 
-        </div>
-        <Player player={this.state.currentPlayer} />
-        <AddPlayer onAdd={this.handleAddPlayer} />
-        </div>
+                        <h3> players </h3>
+                        <ul>
+                            { this.renderPlayers() }
+                        </ul>
+                     </div>
+                    <Player player={this.state.currentPlayer} />
 
-        </div>
-
-    );
+                    <AddPlayer onAdd={this.handleAddPlayer} />
+                </div>
+            </div>
+        );
     }
 }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Player;
+use Illuminate\Support\Facades\Log;
 
 class PlayerController extends Controller
 {
@@ -14,6 +15,7 @@ class PlayerController extends Controller
      */
     public function index()
     {
+        Log::debug( __CLASS__ );
         return Player::all();
     }
 
@@ -24,7 +26,8 @@ class PlayerController extends Controller
      */
     public function create()
     {
-        //
+       // return response()->json([], 201);
+        Log::debug( __CLASS__ );
     }
 
     /**
@@ -35,7 +38,9 @@ class PlayerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $player = Player::create($request->all());
+        Log::debug( __CLASS__ );
+        return response()->json($player, 201);
     }
 
     /**
@@ -47,6 +52,7 @@ class PlayerController extends Controller
     public function show($id)
     {
         //
+        Log::debug( __CLASS__ );
     }
 
     /**
@@ -58,6 +64,7 @@ class PlayerController extends Controller
     public function edit($id)
     {
         //
+        Log::debug( __CLASS__ );
     }
 
     /**
@@ -69,7 +76,7 @@ class PlayerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+       // return response()->json([], 201);
     }
 
     /**
@@ -81,5 +88,6 @@ class PlayerController extends Controller
     public function destroy($id)
     {
         //
+        Log::debug( __CLASS__ );
     }
 }
