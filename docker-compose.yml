@@ -36,3 +36,15 @@ services:
       - "3306:3306"
     logging:
       driver: none
+
+ node:
+    image: "node:9"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./:/home/node/app
+    expose:
+      - "8081"
+    command: "npm start"
