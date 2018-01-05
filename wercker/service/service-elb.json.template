@@ -1,0 +1,17 @@
+{
+    "cluster": "${STEP_CLUSTER}",
+    "serviceName": "${STEP_SERVICE_NAME}",
+    "taskDefinition": "${STEP_TASK_DEFINITION_NAME}",
+    "desiredCount": ${STEP_DESIRED_COUNT},
+    "role": "ecsServiceRole"
+    "deploymentConfiguration": {
+        "maximumPercent": 200,
+        "minimumHealthyPercent": 50
+    }
+    "loadBalancers": [
+        {
+            "loadBalancerName": "ALB",
+            "containerName": "nginx",
+            "containerPort": 80
+        }
+    ],

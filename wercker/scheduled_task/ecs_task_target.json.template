@@ -1,0 +1,14 @@
+{
+  "Rule": "${STEP_SCHEDULE_RULE_NAME}",
+  "Targets": [
+    {
+      "Id": "${STEP_TARGET_ID}",
+      "Arn": "${CLUSTER_ARN}",
+      "RoleArn": "${ROLE_ARN}",
+      "EcsParameters": {
+        "TaskDefinitionArn": "${TASK_DEFINITION_ARN}",
+        "TaskCount": ${STEP_TASK_COUNT}
+  }
+  }
+  ]
+}

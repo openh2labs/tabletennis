@@ -4,13 +4,15 @@ services:
  php-fpm:
     container_name: tabletennis-php-fpm
     build:
-              context: .
-              dockerfile: Dockerfile
-    image: richarvey/nginx-php-fpm
+      context: .
+      dockerfile: Dockerfile
+    image: quay.io/cashrewards/tabletennis:local
     volumes:
      - ./src:/var/www/html
-    ports:
-     - "9001:9001"
+#    ports:
+#     - "9001:9001"
+    links:
+      - mysql
 
  nginx:
     container_name: tabletennis-nginx
@@ -18,7 +20,7 @@ services:
     ports:
       - "90:80"
     links:
-      - "php-fpm"
+      - php-fpm
     volumes_from:
       - php-fpm:ro
         # from search-php-fpm container
@@ -32,7 +34,7 @@ services:
     environment:
       MYSQL_DATABASE: tabletennis
       MYSQL_ROOT_PASSWORD: "passwordhere"
-    ports:
-      - "3306:3306"
+    #ports:
+    #  - "3306:3306"
     logging:
       driver: none
