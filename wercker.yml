@@ -130,33 +130,22 @@ deploy-to-ecs-task-definition:
   box: quay.io/steven_rho/aws-cli
   #box: python:3-slim
   steps:
-    ### Task definition for sending metrics to geckoboard
     - steven-rho/aws-ecs-task-definition@0.0.1:
-        name: Setup Task Definition (crutils-metrics)
+        name: Setup Task Definition (tabletennis)
         key: $STEP_AWS_ACCESS_KEY_ID
         secret: $STEP_AWS_SECRET_ACCESS_KEY
         region: $STEP_AWS_DEFAULT_REGION
-        task-definition-name: crutils-metrics
+        task-definition-name: tabletennis
         container-memory: 512
         container_command: null
         task_definition_template: wercker/task_definition/task_definition.json.template
-    ### Task definition for sending metrics to geckoboard
-    - steven-rho/aws-ecs-task-definition@0.0.1:
-        name: Setup Task Definition (crutils-geckoboard)
-        key: $STEP_AWS_ACCESS_KEY_ID
-        secret: $STEP_AWS_SECRET_ACCESS_KEY
-        region: $STEP_AWS_DEFAULT_REGION
-        task-definition-name: crutils-metrics-geckoboard
-        container-memory: 512
-        container_command: "[\"/usr/local/bin/php\",\"/var/www/html/artisan\", \"crutils:geckoboard:update\"]"
-        task_definition_template: wercker/task_definition/task_definition.json.nonginx.template
 
     - steven-rho/aws-ecs-task-definition@0.0.1:
-        name: Setup Task Definition (crutils-metrics-migrate)
+        name: Setup Task Definition (tabletennis-migrate)
         key: $STEP_AWS_ACCESS_KEY_ID
         secret: $STEP_AWS_SECRET_ACCESS_KEY
         region: $STEP_AWS_DEFAULT_REGION
-        task-definition-name: crutils-metrics-migrate
+        task-definition-name: tabletennis-migrate
         container-memory: 512
         container_command: "[\"/usr/local/bin/php\",\"/var/www/html/artisan\", \"migrate\"]"
         task_definition_template: wercker/task_definition/task_definition.json.nonginx.template
@@ -169,19 +158,9 @@ deploy-to-ecs-task-definition:
           channel: releases
           username: wercker
 
-
-
-#####
-#
-#   Register Service
-#
-# For your Local test :
-#   wercker --environment ./wercker/.env.wercker.deploy deploy --pipeline deploy-to-ecs-service
-#
-deploy-to-ecs-service:
+depoy-to-ecs-migrate:
   box: quay.io/steven_rho/aws-cli
   steps:
-
     - script:
          name: Run Migration
          code: |
@@ -190,7 +169,6 @@ deploy-to-ecs-service:
             aws configure set aws_access_key_id ${STEP_AWS_ACCESS_KEY_ID} --profile ${STEP_AWS_PROFILE}
             aws configure set aws_secret_access_key ${STEP_AWS_SECRET_ACCESS_KEY} --profile ${STEP_AWS_PROFILE}
             aws configure set region ${STEP_AWS_DEFAULT_REGION} --profile ${STEP_AWS_PROFILE}
-
     - script:
          name: Run Migration-run task
          code: |
@@ -207,20 +185,6 @@ deploy-to-ecs-service:
             --cluster ${STEP_CLUSTER} \
             --tasks ${_TASK_ARN}
 
-
-    - steven-rho/aws-ecs-service:
-        name: Setup Service (crutils-metrics)
-        key: $STEP_AWS_ACCESS_KEY_ID
-        secret: $STEP_AWS_SECRET_ACCESS_KEY
-        region: $STEP_AWS_DEFAULT_REGION
-        cluster-name: $STEP_CLUSTER
-        service-name: svc-crutils-metrics
-        task-definition-name: crutils-metrics
-        desired-count: 1
-        service-template: wercker/service/service.json.template
-
-
-
   after-steps:
       - install-packages:
           packages: curl
@@ -229,31 +193,32 @@ deploy-to-ecs-service:
           channel: releases
           username: wercker
 
-#      - install-packages:
-#          packages: ruby
-#      - wantedly/pretty-slack-notify:
-#          webhook_url: $SLACK_WEBHOOK_URL
-#          channel: releases
-#          username: wercker
 
-deploy-to-ecs-scheduled-task:
+#####
+#
+#   Register Service
+#
+# For your Local test :
+#   wercker --environment ./wercker/.env.wercker.deploy deploy --pipeline deploy-to-ecs-service
+#
+deploy-to-ecs-service:
   box: quay.io/steven_rho/aws-cli
   steps:
+    - steven-rho/aws-ecs-service:
+        name: Setup Service (tabletennis)
+        key: $STEP_AWS_ACCESS_KEY_ID
+        secret: $STEP_AWS_SECRET_ACCESS_KEY
+        region: $STEP_AWS_DEFAULT_REGION
+        cluster-name: $STEP_CLUSTER
+        service-name: svc-tabletennis
+        task-definition-name: tabletennis
+        desired-count: 1
+        service-template: wercker/service/service.json.template
 
-    #####
-    # Scheduled task: every 10 minutes
-    #####
-    - steven-rho/aws-ecs-scheduled-task@0.0.4:
-       name: daily-every-10-minutes
-       key: $STEP_AWS_ACCESS_KEY_ID
-       secret: $STEP_AWS_SECRET_ACCESS_KEY
-       region: $STEP_AWS_DEFAULT_REGION
-       schedule-rule-name: daily-every-10-minutes
-       schedule-expression: "cron(*/10 * * * ? *)"
-       schedule-state: $STEP_SCHEDULE_STATE
-       schedule-description: "Tasks that need to run every 10 minutes like geckoboard dataset"
-       cluster-name: ${STEP_CLUSTER}
-       task-count: 1
-       task-definition-name: crutils-metrics-geckoboard
-       target-id: crutils-metrics-geckoboard
-       target-template: wercker/scheduled_task/ecs_task_target.json.template
+  after-steps:
+      - install-packages:
+          packages: curl
+      - slack-notifier:
+          url: $SLACK_WEBHOOK_URL
+          channel: releases
+          username: wercker
