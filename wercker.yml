@@ -1,0 +1,224 @@
+box: php:7.1-fpm
+
+build:
+  steps:
+    - script:
+        name: install extensions
+        code: |
+          pecl install redis-3.1.2
+          pecl install xdebug-2.5.5
+          docker-php-ext-enable redis xdebug
+
+          apt-get update
+          apt-get install -y --no-install-recommends \
+                libfreetype6-dev \
+                libjpeg62-turbo-dev \
+                libmcrypt-dev \
+                libpng12-dev \
+                freetds-dev \
+                unixodbc-dev \
+                vim \
+                openssh-client \
+                git \
+                apt-transport-https \
+                vim
+          docker-php-ext-install -j$(nproc) iconv mcrypt
+          docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+          docker-php-ext-install -j$(nproc) gd
+          docker-php-ext-install -j$(nproc) \
+                  pdo_mysql \
+                  zip
+
+    - script:
+        name: clean up
+        code: |
+            apt-get clean
+            rm -r /var/lib/apt/lists/*
+            rm -rf /tmp/pear
+
+    - script:
+        name: Copy PHP-FPM config
+        code: |
+            cp -Rpv $WERCKER_SOURCE_DIR/docker-config/php-fpm/conf/laravel.conf /usr/local/etc/php-fpm.d/laravel.conf
+
+    - script:
+        name: Copy NGINX config
+        code: |
+            mkdir -p /etc/nginx
+            cp -Rpv $WERCKER_SOURCE_DIR/docker-config/nginx/conf.d /etc/nginx/
+
+    - script:
+        name: ENV Setting
+        code: |
+            export INITRD=No
+            export LANG=en_US.UTF-8
+
+    - script:
+        name: Get Composer
+        code: |
+            /usr/bin/curl -sS https://getcomposer.org/installer |/usr/local/bin/php
+            /bin/mv composer.phar /usr/local/bin/composer
+
+    - script:
+        name: copy source code
+        code: |
+           cp -Rp $WERCKER_SOURCE_DIR/src/* /var/www/html
+    - script:
+        name: update dependencies
+        code: |
+          export COMPOSER_ALLOW_SUPERUSER=1
+          composer update --no-interaction -d /var/www/html
+    - script:
+        name: set permission
+        code: |
+           chown -R :www-data /var/www/html
+           chmod -R ug+rwx /var/www/html/storage /var/www/html/bootstrap/cache
+
+    - internal/docker-push:
+        username: $QUAYIO_USERNAME
+        password: $QUAYIO_PASSWORD
+        repository: quay.io/cashrewards/tabletennis
+        registry: https://quay.io
+        tag: $WERCKER_GIT_BRANCH
+        working-dir: /var/www/html
+        cmd: php-fpm
+        disable-sync: false
+        volumes: /etc/nginx/conf.d/,/var/www/html/
+
+  after-steps:
+      - slack-notifier:
+          url: $SLACK_WEBHOOK_URL
+          channel: releases
+          username: wercker
+
+push-to-quayio:
+  steps:
+    - internal/docker-push:
+        username: $QUAYIO_USERNAME
+        password: $QUAYIO_PASSWORD
+        repository: quay.io/cashrewards/tabletennis
+        registry: https://quay.io
+        tag: $WERCKER_GIT_BRANCH
+        working-dir: /var/www/html
+        cmd: php-fpm
+        disable-sync: false
+        volumes: /etc/nginx/conf.d/,/var/www/html/
+
+  after-steps:
+      - install-packages:
+          packages: curl
+      - slack-notifier:
+          url: $SLACK_WEBHOOK_URL
+          channel: releases
+          username: wercker
+
+#      - install-packages:
+#          packages: ruby
+#      - wantedly/pretty-slack-notify:
+#          webhook_url: $SLACK_WEBHOOK_URL
+#          channel: releases
+#          username: wercker
+
+#####
+#
+#   Register Task Definition 
+#
+# For your Local test :
+#   wercker --environment ./wercker/.env.wercker.deploy deploy --pipeline deploy-to-ecs-task-definition
+#
+deploy-to-ecs-task-definition:
+  box: quay.io/steven_rho/aws-cli
+  #box: python:3-slim
+  steps:
+    - steven-rho/aws-ecs-task-definition@0.0.1:
+        name: Setup Task Definition (tabletennis)
+        key: $STEP_AWS_ACCESS_KEY_ID
+        secret: $STEP_AWS_SECRET_ACCESS_KEY
+        region: $STEP_AWS_DEFAULT_REGION
+        task-definition-name: tabletennis
+        container-memory: 512
+        container_command: null
+        task_definition_template: wercker/task_definition/task_definition.json.template
+
+    - steven-rho/aws-ecs-task-definition@0.0.1:
+        name: Setup Task Definition (tabletennis-migrate)
+        key: $STEP_AWS_ACCESS_KEY_ID
+        secret: $STEP_AWS_SECRET_ACCESS_KEY
+        region: $STEP_AWS_DEFAULT_REGION
+        task-definition-name: tabletennis-migrate
+        container-memory: 512
+        container_command: "[\"/usr/local/bin/php\",\"/var/www/html/artisan\", \"migrate\"]"
+        task_definition_template: wercker/task_definition/task_definition.json.nonginx.template
+
+  after-steps:
+      - install-packages:
+          packages: curl
+      - slack-notifier:
+          url: $SLACK_WEBHOOK_URL
+          channel: releases
+          username: wercker
+
+depoy-to-ecs-migrate:
+  box: quay.io/steven_rho/aws-cli
+  steps:
+    - script:
+         name: Run Migration
+         code: |
+            export STEP_AWS_PROFILE=wercker-step-aws-ecs
+
+            aws configure set aws_access_key_id ${STEP_AWS_ACCESS_KEY_ID} --profile ${STEP_AWS_PROFILE}
+            aws configure set aws_secret_access_key ${STEP_AWS_SECRET_ACCESS_KEY} --profile ${STEP_AWS_PROFILE}
+            aws configure set region ${STEP_AWS_DEFAULT_REGION} --profile ${STEP_AWS_PROFILE}
+    - script:
+         name: Run Migration-run task
+         code: |
+            export _TASK_ARN=$(aws ecs run-task \
+            --profile ${STEP_AWS_PROFILE} \
+            --cluster $STEP_CLUSTER \
+            --task-definition crutils-metrics-migrate \
+            --output text --query 'tasks[].taskArn')
+    - script:
+         name: Run Migration-wait
+         code: |
+            aws ecs wait tasks-stopped \
+            --profile ${STEP_AWS_PROFILE} \
+            --cluster ${STEP_CLUSTER} \
+            --tasks ${_TASK_ARN}
+
+  after-steps:
+      - install-packages:
+          packages: curl
+      - slack-notifier:
+          url: $SLACK_WEBHOOK_URL
+          channel: releases
+          username: wercker
+
+
+#####
+#
+#   Register Service
+#
+# For your Local test :
+#   wercker --environment ./wercker/.env.wercker.deploy deploy --pipeline deploy-to-ecs-service
+#
+deploy-to-ecs-service:
+  box: quay.io/steven_rho/aws-cli
+  steps:
+    - steven-rho/aws-ecs-service:
+        name: Setup Service (tabletennis)
+        key: $STEP_AWS_ACCESS_KEY_ID
+        secret: $STEP_AWS_SECRET_ACCESS_KEY
+        region: $STEP_AWS_DEFAULT_REGION
+        cluster-name: $STEP_CLUSTER
+        service-name: svc-tabletennis
+        task-definition-name: tabletennis
+        desired-count: 1
+        service-template: wercker/service/service.json.template
+
+  after-steps:
+      - install-packages:
+          packages: curl
+      - slack-notifier:
+          url: $SLACK_WEBHOOK_URL
+          channel: releases
+          username: wercker

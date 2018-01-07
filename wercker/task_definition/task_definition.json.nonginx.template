@@ -1,0 +1,166 @@
+{
+    "family": "${STEP_TASK_DEFINITION_NAME}",
+    "containerDefinitions":  [
+      {
+        "name": "php-fpm",
+        "image": "quay.io/cashrewards/tabletennis:$WERCKER_GIT_BRANCH",
+        "essential": true,
+        "command": ${STEP_DOCKER_COMMAND},
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "${STEP_TASK_DEFINITION_NAME}",
+            "awslogs-region": "${STEP_AWS_DEFAULT_REGION}",
+            "awslogs-stream-prefix": "${STEP_TASK_DEFINITION_NAME}-php-fpm"
+          }
+        },
+        "cpu": 0,
+        "memoryReservation": ${STEP_CONTAINER_MEMORY},
+        "environment": [
+          {
+            "name": "_COMMIT_ID",
+            "value": "${WERCKER_GIT_COMMIT}"
+          },
+          {
+            "name": "APP_NAME",
+            "value": "${APP_NAME}"
+          },
+          {
+            "name": "APP_ENV",
+            "value": "${APP_ENV}"
+          },
+          {
+            "name": "APP_KEY",
+            "value": "${APP_KEY}"
+          },
+          {
+            "name": "APP_DEBUG",
+            "value": "${APP_DEBUG}"
+          },
+          {
+            "name": "APP_LOG",
+            "value": "${APP_LOG}"
+          },
+          {
+            "name": "APP_LOG_LEVEL",
+            "value": "${APP_LOG_LEVEL}"
+          },
+          {
+            "name": "APP_URL",
+            "value": "${APP_URL}"
+          },
+
+
+          {
+            "name": "DB_CONNECTION",
+            "value": "${DB_CONNECTION}"
+          },
+          {
+            "name": "DB_HOST",
+            "value": "${DB_HOST}"
+          },
+          {
+            "name": "DB_PORT",
+            "value": "${DB_PORT}"
+          },
+          {
+            "name": "DB_DATABASE",
+            "value": "${DB_DATABASE}"
+          },
+          {
+            "name": "DB_USERNAME",
+            "value": "${DB_USERNAME}"
+          },
+          {
+            "name": "DB_PASSWORD",
+            "value": "${DB_PASSWORD}"
+          },
+
+          {
+            "name": "BROADCAST_DRIVER",
+            "value": "${BROADCAST_DRIVER}"
+          },
+          {
+            "name": "CACHE_DRIVER",
+            "value": "${CACHE_DRIVER}"
+          },
+          {
+            "name": "SESSION_DRIVER",
+            "value": "${SESSION_DRIVER}"
+          },
+          {
+            "name": "SESSION_LIFETIME",
+            "value": "${SESSION_LIFETIME}"
+          },
+          {
+            "name": "QUEUE_DRIVER",
+            "value": "${QUEUE_DRIVER}"
+          },
+
+          {
+            "name": "REDIS_HOST",
+            "value": "${REDIS_HOST}"
+          },
+          {
+            "name": "REDIS_PORT",
+            "value": "${REDIS_PORT}"
+          },
+          {
+            "name": "REDIS_PASSWORD",
+            "value": "${REDIS_PASSWORD}"
+          },
+
+          {
+            "name": "MAIL_DRIVER",
+            "value": "${MAIL_DRIVER}"
+          },
+          {
+            "name": "MAIL_HOST",
+            "value": "${MAIL_HOST}"
+          },
+          {
+            "name": "MAIL_PORT",
+            "value": "${MAIL_PORT}"
+          },
+          {
+            "name": "MAIL_USERNAME",
+            "value": "${MAIL_USERNAME}"
+          },
+          {
+            "name": "MAIL_PASSWORD",
+            "value": "${MAIL_PASSWORD}"
+          },
+          {
+            "name": "MAIL_ENCRYPTION",
+            "value": "${MAIL_ENCRYPTION}"
+          },
+
+          {
+            "name": "PUSHER_APP_ID",
+            "value": "${PUSHER_APP_ID}"
+          },
+          {
+            "name": "PUSHER_APP_KEY",
+            "value": "${PUSHER_APP_KEY}"
+          },
+          {
+            "name": "PUSHER_APP_SECRET",
+            "value": "${PUSHER_APP_SECRET}"
+          },
+
+          {
+            "name": "AWS_ACCESS_KEY_ID",
+            "value": "${AWS_ACCESS_KEY_ID}"
+          },
+          {
+            "name": "AWS_REGION",
+            "value": "${AWS_REGION}"
+          },
+          {
+            "name": "AWS_SECRET_ACCESS_KEY",
+            "value": "${AWS_SECRET_ACCESS_KEY}"
+          }
+        ]
+      }
+    ]
+}
