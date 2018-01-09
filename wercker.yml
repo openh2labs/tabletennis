@@ -63,6 +63,12 @@ build:
         name: copy source code
         code: |
            cp -Rp $WERCKER_SOURCE_DIR/src/* /var/www/html
+
+    - script:
+        name: copy source code
+        code: |
+           cp -Rp $WERCKER_SOURCE_DIR/node/* /home/node/app
+
     - script:
         name: update dependencies
         code: |
@@ -83,7 +89,7 @@ build:
         working-dir: /var/www/html
         cmd: php-fpm
         disable-sync: false
-        volumes: /etc/nginx/conf.d/,/var/www/html/
+        volumes: /etc/nginx/conf.d/,/var/www/html/,/home/node/app/
 
   after-steps:
       - slack-notifier:

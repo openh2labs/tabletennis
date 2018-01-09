@@ -197,6 +197,49 @@
             "value": "${WERCKER_GIT_COMMIT}"
           }
         ]
+      },
+      {
+        "name": "node",
+        "image": "node:9",
+        "essential": true,
+        "workingDirectory": "/home/node/app",
+        "command": ${STEP_CONTAINER_NODE_COMMAND},
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "${STEP_TASK_DEFINITION_NAME}",
+            "awslogs-region": "${STEP_AWS_DEFAULT_REGION}",
+            "awslogs-stream-prefix": "${STEP_TASK_DEFINITION_NAME}-node"
+          }
+        },
+        "cpu": 0,
+        "memoryReservation": 256,
+        "links": [
+          "php-fpm"
+        ],
+        "volumesFrom": [
+          {
+            "sourceContainer": "php-fpm",
+            "readOnly": false
+          }
+        ],
+        "portMappings": [
+          {
+          "hostPort": 0,
+          "containerPort": 8081,
+          "protocol": "tcp"
+          }
+        ],
+        "environment": [
+          {
+            "name": "_COMMIT_ID",
+            "value": "${WERCKER_GIT_COMMIT}"
+          },
+          {
+            "name": "NODE_ENV",
+            "value": "${NODE_ENV}"
+          }
+        ]
       }
     ]
 }
