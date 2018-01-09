@@ -65,8 +65,9 @@ build:
            cp -Rp $WERCKER_SOURCE_DIR/src/* /var/www/html
 
     - script:
-        name: copy source code
+        name: copy nodejs code
         code: |
+           mkdir -p /home/node/app
            cp -Rp $WERCKER_SOURCE_DIR/node/* /home/node/app
 
     - script:
