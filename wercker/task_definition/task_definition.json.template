@@ -203,7 +203,7 @@
         "image": "node:9",
         "essential": true,
         "workingDirectory": "/home/node/app",
-        "command": "${STEP_CONTAINER_NODE_COMMAND}",
+        "command": ${STEP_CONTAINER_NODE_COMMAND},
         "logConfiguration": {
           "logDriver": "awslogs",
           "options": {
