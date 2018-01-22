@@ -9,6 +9,7 @@ services:
     image: quay.io/cashrewards/tabletennis:local
     volumes:
      - ./src:/var/www/html
+     - ./node:/home/node/app
 #    ports:
 #     - "9001:9001"
     links:
@@ -40,13 +41,18 @@ services:
       driver: none
 
  node:
+    container_name: tabletennis-node
     image: "node:9"
-    user: "node"
+#    user: "node"
     working_dir: /home/node/app
     environment:
       - NODE_ENV=production
-    volumes:
-      - ./src-node/:/home/node/app
+#    volumes:
+#      - ./src-node/:/home/node/app
+    links:
+      - php-fpm
+    volumes_from:
+      - php-fpm:rw
     ports:
       - "8081:8081"
 #    expose:
