@@ -41064,6 +41064,7 @@ var Main = function (_Component) {
         };
         console.log('constructor (main).');
         _this.handleAddPlayer = _this.handleAddPlayer.bind(_this);
+        _this.handleTeamClick = _this.handleTeamClick.bind(_this);
         return _this;
     }
     /*componentDidMount() is a lifecycle method
@@ -41119,7 +41120,7 @@ var Main = function (_Component) {
     }, {
         key: 'handleTeamClick',
         value: function handleTeamClick(player) {
-            //handleClick is used to set the state
+            console.log({ player: player });
             this.setState({ team1: player });
         }
     }, {
@@ -54100,23 +54101,8 @@ var Player2 = function (_Component) {
     function Player2(props) {
         _classCallCheck(this, Player2);
 
-        var _this = _possibleConstructorReturn(this, (Player2.__proto__ || Object.getPrototypeOf(Player2)).call(this, props));
-
-        _this.state = {
-            currentPlayer: _this.props.currentPlayer
-        };
-        // this.handleSubmit = this.handleSubmit.bind(this);
-        //this.handleInput = this.handleInput.bind(this);
-        //    handleClick = this.handleClick.bind(this);
-        // handleSubmit = this.handleSubmit.bind(this);
-        return _this;
+        return _possibleConstructorReturn(this, (Player2.__proto__ || Object.getPrototypeOf(Player2)).call(this, props));
     }
-
-    //    this.state.currentPlayer = this.props.state.currentPlayer.bind(this);
-    // this.handleTeamClick = this.props.handleTeamClick.bind(this);
-    ///   this.coolMethod = this.props.coolMethod.bind(this);
-    //  this.state.currentPlayer = this.props.state.currentPlayer.bind(this);
-    //  }
 
     _createClass(Player2, [{
         key: 'handleSubmit',
@@ -54128,7 +54114,7 @@ var Player2 = function (_Component) {
              *to the parent component. The current state is passed
              *as a param
              */
-            //  this.props.onTeam1Select(currentPlayer);
+            this.props.onTeam1Select(this.props.currentPlayer);
         }
     }, {
         key: 'render',
@@ -54191,12 +54177,6 @@ var Player2 = function (_Component) {
 
     return Player2;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-//if (document.getElementById('example')) {
-//    ReactDOM.render(<Example />, document.getElementById('example'));
-//}
-//export default Player2;
-
 
 /* harmony default export */ __webpack_exports__["a"] = (Player2);
 

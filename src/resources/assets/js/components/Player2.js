@@ -5,21 +5,7 @@ import AddPlayer from "./AddPlayer";
 export default class Player2 extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-                currentPlayer: this.props.currentPlayer
-            };
-       // this.handleSubmit = this.handleSubmit.bind(this);
-        //this.handleInput = this.handleInput.bind(this);
-        //    handleClick = this.handleClick.bind(this);
-           // handleSubmit = this.handleSubmit.bind(this);
         }
-
-
-        //    this.state.currentPlayer = this.props.state.currentPlayer.bind(this);
-       // this.handleTeamClick = this.props.handleTeamClick.bind(this);
-     ///   this.coolMethod = this.props.coolMethod.bind(this);
-      //  this.state.currentPlayer = this.props.state.currentPlayer.bind(this);
-  //  }
 
     handleSubmit(e){
         //preventDefault prevents page reload
@@ -29,7 +15,7 @@ export default class Player2 extends Component {
          *to the parent component. The current state is passed
          *as a param
          */
-      //  this.props.onTeam1Select(currentPlayer);
+        this.props.onTeam1Select(this.props.currentPlayer);
     }
 
     render() {
@@ -53,8 +39,3 @@ export default class Player2 extends Component {
         );
     }
 }
-
-//if (document.getElementById('example')) {
-//    ReactDOM.render(<Example />, document.getElementById('example'));
-//}
-//export default Player2;

@@ -21,6 +21,7 @@ class Main extends Component {
         }
         console.log('constructor (main).');
         this.handleAddPlayer = this.handleAddPlayer.bind(this);
+        this.handleTeamClick = this.handleTeamClick.bind(this);
     }
     /*componentDidMount() is a lifecycle method
      * that gets called after the component is rendered
@@ -63,7 +64,7 @@ class Main extends Component {
     }
 
     handleTeamClick(player) {
-        //handleClick is used to set the state
+        console.log({player});
         this.setState({team1:player});
     }
 
