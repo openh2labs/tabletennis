@@ -41064,7 +41064,8 @@ var Main = function (_Component) {
         };
         console.log('constructor (main).');
         _this.handleAddPlayer = _this.handleAddPlayer.bind(_this);
-        _this.handleTeamClick = _this.handleTeamClick.bind(_this);
+        _this.handleTeamClick = _this.handleTeamClick.bind(_this); //team 1 selection
+        _this.handleTeamClick2 = _this.handleTeamClick2.bind(_this); //team 2 selection
         return _this;
     }
     /*componentDidMount() is a lifecycle method
@@ -41117,11 +41118,20 @@ var Main = function (_Component) {
             this.setState({ currentPlayer: player });
             //  this.setState({Player2});
         }
+
+        // team selectors
+
     }, {
         key: 'handleTeamClick',
         value: function handleTeamClick(player) {
             console.log({ player: player });
             this.setState({ team1: player });
+        }
+    }, {
+        key: 'handleTeamClick2',
+        value: function handleTeamClick2(player) {
+            console.log({ player: player });
+            this.setState({ team2: player });
         }
     }, {
         key: 'handleAddPlayer',
@@ -41193,7 +41203,7 @@ var Main = function (_Component) {
                             this.renderPlayers()
                         )
                     ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Player2__["a" /* default */], { currentPlayer: this.state.currentPlayer, onTeam1Select: this.handleTeamClick }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Player2__["a" /* default */], { currentPlayer: this.state.currentPlayer, onTeam1Select: this.handleTeamClick, onTeam2Select: this.handleTeamClick2 }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__AddPlayer__["a" /* default */], { onAdd: this.handleAddPlayer })
                 )
             );
@@ -54109,12 +54119,24 @@ var Player2 = function (_Component) {
         value: function handleSubmit(e) {
             //preventDefault prevents page reload
             e.preventDefault();
-            console.log('The button was clicked for player 2.');
+            console.log('The button was clicked for team 1.');
             /*A call back to the onAdd props. The control is handed over
              *to the parent component. The current state is passed
              *as a param
              */
             this.props.onTeam1Select(this.props.currentPlayer);
+        }
+    }, {
+        key: 'handleSubmit2',
+        value: function handleSubmit2(e) {
+            //preventDefault prevents page reload
+            e.preventDefault();
+            console.log('The button was clicked for team 1.');
+            /*A call back to the onAdd props. The control is handed over
+             *to the parent component. The current state is passed
+             *as a param
+             */
+            this.props.onTeam2Select(this.props.currentPlayer);
         }
     }, {
         key: 'render',
@@ -54164,7 +54186,9 @@ var Player2 = function (_Component) {
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { type: 'button', className: 'btn btn-secondary' },
+                                    { type: 'button', className: 'btn btn-secondary', onClick: function onClick(e) {
+                                            return _this2.handleSubmit2(e);
+                                        } },
                                     'Team 2'
                                 )
                             )

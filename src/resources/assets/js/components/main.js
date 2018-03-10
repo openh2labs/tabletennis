@@ -21,7 +21,8 @@ class Main extends Component {
         }
         console.log('constructor (main).');
         this.handleAddPlayer = this.handleAddPlayer.bind(this);
-        this.handleTeamClick = this.handleTeamClick.bind(this);
+        this.handleTeamClick = this.handleTeamClick.bind(this); //team 1 selection
+        this.handleTeamClick2 = this.handleTeamClick2.bind(this); //team 2 selection
     }
     /*componentDidMount() is a lifecycle method
      * that gets called after the component is rendered
@@ -63,9 +64,14 @@ class Main extends Component {
       //  this.setState({Player2});
     }
 
+    // team selectors
     handleTeamClick(player) {
         console.log({player});
         this.setState({team1:player});
+    }
+    handleTeamClick2(player) {
+        console.log({player});
+        this.setState({team2:player});
     }
 
     handleAddPlayer(player) {
@@ -128,7 +134,7 @@ class Main extends Component {
                             { this.renderPlayers() }
                         </ul>
                      </div>
-                    <Player2 currentPlayer={this.state.currentPlayer} onTeam1Select={this.handleTeamClick} />
+                    <Player2 currentPlayer={this.state.currentPlayer} onTeam1Select={this.handleTeamClick} onTeam2Select={this.handleTeamClick2} />
 
                     <AddPlayer onAdd={this.handleAddPlayer} />
                 </div>

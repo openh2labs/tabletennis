@@ -10,12 +10,23 @@ export default class Player2 extends Component {
     handleSubmit(e){
         //preventDefault prevents page reload
         e.preventDefault();
-        console.log('The button was clicked for player 2.');
+        console.log('The button was clicked for team 1.');
         /*A call back to the onAdd props. The control is handed over
          *to the parent component. The current state is passed
          *as a param
          */
         this.props.onTeam1Select(this.props.currentPlayer);
+    }
+
+    handleSubmit2(e){
+        //preventDefault prevents page reload
+        e.preventDefault();
+        console.log('The button was clicked for team 1.');
+        /*A call back to the onAdd props. The control is handed over
+         *to the parent component. The current state is passed
+         *as a param
+         */
+        this.props.onTeam2Select(this.props.currentPlayer);
     }
 
     render() {
@@ -30,7 +41,7 @@ export default class Player2 extends Component {
                             <div className="panel-heading">  {this.props.currentPlayer.name} </div>
                             <div className="panel-body">
                                 <button type="button" className="btn btn-primary" onClick={(e) => this.handleSubmit(e)}>Team 1</button>
-                                <button type="button" className="btn btn-secondary">Team 2</button>
+                                <button type="button" className="btn btn-secondary" onClick={(e) => this.handleSubmit2(e)}>Team 2</button>
                             </div>
                         </div>
                     </div>
