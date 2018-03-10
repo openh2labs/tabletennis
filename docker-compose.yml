@@ -44,9 +44,12 @@ services:
     container_name: tabletennis-node
     image: "node:9"
 #    user: "node"
+#    volumes:
+#     - ./src:/var/www/html
+#    working_dir: /var/www/html
     working_dir: /home/node/app
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=dev
 #    volumes:
 #      - ./src-node/:/home/node/app
     links:

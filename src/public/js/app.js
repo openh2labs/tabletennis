@@ -41023,8 +41023,10 @@ module.exports = function spread(callback) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Player__ = __webpack_require__(218);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__AddPlayer__ = __webpack_require__(219);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__MainNav__ = __webpack_require__(220);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Player2__ = __webpack_require__(233);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__AddPlayer__ = __webpack_require__(219);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__MainNav__ = __webpack_require__(220);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Game__ = __webpack_require__(232);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -41034,6 +41036,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
 
 
 
@@ -41054,9 +41058,11 @@ var Main = function (_Component) {
 
         _this.state = {
             players: [],
-            currentPlayer: null
-
+            currentPlayer: null,
+            team1: null,
+            team2: null
         };
+        console.log('constructor (main).');
         _this.handleAddPlayer = _this.handleAddPlayer.bind(_this);
         return _this;
     }
@@ -41106,9 +41112,15 @@ var Main = function (_Component) {
     }, {
         key: 'handleClick',
         value: function handleClick(player) {
-
             //handleClick is used to set the state
             this.setState({ currentPlayer: player });
+            //  this.setState({Player2});
+        }
+    }, {
+        key: 'handleTeamClick',
+        value: function handleTeamClick(player) {
+            //handleClick is used to set the state
+            this.setState({ team1: player });
         }
     }, {
         key: 'handleAddPlayer',
@@ -41161,7 +41173,8 @@ var Main = function (_Component) {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__MainNav__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__MainNav__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Game__["a" /* default */], { player: this.state.currentPlayer }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { style: mainDivStyle },
@@ -41179,8 +41192,8 @@ var Main = function (_Component) {
                             this.renderPlayers()
                         )
                     ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Player__["a" /* default */], { player: this.state.currentPlayer }),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__AddPlayer__["a" /* default */], { onAdd: this.handleAddPlayer })
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Player2__["a" /* default */], { currentPlayer: this.state.currentPlayer, onTeam1Select: this.handleTeamClick }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__AddPlayer__["a" /* default */], { onAdd: this.handleAddPlayer })
                 )
             );
         }
@@ -53684,11 +53697,26 @@ var Player = function Player(_ref) {
             ' Wins : ',
             player.price,
             ' '
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'button',
+            { type: 'button', className: 'btn btn-primary', onClick: function onClick(e) {
+                    return parent.handleTeamClick(e);
+                } },
+            'Team 1'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'button',
+            { type: 'button', className: 'btn btn-secondary' },
+            'Team 2'
         )
     );
+
+    //this.setState({currentPlayer:player}); handleTeamClick
+
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (Player);
+/* unused harmony default export */ var _unused_webpack_default_export = (Player);
 
 /***/ }),
 /* 219 */
@@ -53746,6 +53774,7 @@ var AddPlayer = function (_Component) {
         value: function handleSubmit(e) {
             //preventDefault prevents page reload
             e.preventDefault();
+            console.log('The button was clicked.');
             /*A call back to the onAdd props. The control is handed over
              *to the parent component. The current state is passed
              *as a param
@@ -53830,12 +53859,17 @@ var MainNav = function (_Component) {
     function MainNav() {
         _classCallCheck(this, MainNav);
 
-        return _possibleConstructorReturn(this, (MainNav.__proto__ || Object.getPrototypeOf(MainNav)).call(this));
+        var _this = _possibleConstructorReturn(this, (MainNav.__proto__ || Object.getPrototypeOf(MainNav)).call(this));
+
+        _this.handleClick = _this.handleClick.bind(_this);
+        return _this;
     }
 
     _createClass(MainNav, [{
         key: "render",
         value: function render() {
+            var _this2 = this;
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 "ul",
                 { className: "nav nav-tabs" },
@@ -53844,7 +53878,9 @@ var MainNav = function (_Component) {
                     { className: "nav-item" },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         "a",
-                        { className: "nav-link active", href: "#" },
+                        { className: "nav-link active", href: "#", onClick: function onClick(e) {
+                                return _this2.handleClick(e);
+                            } },
                         "Team 1"
                     )
                 ),
@@ -53885,6 +53921,12 @@ var MainNav = function (_Component) {
                     )
                 )
             );
+        }
+    }, {
+        key: "handleClick",
+        value: function handleClick(e) {
+            e.preventDefault();
+            console.log('The link was clicked.');
         }
     }]);
 
@@ -53970,6 +54012,193 @@ if (document.getElementById('example')) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+/* Stateless component or pure component
+ * { player } syntax is the object destructing
+ */
+var Game = function Game(_ref) {
+    var player = _ref.player;
+
+
+    var divStyle = {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '65%',
+        margin: '30px 10px 10px 30px'
+
+        //if the props for player is null, return player doesn't exist
+    };if (!player) {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { style: divStyle },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'h2',
+                null,
+                '  Select a player to setup your game '
+            ),
+            ' '
+        );
+    }
+
+    //Else, display the product data
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { style: divStyle },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'h2',
+            null,
+            ' GAME '
+        )
+    );
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Game);
+
+/***/ }),
+/* 233 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AddPlayer__ = __webpack_require__(219);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+var Player2 = function (_Component) {
+    _inherits(Player2, _Component);
+
+    function Player2(props) {
+        _classCallCheck(this, Player2);
+
+        var _this = _possibleConstructorReturn(this, (Player2.__proto__ || Object.getPrototypeOf(Player2)).call(this, props));
+
+        _this.state = {
+            currentPlayer: _this.props.currentPlayer
+        };
+        // this.handleSubmit = this.handleSubmit.bind(this);
+        //this.handleInput = this.handleInput.bind(this);
+        //    handleClick = this.handleClick.bind(this);
+        // handleSubmit = this.handleSubmit.bind(this);
+        return _this;
+    }
+
+    //    this.state.currentPlayer = this.props.state.currentPlayer.bind(this);
+    // this.handleTeamClick = this.props.handleTeamClick.bind(this);
+    ///   this.coolMethod = this.props.coolMethod.bind(this);
+    //  this.state.currentPlayer = this.props.state.currentPlayer.bind(this);
+    //  }
+
+    _createClass(Player2, [{
+        key: 'handleSubmit',
+        value: function handleSubmit(e) {
+            //preventDefault prevents page reload
+            e.preventDefault();
+            console.log('The button was clicked for player 2.');
+            /*A call back to the onAdd props. The control is handed over
+             *to the parent component. The current state is passed
+             *as a param
+             */
+            //  this.props.onTeam1Select(currentPlayer);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            if (!this.props.currentPlayer) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h2',
+                        null,
+                        '  No Player was selected '
+                    ),
+                    ' '
+                );
+            }
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'container' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'row' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-8 col-md-offset-2' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'panel panel-default' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'panel-heading' },
+                                '  ',
+                                this.props.currentPlayer.name,
+                                ' '
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'panel-body' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'button',
+                                    { type: 'button', className: 'btn btn-primary', onClick: function onClick(e) {
+                                            return _this2.handleSubmit(e);
+                                        } },
+                                    'Team 1'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'button',
+                                    { type: 'button', className: 'btn btn-secondary' },
+                                    'Team 2'
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Player2;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+//if (document.getElementById('example')) {
+//    ReactDOM.render(<Example />, document.getElementById('example'));
+//}
+//export default Player2;
+
+
+/* harmony default export */ __webpack_exports__["a"] = (Player2);
 
 /***/ })
 /******/ ]);

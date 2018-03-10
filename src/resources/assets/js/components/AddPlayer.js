@@ -28,6 +28,7 @@ class AddPlayer extends Component {
     handleSubmit(e) {
         //preventDefault prevents page reload
         e.preventDefault();
+        console.log('The button was clicked.');
         /*A call back to the onAdd props. The control is handed over
          *to the parent component. The current state is passed
          *as a param
