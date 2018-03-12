@@ -41261,7 +41261,6 @@ var Main = function (_Component) {
                     });
                 }
             }
-            // this.updateTeamName(player, 1);
         }
 
         // team 2 selectors
@@ -41269,9 +41268,28 @@ var Main = function (_Component) {
     }, {
         key: 'handleTeamClick2',
         value: function handleTeamClick2(player) {
+            var _this5 = this;
+
             this.checkIfPlayerInAnotherTeam(player, 2);
             console.log({ player: player });
-            this.setState({ team2P1: player });
+            //this.setState({team2P1:player});
+            if (this.state.team2P1 === null) {
+                // this.setState({team1P1:player});
+                this.setState({
+                    team2P1: player
+                }, function () {
+                    _this5.updateTeamName(2);
+                });
+            } else {
+                if (this.state.team2P2 === null) {
+                    //   this.setState({team1P2:player});
+                    this.setState({
+                        team2P2: player
+                    }, function () {
+                        _this5.updateTeamName(2);
+                    });
+                }
+            }
         }
 
         // check if a player is already in another team and remove them
@@ -41309,15 +41327,17 @@ var Main = function (_Component) {
                 //this.setState({team1Display: ""})
                 if (this.state.team1P1 !== null) {
                     this.setState({ team1Display: this.state.team1P1.name });
-                    console.log('update team 1.');
                 }
                 if (this.state.team1P2 !== null) {
-                    this.setState({ team1Display: this.state.team1P2.name + " - " + this.state.team1P1.name });
-                    console.log('update team 1..');
+                    this.setState({ team1Display: this.state.team1P1.name + " - " + this.state.team1P2.name });
                 }
             } else {
-                if (!this.state.team2P1) {}
-                if (!this.state.team2P2) {}
+                if (this.state.team2P1 !== null) {
+                    this.setState({ team2Display: this.state.team2P1.name });
+                }
+                if (this.state.team2P2 !== null) {
+                    this.setState({ team2Display: this.state.team2P1.name + " - " + this.state.team2P2.name });
+                }
             }
         }
 
@@ -41326,7 +41346,7 @@ var Main = function (_Component) {
     }, {
         key: 'handleAddPlayer',
         value: function handleAddPlayer(player) {
-            var _this5 = this;
+            var _this6 = this;
 
             //player.price = Number(player.price);
             /*Fetch API for post request */
@@ -41343,7 +41363,7 @@ var Main = function (_Component) {
                 return response.json();
             }).then(function (data) {
 
-                _this5.setState(function (prevState) {
+                _this6.setState(function (prevState) {
                     return {
                         players: prevState.players.concat(data),
                         currentPlayer: data

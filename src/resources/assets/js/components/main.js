@@ -88,14 +88,30 @@ class Main extends Component {
                 });
             }
         }
-       // this.updateTeamName(player, 1);
     }
 
     // team 2 selectors
     handleTeamClick2(player) {
         this.checkIfPlayerInAnotherTeam(player,2);
         console.log({player});
-        this.setState({team2P1:player});
+        //this.setState({team2P1:player});
+        if(this.state.team2P1 === null){
+            // this.setState({team1P1:player});
+            this.setState({
+                team2P1: player
+            }, () => {
+                this.updateTeamName(2);
+            });
+        }else{
+            if(this.state.team2P2 === null){
+                //   this.setState({team1P2:player});
+                this.setState({
+                    team2P2: player
+                }, () => {
+                    this.updateTeamName(2);
+                });
+            }
+        }
     }
 
     // check if a player is already in another team and remove them
@@ -127,18 +143,16 @@ class Main extends Component {
             //this.setState({team1Display: ""})
             if(this.state.team1P1 !== null){
                 this.setState({team1Display: this.state.team1P1.name});
-                console.log('update team 1.');
             }
             if(this.state.team1P2 !== null){
-                this.setState({team1Display: this.state.team1P2.name + " - " + this.state.team1P1.name});
-                console.log('update team 1..');
+                this.setState({team1Display: this.state.team1P1.name + " - " + this.state.team1P2.name});
             }
         }else{
-            if(!this.state.team2P1){
-
+            if(this.state.team2P1 !== null){
+                this.setState({team2Display: this.state.team2P1.name});
             }
-            if(!this.state.team2P2){
-
+            if(this.state.team2P2 !== null){
+                this.setState({team2Display: this.state.team2P1.name + " - " + this.state.team2P2.name});
             }
         }
     }
