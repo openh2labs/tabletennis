@@ -41059,8 +41059,10 @@ var Main = function (_Component) {
         _this.state = {
             players: [],
             currentPlayer: null,
-            team1: null,
-            team2: null
+            team1P1: null,
+            team1P2: null,
+            team2P1: null,
+            team2P2: null
         };
         console.log('constructor (main).');
         _this.handleAddPlayer = _this.handleAddPlayer.bind(_this);
@@ -41119,20 +41121,51 @@ var Main = function (_Component) {
             //  this.setState({Player2});
         }
 
-        // team selectors
+        // team 1 selectors
 
     }, {
         key: 'handleTeamClick',
         value: function handleTeamClick(player) {
+            this.checkIfPlayerInAnotherTeam(player, 1);
             console.log({ player: player });
-            this.setState({ team1: player });
+            if (!this.state.team1P1) {
+                this.setState({ team1P1: player });
+            }
         }
+        // team 2 selectors
+
     }, {
         key: 'handleTeamClick2',
         value: function handleTeamClick2(player) {
+            this.checkIfPlayerInAnotherTeam(player);
             console.log({ player: player });
-            this.setState({ team2: player });
+            this.setState({ team2P1: player });
         }
+
+        // check if a player is already in another team and remove them
+
+    }, {
+        key: 'checkIfPlayerInAnotherTeam',
+        value: function checkIfPlayerInAnotherTeam(player, newTeam) {
+            if (newTeam == 2) {
+                if (player == this.state.team1P1) {
+                    this.setState({ team1P1: null });
+                }
+                if (player == this.state.team1P2) {
+                    this.setState({ team1P2: null });
+                }
+            } else {
+                if (player == this.state.team2P1) {
+                    this.setState({ team1P1: null });
+                }
+                if (player == this.state.team2P2) {
+                    this.setState({ team1P2: null });
+                }
+            }
+        }
+
+        // post to the ms to save the player
+
     }, {
         key: 'handleAddPlayer',
         value: function handleAddPlayer(player) {
@@ -41162,6 +41195,9 @@ var Main = function (_Component) {
             });
             //update the state of players and currentPlayer
         }
+
+        // render the output
+
     }, {
         key: 'render',
         value: function render() {
@@ -41185,7 +41221,7 @@ var Main = function (_Component) {
                 'div',
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__MainNav__["a" /* default */], null),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Game__["a" /* default */], { player: this.state.currentPlayer }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Game__["a" /* default */], _defineProperty({ player: this.state.currentPlayer, team1P1: this.state.team1P1, team1P2: this.state.team1P2, team2P1: this.state.team2P1 }, 'team2P1', this.state.team2P2)),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { style: mainDivStyle },
@@ -54076,7 +54112,9 @@ var Game = function Game(_ref) {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'h2',
             null,
-            ' GAME '
+            ' GAME: ',
+            team1P1,
+            ' '
         )
     );
 };
@@ -54131,7 +54169,7 @@ var Player2 = function (_Component) {
         value: function handleSubmit2(e) {
             //preventDefault prevents page reload
             e.preventDefault();
-            console.log('The button was clicked for team 1.');
+            console.log('The button was clicked for team 2.');
             /*A call back to the onAdd props. The control is handed over
              *to the parent component. The current state is passed
              *as a param

@@ -21,7 +21,7 @@ export default class Player2 extends Component {
     handleSubmit2(e){
         //preventDefault prevents page reload
         e.preventDefault();
-        console.log('The button was clicked for team 1.');
+        console.log('The button was clicked for team 2.');
         /*A call back to the onAdd props. The control is handed over
          *to the parent component. The current state is passed
          *as a param

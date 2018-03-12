@@ -20,11 +20,9 @@ const Game = ({player}) => {
     //Else, display the product data
     return(
         <div style={divStyle}>
-            <h2> GAME </h2>
+            <h2> GAME: {team1P1} </h2>
         </div>
     )
-
-
 }
 
 export default Game ;

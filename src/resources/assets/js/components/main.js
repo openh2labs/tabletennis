@@ -16,8 +16,10 @@ class Main extends Component {
         this.state = {
             players: [],
             currentPlayer: null,
-            team1: null,
-            team2: null
+            team1P1: null,
+            team1P2: null,
+            team2P1: null,
+            team2P2: null
         }
         console.log('constructor (main).');
         this.handleAddPlayer = this.handleAddPlayer.bind(this);
@@ -64,18 +66,43 @@ class Main extends Component {
       //  this.setState({Player2});
     }
 
-    // team selectors
+    // team 1 selectors
     handleTeamClick(player) {
+    this.checkIfPlayerInAnotherTeam(player,1);
         console.log({player});
-        this.setState({team1:player});
+        if(!this.state.team1P1){
+            this.setState({team1P1:player});
+        }
+
     }
+    // team 2 selectors
     handleTeamClick2(player) {
+        this.checkIfPlayerInAnotherTeam(player);
         console.log({player});
-        this.setState({team2:player});
+        this.setState({team2P1:player});
     }
 
-    handleAddPlayer(player) {
+    // check if a player is already in another team and remove them
+    checkIfPlayerInAnotherTeam(player, newTeam){
+        if(newTeam == 2){
+            if(player == this.state.team1P1){
+                this.setState({team1P1:null});
+            }
+            if(player == this.state.team1P2){
+                this.setState({team1P2:null});
+            }
+        }else{
+            if(player == this.state.team2P1){
+                this.setState({team1P1:null});
+            }
+            if(player == this.state.team2P2){
+                this.setState({team1P2:null});
+            }
+        }
+    }
 
+    // post to the ms to save the player
+    handleAddPlayer(player) {
         //player.price = Number(player.price);
         /*Fetch API for post request */
         fetch( 'api/player/', {
@@ -101,9 +128,8 @@ class Main extends Component {
         //update the state of players and currentPlayer
     }
 
+    // render the output
     render() {
-
-
         const mainDivStyle =  {
 
             display: "flex",
@@ -125,7 +151,7 @@ class Main extends Component {
 
             <div>
             <MainNav></MainNav>
-                <Game player={this.state.currentPlayer} />
+                <Game player={this.state.currentPlayer} team1P1={this.state.team1P1} team1P2={this.state.team1P2} team2P1={this.state.team2P1} team2P1={this.state.team2P2}/>
                 <div style= {mainDivStyle}>
                     <div style={divStyle}>
 
