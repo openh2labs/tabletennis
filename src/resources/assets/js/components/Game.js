@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 /* Stateless component or pure component
  * { player } syntax is the object destructing
  */
-const Game = ({player}) => {
+const Game = (props) => {
 
     const divStyle = {
         display: 'flex',
@@ -13,14 +13,14 @@ const Game = ({player}) => {
     }
 
     //if the props for player is null, return player doesn't exist
-    if(!player) {
+    if(!this.props.team1P1) {
         return(<div style={divStyle}><h2>  Select a player to setup your game </h2> </div>);
     }
 
     //Else, display the product data
     return(
         <div style={divStyle}>
-            <h2> GAME: {team1P1} </h2>
+            <h2> GAME: {this.props.team1P1} </h2>
         </div>
     )
 }

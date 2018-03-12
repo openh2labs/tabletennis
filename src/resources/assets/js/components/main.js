@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Player from './Player';
 import Player2 from './Player2';
 import AddPlayer from './AddPlayer';
 import MainNav from './MainNav';
-import Game from './Game';
+import Game2 from './Game2';
 
 /* Main Component */
 class Main extends Component {
@@ -19,7 +18,9 @@ class Main extends Component {
             team1P1: null,
             team1P2: null,
             team2P1: null,
-            team2P2: null
+            team2P2: null,
+            team1Display: "",
+            team2Display: ""
         }
         console.log('constructor (main).');
         this.handleAddPlayer = this.handleAddPlayer.bind(this);
@@ -70,33 +71,74 @@ class Main extends Component {
     handleTeamClick(player) {
     this.checkIfPlayerInAnotherTeam(player,1);
         console.log({player});
-        if(!this.state.team1P1){
-            this.setState({team1P1:player});
+        if(this.state.team1P1 === null){
+           // this.setState({team1P1:player});
+            this.setState({
+                team1P1: player
+            }, () => {
+                this.updateTeamName(1);
+            });
+        }else{
+            if(this.state.team1P2 === null){
+             //   this.setState({team1P2:player});
+                this.setState({
+                    team1P2: player
+                }, () => {
+                    this.updateTeamName(1);
+                });
+            }
         }
-
+       // this.updateTeamName(player, 1);
     }
+
     // team 2 selectors
     handleTeamClick2(player) {
-        this.checkIfPlayerInAnotherTeam(player);
+        this.checkIfPlayerInAnotherTeam(player,2);
         console.log({player});
         this.setState({team2P1:player});
     }
 
     // check if a player is already in another team and remove them
     checkIfPlayerInAnotherTeam(player, newTeam){
-        if(newTeam == 2){
-            if(player == this.state.team1P1){
+        if(newTeam === 2){
+            if(player === this.state.team1P1){
                 this.setState({team1P1:null});
             }
-            if(player == this.state.team1P2){
+            if(player === this.state.team1P2){
                 this.setState({team1P2:null});
             }
         }else{
-            if(player == this.state.team2P1){
+            if(player === this.state.team2P1){
                 this.setState({team1P1:null});
             }
-            if(player == this.state.team2P2){
+            if(player === this.state.team2P2){
                 this.setState({team1P2:null});
+            }
+        }
+    }
+
+    /**
+     * provide team name to display
+     * @param team
+     */
+    updateTeamName(team){
+        console.log('update team 1' + this.state.team1P1);
+        if(team === 1){
+            //this.setState({team1Display: ""})
+            if(this.state.team1P1 !== null){
+                this.setState({team1Display: this.state.team1P1.name});
+                console.log('update team 1.');
+            }
+            if(this.state.team1P2 !== null){
+                this.setState({team1Display: this.state.team1P2.name + " - " + this.state.team1P1.name});
+                console.log('update team 1..');
+            }
+        }else{
+            if(!this.state.team2P1){
+
+            }
+            if(!this.state.team2P2){
+
             }
         }
     }
@@ -151,7 +193,7 @@ class Main extends Component {
 
             <div>
             <MainNav></MainNav>
-                <Game player={this.state.currentPlayer} team1P1={this.state.team1P1} team1P2={this.state.team1P2} team2P1={this.state.team2P1} team2P1={this.state.team2P2}/>
+                <Game2 team1Display={this.state.team1Display} team2Display={this.state.team2Display}/>
                 <div style= {mainDivStyle}>
                     <div style={divStyle}>
 
