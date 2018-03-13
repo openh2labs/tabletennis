@@ -211,7 +211,7 @@ class Main extends Component {
         }
 
         return (
-
+            <MuiThemeProvider>
             <div>
             <MainNav></MainNav>
                 <Game2 team1Display={this.state.team1Display} team2Display={this.state.team2Display} team1P1={this.state.team1P1} team1P2={this.state.team1P2} team2P1={this.state.team2P1} team2P2={this.state.team2P2}/>
@@ -231,6 +231,7 @@ class Main extends Component {
                     <MyAwesomeReactComponent />
                 </MuiThemeProvider>
             </div>
+            </MuiThemeProvider>
         );
     }
 }

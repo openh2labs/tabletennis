@@ -3,10 +3,27 @@ import ReactDOM from 'react-dom';
 import ButtonTest from './ButtonTest';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+const styles = {
+    chip: {
+        margin: 4,
+    },
+    wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+}
+
 export default class Game2 extends Component {
 
     constructor(props) {
         super(props);
+    }
+
+
+
+
+    getCheap(player){
+        return <ButtonTest player={player}/>;
     }
 
     render() {
@@ -14,19 +31,19 @@ export default class Game2 extends Component {
         let chipT1P1, chipT1P2, chipT2P1, chipT2P2 = null;
         if(this.props.team1P1 !== null){
             console.log('Game2.team1P1');
-            chipT1P1 = <MuiThemeProvider><ButtonTest player={this.props.team1P1}/></MuiThemeProvider>;
+            chipT1P1 = this.getCheap(this.props.team1P1);
         }
         if(this.props.team1P2 !== null){
             console.log('Game2.team1P2');
-            chipT1P2 = <MuiThemeProvider><ButtonTest player={this.props.team1P2}/></MuiThemeProvider>;
+            chipT1P2 = this.getCheap(this.props.team1P2); //<MuiThemeProvider><ButtonTest player={this.props.team1P2}/></MuiThemeProvider>;
         }
         if(this.props.team2P1 !== null){
             console.log('Game2.team2P1');
-            chipT2P1 = <MuiThemeProvider><ButtonTest player={this.props.team2P1}/></MuiThemeProvider>;
+            chipT2P1 = this.getCheap(this.props.team2P1); //<MuiThemeProvider><ButtonTest player={this.props.team2P1}/></MuiThemeProvider>;
         }
         if(this.props.team2P2 !== null){
             console.log('Game2.team2P2');
-            chipT1P2 = <MuiThemeProvider><ButtonTest player={this.props.team2P2}/></MuiThemeProvider>;
+            chipT2P2 = this.getCheap(this.props.team2P2); //<MuiThemeProvider><ButtonTest player={this.props.team2P2}/></MuiThemeProvider>;
         }
 
         return (
@@ -34,10 +51,14 @@ export default class Game2 extends Component {
 
                 <div className="row">
                     <div className="col">
-                        Team 1 : {chipT1P1} {chipT1P2} {this.props.team1Display}
+                        <div style={styles.wrapper}>
+                        Team 1 : {chipT1P1} {chipT1P2}
+                        </div>
                     </div>
                     <div className="col">
-                        Team 2: {chipT2P1} {chipT2P2}  {this.props.team2Display}
+                        <div style={styles.wrapper}>
+                        Team 2: {chipT2P1} {chipT2P2}
+                        </div>
                     </div>
                 </div>
             </div>

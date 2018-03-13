@@ -43257,34 +43257,38 @@ var Main = function (_Component) {
             }, _defineProperty(_divStyle, 'padding', '20px 20px 20px 20px'), _defineProperty(_divStyle, 'margin', '30px 10px 10px 30px'), _divStyle);
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
+                __WEBPACK_IMPORTED_MODULE_2_material_ui_styles_MuiThemeProvider___default.a,
                 null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__MainNav__["a" /* default */], null),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__Game2__["a" /* default */], { team1Display: this.state.team1Display, team2Display: this.state.team2Display, team1P1: this.state.team1P1, team1P2: this.state.team1P2, team2P1: this.state.team2P1, team2P2: this.state.team2P2 }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    { style: mainDivStyle },
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__MainNav__["a" /* default */], null),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__Game2__["a" /* default */], { team1Display: this.state.team1Display, team2Display: this.state.team2Display, team1P1: this.state.team1P1, team1P2: this.state.team1P2, team2P1: this.state.team2P1, team2P2: this.state.team2P2 }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { style: divStyle },
+                        { style: mainDivStyle },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'h3',
-                            null,
-                            ' players '
+                            'div',
+                            { style: divStyle },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'h3',
+                                null,
+                                ' players '
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'ul',
+                                null,
+                                this.renderPlayers()
+                            )
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'ul',
-                            null,
-                            this.renderPlayers()
-                        )
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Player2__["a" /* default */], { currentPlayer: this.state.currentPlayer, onTeam1Select: this.handleTeamClick, onTeam2Select: this.handleTeamClick2 }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__AddPlayer__["a" /* default */], { onAdd: this.handleAddPlayer })
                     ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Player2__["a" /* default */], { currentPlayer: this.state.currentPlayer, onTeam1Select: this.handleTeamClick, onTeam2Select: this.handleTeamClick2 }),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__AddPlayer__["a" /* default */], { onAdd: this.handleAddPlayer })
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_material_ui_styles_MuiThemeProvider___default.a,
-                    null,
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__MyAwesomeReactComponent__["a" /* default */], null)
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_2_material_ui_styles_MuiThemeProvider___default.a,
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__MyAwesomeReactComponent__["a" /* default */], null)
+                    )
                 )
             );
         }
@@ -55421,6 +55425,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+var styles = {
+    chip: {
+        margin: 4
+    },
+    wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap'
+    }
+};
+
 var Game2 = function (_Component) {
     _inherits(Game2, _Component);
 
@@ -55431,6 +55445,11 @@ var Game2 = function (_Component) {
     }
 
     _createClass(Game2, [{
+        key: 'getCheap',
+        value: function getCheap(player) {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__ButtonTest__["a" /* default */], { player: player });
+        }
+    }, {
         key: 'render',
         value: function render() {
 
@@ -55440,35 +55459,19 @@ var Game2 = function (_Component) {
                 chipT2P2 = null;
             if (this.props.team1P1 !== null) {
                 console.log('Game2.team1P1');
-                chipT1P1 = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_3_material_ui_styles_MuiThemeProvider___default.a,
-                    null,
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__ButtonTest__["a" /* default */], { player: this.props.team1P1 })
-                );
+                chipT1P1 = this.getCheap(this.props.team1P1);
             }
             if (this.props.team1P2 !== null) {
                 console.log('Game2.team1P2');
-                chipT1P2 = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_3_material_ui_styles_MuiThemeProvider___default.a,
-                    null,
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__ButtonTest__["a" /* default */], { player: this.props.team1P2 })
-                );
+                chipT1P2 = this.getCheap(this.props.team1P2); //<MuiThemeProvider><ButtonTest player={this.props.team1P2}/></MuiThemeProvider>;
             }
             if (this.props.team2P1 !== null) {
                 console.log('Game2.team2P1');
-                chipT2P1 = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_3_material_ui_styles_MuiThemeProvider___default.a,
-                    null,
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__ButtonTest__["a" /* default */], { player: this.props.team2P1 })
-                );
+                chipT2P1 = this.getCheap(this.props.team2P1); //<MuiThemeProvider><ButtonTest player={this.props.team2P1}/></MuiThemeProvider>;
             }
             if (this.props.team2P2 !== null) {
                 console.log('Game2.team2P2');
-                chipT1P2 = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_3_material_ui_styles_MuiThemeProvider___default.a,
-                    null,
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__ButtonTest__["a" /* default */], { player: this.props.team2P2 })
-                );
+                chipT2P2 = this.getCheap(this.props.team2P2); //<MuiThemeProvider><ButtonTest player={this.props.team2P2}/></MuiThemeProvider>;
             }
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -55480,22 +55483,26 @@ var Game2 = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'col' },
-                        'Team 1 : ',
-                        chipT1P1,
-                        ' ',
-                        chipT1P2,
-                        ' ',
-                        this.props.team1Display
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { style: styles.wrapper },
+                            'Team 1 : ',
+                            chipT1P1,
+                            ' ',
+                            chipT1P2
+                        )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'col' },
-                        'Team 2: ',
-                        chipT2P1,
-                        ' ',
-                        chipT2P2,
-                        '  ',
-                        this.props.team2Display
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { style: styles.wrapper },
+                            'Team 2: ',
+                            chipT2P1,
+                            ' ',
+                            chipT2P2
+                        )
                     )
                 )
             );
@@ -64113,17 +64120,13 @@ var ButtonTest = function ButtonTest(props) {
     console.log(props);
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        null,
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_4_material_ui_Chip___default.a,
-            {
-                onRequestDelete: handleRequestDelete,
-                onClick: handleClick,
-                style: styles.chip
-            },
-            props.player.name
-        )
+        __WEBPACK_IMPORTED_MODULE_4_material_ui_Chip___default.a,
+        {
+            onRequestDelete: handleRequestDelete,
+            onClick: handleClick,
+            style: styles.chip
+        },
+        props.player.name
     );
 };
 

@@ -28,7 +28,6 @@ const ButtonTest = (props) => {
     console.log(props);
 
     return(
-    <div>
         <Chip
             onRequestDelete={handleRequestDelete}
             onClick={handleClick}
@@ -36,7 +35,6 @@ const ButtonTest = (props) => {
         >
             {props.player.name}
         </Chip>
-    </div>
     )
 };
 
