@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
+
 import ReactDOM from 'react-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import MyAwesomeReactComponent from './MyAwesomeReactComponent';
+import ButtonTest from './ButtonTest.js';
+
 import Player2 from './Player2';
 import AddPlayer from './AddPlayer';
 import MainNav from './MainNav';
 import Game2 from './Game2';
+
+
 
 /* Main Component */
 class Main extends Component {
@@ -207,7 +214,7 @@ class Main extends Component {
 
             <div>
             <MainNav></MainNav>
-                <Game2 team1Display={this.state.team1Display} team2Display={this.state.team2Display}/>
+                <Game2 team1Display={this.state.team1Display} team2Display={this.state.team2Display} team1P1={this.state.team1P1} team1P2={this.state.team1P2} team2P1={this.state.team2P1} team2P2={this.state.team2P2}/>
                 <div style= {mainDivStyle}>
                     <div style={divStyle}>
 
@@ -220,6 +227,9 @@ class Main extends Component {
 
                     <AddPlayer onAdd={this.handleAddPlayer} />
                 </div>
+                <MuiThemeProvider>
+                    <MyAwesomeReactComponent />
+                </MuiThemeProvider>
             </div>
         );
     }

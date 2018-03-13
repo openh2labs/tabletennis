@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "material-ui": "^0.20.0",
     "npm-watch": "^0.3.0"
   }
 }
