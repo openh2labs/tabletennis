@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ButtonTest from './ButtonTest';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const styles = {
     chip: {
@@ -12,6 +11,15 @@ const styles = {
         flexWrap: 'wrap',
     },
 }
+
+const paperStyle = {
+    height: 100,
+    width: 100,
+    margin: 20,
+    textAlign: 'center',
+    display: 'inline-block',
+};
+
 
 export default class Game2 extends Component {
 
@@ -48,16 +56,24 @@ export default class Game2 extends Component {
 
         return (
             <div className="container">
-
-                <div className="row">
-                    <div className="col">
-                        <div style={styles.wrapper}>
-                        Team 1 : {chipT1P1} {chipT1P2}
+                <div className="panel panel-default">
+                    <div className="panel-heading text-center"> <h1> Game </h1> </div>
+                    <div className="panel-body">
+                        <div className="row">
+                            <div className="col"><h2>Team 1</h2></div>
+                            <div className="col" style={styles.wrapper}>{chipT1P1} {chipT1P2}</div>
+                            <div className="col">score</div>
                         </div>
+                        <div className="row">
+                            <div className="col"><h2>Team 2</h2></div>
+                            <div className="col" style={styles.wrapper}>{chipT2P1} {chipT2P2}</div>
+                            <div className="col">score</div>
+                        </div>
+
                     </div>
-                    <div className="col">
+                    <div className="panel-body">
                         <div style={styles.wrapper}>
-                        Team 2: {chipT2P1} {chipT2P2}
+
                         </div>
                     </div>
                 </div>
