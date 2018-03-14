@@ -43,9 +43,10 @@ export default class Player2 extends Component {
                         <div className="panel panel-default">
                             <div className="panel-heading">  {this.props.currentPlayer.name} </div>
                             <div className="panel-body">
-                                <ButtonTeamSelect2 teamId={1} currentPlayer={this.props.currentPlayer} />
-                                <button type="button" className="btn btn-primary btn-lg" onClick={(e) => this.handleSubmit(e)}>Team 1</button> -
-                                <button type="button" className="btn btn-primary btn-lg" onClick={(e) => this.handleSubmit2(e)}>Team 2</button>
+                                <div className="row">
+                                    <div className="col"> <ButtonTeamSelect2 teamId={1} /></div>
+                                    <div className="col"><ButtonTeamSelect2 teamId={2} /></div>
+                                </div>
                             </div>
                         </div>
                     </div>

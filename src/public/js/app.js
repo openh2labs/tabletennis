@@ -44668,6 +44668,8 @@ var Main = function (_Component) {
             console.log(data);
             if (data === 1) {
                 this.handleTeamClick(this.state.currentPlayer);
+            } else {
+                this.handleTeamClick2(this.state.currentPlayer);
             }
         }
     }, {
@@ -65423,8 +65425,6 @@ var Player2 = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
-
             if (!this.props.currentPlayer) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
@@ -65459,21 +65459,20 @@ var Player2 = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: 'panel-body' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__form_ButtonTeamSelect2__["a" /* default */], { teamId: 1, currentPlayer: this.props.currentPlayer }),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'button',
-                                    { type: 'button', className: 'btn btn-primary btn-lg', onClick: function onClick(e) {
-                                            return _this2.handleSubmit(e);
-                                        } },
-                                    'Team 1'
-                                ),
-                                ' -',
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'button',
-                                    { type: 'button', className: 'btn btn-primary btn-lg', onClick: function onClick(e) {
-                                            return _this2.handleSubmit2(e);
-                                        } },
-                                    'Team 2'
+                                    'div',
+                                    { className: 'row' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'col' },
+                                        ' ',
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__form_ButtonTeamSelect2__["a" /* default */], { teamId: 1 })
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'col' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__form_ButtonTeamSelect2__["a" /* default */], { teamId: 2 })
+                                    )
                                 )
                             )
                         )
@@ -65544,12 +65543,12 @@ var ButtonTeamSelect2 = function (_Component) {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'button',
                 {
-                    className: 'btn btn-default',
+                    className: 'btn btn-primary btn-lg',
                     onClick: function onClick(e) {
-                        return _this2.handleSubmit(e, 1);
+                        return _this2.handleSubmit(e, _this2.props.teamId);
                     }
                 },
-                "assing to team " + this.props.teamId
+                "assign to team " + this.props.teamId
             );
         }
     }]);

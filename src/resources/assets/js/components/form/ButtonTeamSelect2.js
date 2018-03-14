@@ -26,9 +26,9 @@ export default class ButtonTeamSelect2 extends Component {
         console.log(this.props);
         return (
             <button
-                className="btn btn-default"
-                onClick={(e) =>  this.handleSubmit(e, 1)}
-            >{"assing to team " + this.props.teamId}
+                className="btn btn-primary btn-lg"
+                onClick={(e) =>  this.handleSubmit(e, this.props.teamId)}
+            >{"assign to team " + this.props.teamId}
             </button>
         )
     }

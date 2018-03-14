@@ -42,6 +42,8 @@ class Main extends Component {
         console.log(data);
         if(data===1){
             this.handleTeamClick(this.state.currentPlayer);
+        }else{
+            this.handleTeamClick2(this.state.currentPlayer);
         }
     }
 
