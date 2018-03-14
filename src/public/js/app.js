@@ -55410,6 +55410,7 @@ var MainNav = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ButtonTest__ = __webpack_require__(407);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__form_InputTeamScore__ = __webpack_require__(426);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -55417,6 +55418,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -55462,6 +55464,9 @@ var Game2 = function (_Component) {
                 chipT1P2 = void 0,
                 chipT2P1 = void 0,
                 chipT2P2 = null;
+            var placeHolder1 = "select players to get started!";
+            var placeHolder2 = "select players to get started!";
+
             if (this.props.team1P1 !== null) {
                 console.log('Game2.team1P1');
                 chipT1P1 = this.getCheap(this.props.team1P1);
@@ -55477,6 +55482,12 @@ var Game2 = function (_Component) {
             if (this.props.team2P2 !== null) {
                 console.log('Game2.team2P2');
                 chipT2P2 = this.getCheap(this.props.team2P2); //<MuiThemeProvider><ButtonTest player={this.props.team2P2}/></MuiThemeProvider>;
+            }
+            if (this.props.team1Display !== "") {
+                placeHolder1 = "score for " + this.props.team1Display;
+            }
+            if (this.props.team2Display !== "") {
+                placeHolder2 = "score for " + this.props.team2Display;
             }
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -55521,7 +55532,7 @@ var Game2 = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: 'col' },
-                                'score'
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__form_InputTeamScore__["a" /* default */], { teamId: 1, placeHolder: placeHolder1 })
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -55546,7 +55557,7 @@ var Game2 = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: 'col' },
-                                'score'
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__form_InputTeamScore__["a" /* default */], { teamId: 2, placeHolder: placeHolder2 })
                             )
                         )
                     ),
@@ -65718,6 +65729,29 @@ NavigationCancel.displayName = 'NavigationCancel';
 NavigationCancel.muiName = 'SvgIcon';
 
 exports.default = NavigationCancel;
+
+/***/ }),
+/* 426 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+var InputTeamScore = function InputTeamScore(props) {
+    console.log('now in last component');
+    console.log(props);
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', {
+        type: 'text',
+        name: "team" + props.teamId + "Score",
+        placeholder: props.placeHolder,
+        className: 'form-control'
+    });
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (InputTeamScore);
 
 /***/ })
 /******/ ]);

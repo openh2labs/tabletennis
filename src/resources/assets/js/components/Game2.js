@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ButtonTest from './ButtonTest';
+import InputTeamScore from './form/InputTeamScore';
 
 const styles = {
     chip: {
@@ -30,13 +31,17 @@ export default class Game2 extends Component {
 
 
 
+
     getCheap(player){
         return <ButtonTest player={player}/>;
     }
 
     render() {
 
-        let chipT1P1, chipT1P2, chipT2P1, chipT2P2 = null;
+        let chipT1P1, chipT1P2, chipT2P1, chipT2P2 =  null;
+        let placeHolder1 = "select players to get started!";
+        let placeHolder2 = "select players to get started!";
+        
         if(this.props.team1P1 !== null){
             console.log('Game2.team1P1');
             chipT1P1 = this.getCheap(this.props.team1P1);
@@ -53,6 +58,13 @@ export default class Game2 extends Component {
             console.log('Game2.team2P2');
             chipT2P2 = this.getCheap(this.props.team2P2); //<MuiThemeProvider><ButtonTest player={this.props.team2P2}/></MuiThemeProvider>;
         }
+        if(this.props.team1Display !== ""){
+            placeHolder1 = "score for " + this.props.team1Display;
+        }
+        if(this.props.team2Display !== ""){
+            placeHolder2 = "score for " + this.props.team2Display;
+        }
+
 
         return (
             <div className="container">
@@ -62,12 +74,12 @@ export default class Game2 extends Component {
                         <div className="row">
                             <div className="col"><h2>Team 1</h2></div>
                             <div className="col" style={styles.wrapper}>{chipT1P1} {chipT1P2}</div>
-                            <div className="col">score</div>
+                            <div className="col"><InputTeamScore teamId={1} placeHolder={placeHolder1}/></div>
                         </div>
                         <div className="row">
                             <div className="col"><h2>Team 2</h2></div>
                             <div className="col" style={styles.wrapper}>{chipT2P1} {chipT2P2}</div>
-                            <div className="col">score</div>
+                            <div className="col"><InputTeamScore teamId={2} placeHolder={placeHolder2}/></div>
                         </div>
 
                     </div>
