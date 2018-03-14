@@ -29,9 +29,6 @@ export default class Game2 extends Component {
     }
 
 
-
-
-
     getCheap(player){
         return <ButtonTest player={player}/>;
     }
@@ -64,7 +61,6 @@ export default class Game2 extends Component {
         if(this.props.team2Display !== ""){
             placeHolder2 = "score for " + this.props.team2Display;
         }
-
 
         return (
             <div className="container">

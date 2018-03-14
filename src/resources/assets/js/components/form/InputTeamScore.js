@@ -1,9 +1,6 @@
 import React from 'react';
 
-
-
 const InputTeamScore = (props) => {
-    console.log('now in last component');
     console.log(props);
 
     return(

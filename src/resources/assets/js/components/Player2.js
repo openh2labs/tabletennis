@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import AddPlayer from "./AddPlayer";
+import ButtonTeamSelect2 from "./form/ButtonTeamSelect2";
+import BaseClient from './BaseClient';
+
 
 export default class Player2 extends Component {
     constructor(props) {
@@ -40,6 +43,7 @@ export default class Player2 extends Component {
                         <div className="panel panel-default">
                             <div className="panel-heading">  {this.props.currentPlayer.name} </div>
                             <div className="panel-body">
+                                <ButtonTeamSelect2 teamId={1} currentPlayer={this.props.currentPlayer} />
                                 <button type="button" className="btn btn-primary btn-lg" onClick={(e) => this.handleSubmit(e)}>Team 1</button> -
                                 <button type="button" className="btn btn-primary btn-lg" onClick={(e) => this.handleSubmit2(e)}>Team 2</button>
                             </div>

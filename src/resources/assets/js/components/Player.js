@@ -25,8 +25,8 @@ const Player = ({player}) => {
         <p> {player.description} </p>
         <h3> Status {player.availability ? 'Available' : 'scorecard'} </h3>
         <h3> Wins : {player.price} </h3>
-        <button type="button" className="btn btn-primary" onClick={(e) => parent.handleTeamClick(e)}>Team 1</button>
-        <button type="button" className="btn btn-secondary">Team 2</button>
+        <button type="button" className="btn btn-primary btn-lg" onClick={(e) => parent.handleTeamClick(e)}>Team 1</button>
+        <button type="button" className="btn btn-primary btn-lg">Team 2</button>
         </div>
     )
 

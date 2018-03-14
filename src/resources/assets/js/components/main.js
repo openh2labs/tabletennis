@@ -3,20 +3,17 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MyAwesomeReactComponent from './MyAwesomeReactComponent';
-import ButtonTest from './ButtonTest.js';
-
 import Player2 from './Player2';
 import AddPlayer from './AddPlayer';
 import MainNav from './MainNav';
 import Game2 from './Game2';
-
+import PubSub from 'pubsub-js'; // example https://anthonymineo.com/communication-between-independent-components-in-react-using-pubsubjs/
 
 
 /* Main Component */
 class Main extends Component {
 
     constructor() {
-
         super();
         //Initialize the state in the constructor
         this.state = {
@@ -27,17 +24,45 @@ class Main extends Component {
             team2P1: null,
             team2P2: null,
             team1Display: "",
-            team2Display: ""
+            team2Display: "",
+            TODO_ADDED: null,
+
         }
+       // this.client = new BaseClient();
         console.log('constructor (main).');
         this.handleAddPlayer = this.handleAddPlayer.bind(this);
         this.handleTeamClick = this.handleTeamClick.bind(this); //team 1 selection
         this.handleTeamClick2 = this.handleTeamClick2.bind(this); //team 2 selection
+
     }
+// The function that is subscribed to the publisher
+    subscriber(EventName, data){
+        console.log("@ subscriber");
+        console.log(EventName);
+        console.log(data);
+        if(data===1){
+            this.handleTeamClick(this.state.currentPlayer);
+        }
+    }
+
+    componentWillMount() {
+        console.log('componentWillMount');
+        this.token = PubSub.subscribe('TeamSelected', this.subscriber.bind(this));
+    }
+
+    componentWillUnmount() {
+        console.log('emit received 4?');
+        // React removed me from the DOM, I have to unsubscribe from the system using my token
+        //PubSub.unsubscribe(this.token);
+    }
+
     /*componentDidMount() is a lifecycle method
      * that gets called after the component is rendered
      */
     componentDidMount() {
+        PubSub.publish('TeamSelected', this.token);
+        console.log(this.token);
+
         /* fetch API in action */
         fetch('/api/player')
             .then(response => {
@@ -71,6 +96,7 @@ class Main extends Component {
     handleClick(player) {
         //handleClick is used to set the state
         this.setState({currentPlayer:player});
+        window.currentPlayer = player;
       //  this.setState({Player2});
     }
 
