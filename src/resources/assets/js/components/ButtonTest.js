@@ -32,6 +32,7 @@ const ButtonTest = (props) => {
             onRequestDelete={handleRequestDelete}
             onClick={handleClick}
             style={styles.chip}
+            className="small"
         >
             {props.player.name}
         </Chip>

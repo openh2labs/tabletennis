@@ -154,36 +154,6 @@ export default class Game2 extends Component {
         );
     }
 
-     oldContainer(){
-        <div className="panel panel-default">
-            <div className="panel-heading text-center"> <b>Game</b>  </div>
-            <div className="panel-body">
-                <div className="row">
-                    <div className="row align-items-center justify-content-center">
-                        <div className="col align-middle">{ButtonTeam1}</div>
-                        <div className="col align-middle" style={styles.wrapper}>{chipT1P1} {chipT1P2}</div>
-                        <div className="col align-middle"><InputTeamScore teamId={1} placeHolder={placeHolder1}/></div>
-                        <div className="col align-middle">{ButtonTeam2}</div>
-                        <div className="col align-middle" style={styles.wrapper}>{chipT2P1} {chipT2P2}</div>
-                        <div className="col align-middle"><InputTeamScore teamId={2} placeHolder={placeHolder2}/></div>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="row align-items-center justify-content-center">
-                        <div className="col">{ButtonTeam2}</div>
-                        <div className="col" style={styles.wrapper}>{chipT2P1} {chipT2P2}</div>
-                        <div className="col"><InputTeamScore teamId={2} placeHolder={placeHolder2}/></div>
-                    </div>
-                </div>
-
-            </div>
-            <div className="panel-body">
-                <div style={styles.wrapper}>
-
-                </div>
-            </div>
-        </div>
-    }
 }
 
 if (document.getElementById('Game2')) {

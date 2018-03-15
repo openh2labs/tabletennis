@@ -51,24 +51,41 @@ class AddPlayer extends Component {
             margin: '0px 10px 0px 10px'
         }
         return (
-            <div>
-                <div>
-                    <h2> Add new player </h2>
-                    {/*when Submit button is pressed, the control is passed to
+            <div className="container">
+                {/*when Submit button is pressed, the control is passed to
          *handleSubmit method
          */}
-                    <form onSubmit={this.handleSubmit}>
-
-                        <label>
-                            name:
-                            {/*On every keystroke, the handeInput method is invoked */}
-                            <input style={inputStyle} type="text" onChange={(e) => this.handleInput('name', e)}/>
-                        </label>
-                        <input style={inputStyle} type="submit" value="Submit"/>
-                    </form>
-                </div>
+                <form onSubmit={this.handleSubmit}>
+                    <div className="form-group row">
+                        <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm">player</label>
+                        <div className="col-sm-8">
+                            <input type="name" className="form-control form-control-sm input-sm" id="colFormLabelSm" placeholder="enter new player name" onChange={(e) => this.handleInput('name', e)}/>
+                            <input style={inputStyle} type="submit" value="Submit"/>
+                        </div>
+                    </div>
+                </form>
             </div>
         )
+    }
+
+    oldcontainer(){
+
+        <div>
+            <div>
+                <strong> Add new player </strong>
+                {/*when Submit button is pressed, the control is passed to
+         *handleSubmit method
+         */}
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        name:
+                        {/*On every keystroke, the handeInput method is invoked */}
+                        <input style={inputStyle} type="text" onChange={(e) => this.handleInput('name', e)}/>
+                    </label>
+                    <input style={inputStyle} type="submit" value="Submit"/>
+                </form>
+            </div>
+        </div>
     }
 }
 

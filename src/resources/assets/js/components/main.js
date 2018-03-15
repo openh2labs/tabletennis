@@ -95,7 +95,7 @@ class Main extends Component {
             /* When using list you need to specify a key
              * attribute that is unique for each list item
             */
-            <li style={listStyle} onClick={
+            <li className="list-group-item" onClick={
         () =>this.handleClick(player)} key={player.id} >
         { player.name }
     </li>
@@ -281,15 +281,14 @@ class Main extends Component {
                 <div className="row">
                     <div className="col"><AddPlayer onAdd={this.handleAddPlayer} /></div>
                 </div>
-                <div style= {mainDivStyle} className="row">
-                    <div className="col">
-                    <div style={divStyle}>
-                        players
-                        <ul>
+                <div className="container">
+                    <div>
+                        <hr />
+                        <p><strong>Available players</strong></p>
+                        <ul className="list-group">
                             { this.renderPlayers() }
                         </ul>
                      </div>
-                    </div>
                 </div>
             </div>
             </MuiThemeProvider>

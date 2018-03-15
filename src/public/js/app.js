@@ -30644,7 +30644,8 @@ var ButtonTest = function ButtonTest(props) {
         {
             onRequestDelete: handleRequestDelete,
             onClick: handleClick,
-            style: styles.chip
+            style: styles.chip,
+            className: 'small'
         },
         props.player.name
     );
@@ -30838,12 +30839,43 @@ var AddPlayer = function (_Component) {
             };
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
+                { className: 'container' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'form',
+                    { onSubmit: this.handleSubmit },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'form-group row' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'label',
+                            { htmlFor: 'colFormLabelSm', className: 'col-sm-2 col-form-label col-form-label-sm' },
+                            'player'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'col-sm-8' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'name', className: 'form-control form-control-sm input-sm', id: 'colFormLabelSm', placeholder: 'enter new player name', onChange: function onChange(e) {
+                                    return _this2.handleInput('name', e);
+                                } }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { style: inputStyle, type: 'submit', value: 'Submit' })
+                        )
+                    )
+                )
+            );
+        }
+    }, {
+        key: 'oldcontainer',
+        value: function oldcontainer() {
+            var _this3 = this;
+
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'h2',
+                        'strong',
                         null,
                         ' Add new player '
                     ),
@@ -30855,7 +30887,7 @@ var AddPlayer = function (_Component) {
                             null,
                             'name:',
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { style: inputStyle, type: 'text', onChange: function onChange(e) {
-                                    return _this2.handleInput('name', e);
+                                    return _this3.handleInput('name', e);
                                 } })
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { style: inputStyle, type: 'submit', value: 'Submit' })
@@ -44639,7 +44671,7 @@ var Main = function (_Component) {
                     */
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'li',
-                        { style: listStyle, onClick: function onClick() {
+                        { className: 'list-group-item', onClick: function onClick() {
                                 return _this3.handleClick(player);
                             }, key: player.id },
                         player.name
@@ -44866,19 +44898,24 @@ var Main = function (_Component) {
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { style: mainDivStyle, className: 'row' },
+                        { className: 'container' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
-                            { className: 'col' },
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('hr', null),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { style: divStyle },
-                                'players',
+                                'p',
+                                null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'ul',
+                                    'strong',
                                     null,
-                                    this.renderPlayers()
+                                    'Available players'
                                 )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'ul',
+                                { className: 'list-group' },
+                                this.renderPlayers()
                             )
                         )
                     )
@@ -65734,101 +65771,6 @@ var Game2 = function (_Component) {
                 )
             );
         }
-    }, {
-        key: 'oldContainer',
-        value: function oldContainer() {
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'panel panel-default' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'panel-heading text-center' },
-                    ' ',
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'b',
-                        null,
-                        'Game'
-                    ),
-                    '  '
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'panel-body' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'row' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'row align-items-center justify-content-center' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'col align-middle' },
-                                ButtonTeam1
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'col align-middle', style: styles.wrapper },
-                                chipT1P1,
-                                ' ',
-                                chipT1P2
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'col align-middle' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__form_InputTeamScore__["a" /* default */], { teamId: 1, placeHolder: placeHolder1 })
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'col align-middle' },
-                                ButtonTeam2
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'col align-middle', style: styles.wrapper },
-                                chipT2P1,
-                                ' ',
-                                chipT2P2
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'col align-middle' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__form_InputTeamScore__["a" /* default */], { teamId: 2, placeHolder: placeHolder2 })
-                            )
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'row' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'row align-items-center justify-content-center' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'col' },
-                                ButtonTeam2
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'col', style: styles.wrapper },
-                                chipT2P1,
-                                ' ',
-                                chipT2P2
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'col' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__form_InputTeamScore__["a" /* default */], { teamId: 2, placeHolder: placeHolder2 })
-                            )
-                        )
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'panel-body' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { style: styles.wrapper })
-                )
-            );
-        }
     }]);
 
     return Game2;
@@ -65861,7 +65803,7 @@ var InputTeamScore = function InputTeamScore(props) {
     });
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (InputTeamScore);
+/* unused harmony default export */ var _unused_webpack_default_export = (InputTeamScore);
 
 /***/ }),
 /* 414 */
