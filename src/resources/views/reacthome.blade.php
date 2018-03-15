@@ -9,7 +9,7 @@
     <link href="{{mix('css/app.css')}}" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h2 style="text-align: center">table tennis scores collection</h2>
+<p class="text-center">table tennis scores collection</p>
     <div id="root"></div>
 <script src="{{mix('/js/app.js')}}"></script>
 </body>

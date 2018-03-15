@@ -5,7 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MyAwesomeReactComponent from './MyAwesomeReactComponent';
 import Player2 from './Player2';
 import AddPlayer from './AddPlayer';
-import MainNav from './MainNav';
+//import MainNav from './MainNav';
 import Game2 from './Game2';
 import PubSub from 'pubsub-js'; // example https://anthonymineo.com/communication-between-independent-components-in-react-using-pubsubjs/
 
@@ -27,21 +27,17 @@ class Main extends Component {
             team2Count: 0,
             team1Display: "",
             team2Display: "",
-            TODO_ADDED: null,
 
         }
        // this.client = new BaseClient();
-        console.log('constructor (main).');
         this.handleAddPlayer = this.handleAddPlayer.bind(this);
         this.handleTeamClick = this.handleTeamClick.bind(this); //team 1 selection
         this.handleTeamClick2 = this.handleTeamClick2.bind(this); //team 2 selection
 
     }
+
     // The function that is subscribed to the publisher
     subscriber(EventName, data){
-        console.log("@ subscriber");
-        console.log(EventName);
-        console.log(data);
         if(data===1){
             this.handleTeamClick(this.state.currentPlayer);
         }else{
@@ -59,12 +55,12 @@ class Main extends Component {
     }
 
     componentWillMount() {
-        console.log('componentWillMount');
+       // console.log('main componentWillMount');
         this.token = PubSub.subscribe('TeamSelected', this.subscriber.bind(this));
     }
 
     componentWillUnmount() {
-        console.log('emit received 4?');
+        console.log('main componentWillUnmount');
         // React removed me from the DOM, I have to unsubscribe from the system using my token
         //PubSub.unsubscribe(this.token);
     }
@@ -73,7 +69,7 @@ class Main extends Component {
      * that gets called after the component is rendered
      */
     componentDidMount() {
-        PubSub.publish('TeamSelected', this.token);
+       // PubSub.publish('TeamSelected', this.token);
         console.log(this.token);
 
         /* fetch API in action */
@@ -121,7 +117,7 @@ class Main extends Component {
             if(this.state.team1P2 !== null){
                 count = count + 1;
             }
-            this.setState.team1Count = count;
+            this.setState({team1Count: count});
         }else{
             if(this.state.team2P1 !== null){
                 count = count + 1;
@@ -130,6 +126,10 @@ class Main extends Component {
                 count = count + 1;
             }
             this.setState({team2Count: count});
+        }
+        if(count === 2){
+            console.log('main team full publish '+teamId);
+            PubSub.publish('TeamFull', teamId);
         }
     }
 
@@ -273,7 +273,6 @@ class Main extends Component {
         return (
             <MuiThemeProvider>
             <div>
-            <MainNav></MainNav>
                 <Game2 team1Display={this.state.team1Display} team2Display={this.state.team2Display} team1P1={this.state.team1P1} team1P2={this.state.team1P2} team2P1={this.state.team2P1} team2P2={this.state.team2P2}/>
                 <div style= {mainDivStyle}>
                     <div style={divStyle}>

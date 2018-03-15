@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import ButtonTest from './ButtonTest';
 import InputTeamScore from './form/InputTeamScore';
 import ButtonTeamSelect2 from "./form/ButtonTeamSelect2";
+import PubSub from "pubsub-js";
 
 const styles = {
     chip: {
@@ -27,21 +28,72 @@ export default class Game2 extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            "team1Full": false,
+            "team2Full": false,
+        }
     }
 
+    componentWillMount() {
+        console.log('game 2componentWillMount');
+        this.token = PubSub.subscribe('TeamFull', this.subscriber.bind(this));
+    }
+
+    componentWillUnmount() {
+        console.log('game2 componentWillUnmount');
+        // React removed me from the DOM, I have to unsubscribe from the system using my token
+        //PubSub.unsubscribe(this.token);
+    }
+
+    /*componentDidMount() is a lifecycle method
+  * that gets called after the component is rendered
+  */
+    componentDidMount() {
+       // PubSub.publish('TeamFull', this.token);
+        console.log('game2 componentDidMount');
+    }
+
+    // The function that is subscribed to the publisher
+    subscriber(EventName, data){
+        console.log("game2 subscriber fired " + EventName + ", data " +data);
+        //console.log(EventName);
+        //console.log(data);
+        if(EventName === "TeamFull"){
+            if(data===1){
+                this.setState({"team1Full" : true});
+            }else{
+                this.setState({"team2Full" : true});
+            }
+        }
+    }
 
     getCheap(player){
         return <ButtonTest player={player}/>;
     }
 
+    /**
+     * get the button for the team
+     *
+     * @param teamId
+     * @returns {*}
+     */
      getButton(teamId){
-        return <ButtonTeamSelect2 teamId={teamId} />;
+        if(this.state.team1Full === false){
+            return <ButtonTeamSelect2 teamId={teamId} />;
+        }else{
+
+        }
     }
+
+    getTeamHeading(teamId){
+
+    }
+
 
     render() {
 
 
-        let chipT1P1, chipT1P2, chipT2P1, chipT2P2, ButtonTeam1, ButtonTeam2 =  null;
+        let chipT1P1, chipT1P2, chipT2P1, chipT2P2, ButtonTeam1, ButtonTeam2, teamHeading =  null;
         let placeHolder1 = "select players to get started!";
         let placeHolder2 = "select players to get started!";
 
@@ -71,35 +123,60 @@ export default class Game2 extends Component {
             placeHolder2 = "score for " + this.props.team2Display;
         }
 
+
+
         return (
             <div className="container">
-                <div className="panel panel-default">
-                    <div className="panel-heading text-center"> <h1> Game </h1> </div>
-                    <div className="panel-body">
-                        <div className="row">
-                            <div className="row align-items-center justify-content-center">
-                                <div className="col align-middle">{ButtonTeam1}</div>
-                                <div className="col align-middle" style={styles.wrapper}>{chipT1P1} {chipT1P2}</div>
-                                <div className="col align-middle"><InputTeamScore teamId={1} placeHolder={placeHolder1}/></div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="row align-items-center justify-content-center">
-                                <div className="col">{ButtonTeam2}</div>
-                                <div className="col" style={styles.wrapper}>{chipT2P1} {chipT2P2}</div>
-                                <div className="col"><InputTeamScore teamId={2} placeHolder={placeHolder2}/></div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div className="panel-body">
-                        <div style={styles.wrapper}>
-
+                <form>
+                    <div className="form-group row">
+                        <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm">{chipT1P1} {chipT1P2}</label>
+                        {ButtonTeam1}
+                        <div className="col-sm-10">
+                            <input type="email" className="form-control form-control-sm input-sm" id="colFormLabelSm" placeholder="score team 1"/>
                         </div>
                     </div>
-                </div>
+
+                    <div className="form-group row">
+                        <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm">{chipT2P1} {chipT2P2}</label>
+                        {ButtonTeam2}
+                        <div className="col-sm-10">
+                            <input type="email" className="form-control form-control-sm input-sm" id="colFormLabelSm" placeholder="score team 1"/>
+                        </div>
+                    </div>
+                </form>
             </div>
         );
+    }
+
+     oldContainer(){
+        <div className="panel panel-default">
+            <div className="panel-heading text-center"> <b>Game</b>  </div>
+            <div className="panel-body">
+                <div className="row">
+                    <div className="row align-items-center justify-content-center">
+                        <div className="col align-middle">{ButtonTeam1}</div>
+                        <div className="col align-middle" style={styles.wrapper}>{chipT1P1} {chipT1P2}</div>
+                        <div className="col align-middle"><InputTeamScore teamId={1} placeHolder={placeHolder1}/></div>
+                        <div className="col align-middle">{ButtonTeam2}</div>
+                        <div className="col align-middle" style={styles.wrapper}>{chipT2P1} {chipT2P2}</div>
+                        <div className="col align-middle"><InputTeamScore teamId={2} placeHolder={placeHolder2}/></div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="row align-items-center justify-content-center">
+                        <div className="col">{ButtonTeam2}</div>
+                        <div className="col" style={styles.wrapper}>{chipT2P1} {chipT2P2}</div>
+                        <div className="col"><InputTeamScore teamId={2} placeHolder={placeHolder2}/></div>
+                    </div>
+                </div>
+
+            </div>
+            <div className="panel-body">
+                <div style={styles.wrapper}>
+
+                </div>
+            </div>
+        </div>
     }
 }
 
