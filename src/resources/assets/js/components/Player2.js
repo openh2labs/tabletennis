@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import AddPlayer from "./AddPlayer";
 import ButtonTeamSelect2 from "./form/ButtonTeamSelect2";
-import BaseClient from './BaseClient';
 
 
 export default class Player2 extends Component {
@@ -44,8 +42,7 @@ export default class Player2 extends Component {
                             <div className="panel-heading">  {this.props.currentPlayer.name} </div>
                             <div className="panel-body">
                                 <div className="row">
-                                    <div className="col"> <ButtonTeamSelect2 teamId={1} /></div>
-                                    <div className="col"><ButtonTeamSelect2 teamId={2} /></div>
+                                    player info here to follow
                                 </div>
                             </div>
                         </div>

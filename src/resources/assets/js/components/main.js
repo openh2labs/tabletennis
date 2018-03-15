@@ -23,6 +23,8 @@ class Main extends Component {
             team1P2: null,
             team2P1: null,
             team2P2: null,
+            team1Count: 0,
+            team2Count: 0,
             team1Display: "",
             team2Display: "",
             TODO_ADDED: null,
@@ -35,7 +37,7 @@ class Main extends Component {
         this.handleTeamClick2 = this.handleTeamClick2.bind(this); //team 2 selection
 
     }
-// The function that is subscribed to the publisher
+    // The function that is subscribed to the publisher
     subscriber(EventName, data){
         console.log("@ subscriber");
         console.log(EventName);
@@ -45,6 +47,15 @@ class Main extends Component {
         }else{
             this.handleTeamClick2(this.state.currentPlayer);
         }
+    }
+
+    // once a player is assigned to a team needs to be removed
+    removePlayer(Player) {
+        let array = this.state.players;
+        let index = array.indexOf(Player)
+        array.splice(index, 1);
+        this.setState({players: array });
+        this.setState({currentPlayer: null});
     }
 
     componentWillMount() {
@@ -98,8 +109,28 @@ class Main extends Component {
     handleClick(player) {
         //handleClick is used to set the state
         this.setState({currentPlayer:player});
-        window.currentPlayer = player;
-      //  this.setState({Player2});
+    }
+
+    // get team counts to decide what to display @todo move to array for teams
+    setTeamCount(teamId){
+        let count = 0;
+        if(teamId === 1){
+            if(this.state.team1P1 !== null){
+                count = count + 1;
+            }
+            if(this.state.team1P2 !== null){
+                count = count + 1;
+            }
+            this.setState.team1Count = count;
+        }else{
+            if(this.state.team2P1 !== null){
+                count = count + 1;
+            }
+            if(this.state.team2P2 !== null){
+                count = count + 1;
+            }
+            this.setState({team2Count: count});
+        }
     }
 
     // team 1 selectors
@@ -107,22 +138,23 @@ class Main extends Component {
     this.checkIfPlayerInAnotherTeam(player,1);
         console.log({player});
         if(this.state.team1P1 === null){
-           // this.setState({team1P1:player});
             this.setState({
                 team1P1: player
             }, () => {
                 this.updateTeamName(1);
+                this.removePlayer(player);
             });
         }else{
             if(this.state.team1P2 === null){
-             //   this.setState({team1P2:player});
                 this.setState({
                     team1P2: player
                 }, () => {
                     this.updateTeamName(1);
+                    this.removePlayer(player);
                 });
             }
         }
+        this.setTeamCount(1);
     }
 
     // team 2 selectors
@@ -131,19 +163,19 @@ class Main extends Component {
         console.log({player});
         //this.setState({team2P1:player});
         if(this.state.team2P1 === null){
-            // this.setState({team1P1:player});
             this.setState({
                 team2P1: player
             }, () => {
                 this.updateTeamName(2);
+                this.removePlayer(player);
             });
         }else{
             if(this.state.team2P2 === null){
-                //   this.setState({team1P2:player});
                 this.setState({
                     team2P2: player
                 }, () => {
                     this.updateTeamName(2);
+                    this.removePlayer(player);
                 });
             }
         }
@@ -252,12 +284,8 @@ class Main extends Component {
                         </ul>
                      </div>
                     <Player2 currentPlayer={this.state.currentPlayer} onTeam1Select={this.handleTeamClick} onTeam2Select={this.handleTeamClick2} />
-
                     <AddPlayer onAdd={this.handleAddPlayer} />
                 </div>
-                <MuiThemeProvider>
-                    <MyAwesomeReactComponent />
-                </MuiThemeProvider>
             </div>
             </MuiThemeProvider>
         );

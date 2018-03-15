@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ButtonTest from './ButtonTest';
 import InputTeamScore from './form/InputTeamScore';
+import ButtonTeamSelect2 from "./form/ButtonTeamSelect2";
 
 const styles = {
     chip: {
@@ -33,11 +34,19 @@ export default class Game2 extends Component {
         return <ButtonTest player={player}/>;
     }
 
+     getButton(teamId){
+        return <ButtonTeamSelect2 teamId={teamId} />;
+    }
+
     render() {
 
-        let chipT1P1, chipT1P2, chipT2P1, chipT2P2 =  null;
+
+        let chipT1P1, chipT1P2, chipT2P1, chipT2P2, ButtonTeam1, ButtonTeam2 =  null;
         let placeHolder1 = "select players to get started!";
         let placeHolder2 = "select players to get started!";
+
+        ButtonTeam1 = this.getButton(1);
+        ButtonTeam2 = this.getButton(2);
         
         if(this.props.team1P1 !== null){
             console.log('Game2.team1P1');
@@ -68,14 +77,18 @@ export default class Game2 extends Component {
                     <div className="panel-heading text-center"> <h1> Game </h1> </div>
                     <div className="panel-body">
                         <div className="row">
-                            <div className="col"><h2>Team 1</h2></div>
-                            <div className="col" style={styles.wrapper}>{chipT1P1} {chipT1P2}</div>
-                            <div className="col"><InputTeamScore teamId={1} placeHolder={placeHolder1}/></div>
+                            <div className="row align-items-center justify-content-center">
+                                <div className="col align-middle">{ButtonTeam1}</div>
+                                <div className="col align-middle" style={styles.wrapper}>{chipT1P1} {chipT1P2}</div>
+                                <div className="col align-middle"><InputTeamScore teamId={1} placeHolder={placeHolder1}/></div>
+                            </div>
                         </div>
                         <div className="row">
-                            <div className="col"><h2>Team 2</h2></div>
-                            <div className="col" style={styles.wrapper}>{chipT2P1} {chipT2P2}</div>
-                            <div className="col"><InputTeamScore teamId={2} placeHolder={placeHolder2}/></div>
+                            <div className="row align-items-center justify-content-center">
+                                <div className="col">{ButtonTeam2}</div>
+                                <div className="col" style={styles.wrapper}>{chipT2P1} {chipT2P2}</div>
+                                <div className="col"><InputTeamScore teamId={2} placeHolder={placeHolder2}/></div>
+                            </div>
                         </div>
 
                     </div>
