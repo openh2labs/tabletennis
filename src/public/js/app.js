@@ -30804,6 +30804,7 @@ var AddPlayer = function (_Component) {
             state[key] = e.target.value;
             this.setState({ newPlayer: state });
         }
+
         /* This method is invoked when submit button is pressed */
 
     }, {
@@ -30840,7 +30841,7 @@ var AddPlayer = function (_Component) {
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    { style: divStyle },
+                    null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'h2',
                         null,
@@ -44585,6 +44586,7 @@ var Main = function (_Component) {
             array.splice(index, 1);
             this.setState({ players: array });
             this.setState({ currentPlayer: null });
+            __WEBPACK_IMPORTED_MODULE_7_pubsub_js___default.a.publish('currentPlayer', null);
         }
     }, {
         key: 'componentWillMount',
@@ -44645,11 +44647,15 @@ var Main = function (_Component) {
                 );
             });
         }
+
+        // player selected
+
     }, {
         key: 'handleClick',
         value: function handleClick(player) {
             //handleClick is used to set the state
             this.setState({ currentPlayer: player });
+            __WEBPACK_IMPORTED_MODULE_7_pubsub_js___default.a.publish('currentPlayer', player);
         }
 
         // get team counts to decide what to display @todo move to array for teams
@@ -44657,6 +44663,7 @@ var Main = function (_Component) {
     }, {
         key: 'setTeamCount',
         value: function setTeamCount(teamId) {
+            console.log('setTeamCount ' + teamId);
             var count = 0;
             if (teamId === 1) {
                 if (this.state.team1P1 !== null) {
@@ -44689,7 +44696,6 @@ var Main = function (_Component) {
             var _this4 = this;
 
             this.checkIfPlayerInAnotherTeam(player, 1);
-            console.log({ player: player });
             if (this.state.team1P1 === null) {
                 this.setState({
                     team1P1: player
@@ -44718,7 +44724,6 @@ var Main = function (_Component) {
             var _this5 = this;
 
             this.checkIfPlayerInAnotherTeam(player, 2);
-            console.log({ player: player });
             //this.setState({team2P1:player});
             if (this.state.team2P1 === null) {
                 this.setState({
@@ -44737,6 +44742,7 @@ var Main = function (_Component) {
                     });
                 }
             }
+            this.setTeamCount(2);
         }
 
         // check if a player is already in another team and remove them
@@ -44841,32 +44847,40 @@ var Main = function (_Component) {
                 background: '#f0f0f0'
             }, _defineProperty(_divStyle, 'padding', '20px 20px 20px 20px'), _defineProperty(_divStyle, 'margin', '30px 10px 10px 30px'), _divStyle);
 
+            // <Player2 currentPlayer={this.state.currentPlayer} onTeam1Select={this.handleTeamClick} onTeam2Select={this.handleTeamClick2} />
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_2_material_ui_styles_MuiThemeProvider___default.a,
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    null,
+                    { className: 'container' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Game2__["a" /* default */], { team1Display: this.state.team1Display, team2Display: this.state.team2Display, team1P1: this.state.team1P1, team1P2: this.state.team1P2, team2P1: this.state.team2P1, team2P2: this.state.team2P2 }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { style: mainDivStyle },
+                        { className: 'row' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
-                            { style: divStyle },
+                            { className: 'col' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__AddPlayer__["a" /* default */], { onAdd: this.handleAddPlayer })
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { style: mainDivStyle, className: 'row' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'col' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'h3',
-                                null,
-                                ' players '
-                            ),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'ul',
-                                null,
-                                this.renderPlayers()
+                                'div',
+                                { style: divStyle },
+                                'players',
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'ul',
+                                    null,
+                                    this.renderPlayers()
+                                )
                             )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Player2__["a" /* default */], { currentPlayer: this.state.currentPlayer, onTeam1Select: this.handleTeamClick, onTeam2Select: this.handleTeamClick2 }),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__AddPlayer__["a" /* default */], { onAdd: this.handleAddPlayer })
+                        )
                     )
                 )
             );
@@ -65407,7 +65421,7 @@ var Player2 = function (_Component) {
     return Player2;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
-/* harmony default export */ __webpack_exports__["a"] = (Player2);
+/* unused harmony default export */ var _unused_webpack_default_export = (Player2);
 
 /***/ }),
 /* 409 */
@@ -65470,7 +65484,7 @@ var ButtonTeamSelect2 = function (_Component) {
                         return _this2.handleSubmit(e, _this2.props.teamId);
                     }
                 },
-                "assign to team " + this.props.teamId
+                "Team " + this.props.teamId
             );
         }
     }]);
@@ -65544,7 +65558,8 @@ var Game2 = function (_Component) {
 
         _this.state = {
             "team1Full": false,
-            "team2Full": false
+            "team2Full": false,
+            "currentPlayer": null
         };
         return _this;
     }
@@ -65554,6 +65569,7 @@ var Game2 = function (_Component) {
         value: function componentWillMount() {
             console.log('game 2componentWillMount');
             this.token = __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.subscribe('TeamFull', this.subscriber.bind(this));
+            this.token = __WEBPACK_IMPORTED_MODULE_5_pubsub_js___default.a.subscribe('currentPlayer', this.subscriber.bind(this));
         }
     }, {
         key: 'componentWillUnmount',
@@ -65580,14 +65596,15 @@ var Game2 = function (_Component) {
         key: 'subscriber',
         value: function subscriber(EventName, data) {
             console.log("game2 subscriber fired " + EventName + ", data " + data);
-            //console.log(EventName);
-            //console.log(data);
             if (EventName === "TeamFull") {
                 if (data === 1) {
                     this.setState({ "team1Full": true });
                 } else {
                     this.setState({ "team2Full": true });
                 }
+            }
+            if (EventName === "currentPlayer") {
+                this.setState({ "currentPlayer": data });
             }
         }
     }, {
@@ -65606,9 +65623,27 @@ var Game2 = function (_Component) {
     }, {
         key: 'getButton',
         value: function getButton(teamId) {
-            if (this.state.team1Full === false) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__form_ButtonTeamSelect2__["a" /* default */], { teamId: teamId });
-            } else {}
+            if (teamId === 1) {
+                if (this.state.team1Full === false && this.state.currentPlayer !== null) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__form_ButtonTeamSelect2__["a" /* default */], { teamId: teamId });
+                } else {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'button',
+                        { type: 'button', className: 'btn btn-secondary btn-sm' },
+                        'Team 1'
+                    );
+                }
+            } else {
+                if (this.state.team2Full === false && this.state.currentPlayer !== null) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__form_ButtonTeamSelect2__["a" /* default */], { teamId: teamId });
+                } else {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'button',
+                        { type: 'button', className: 'btn btn-secondary btn-sm' },
+                        'Team 2'
+                    );
+                }
+            }
         }
     }, {
         key: 'getTeamHeading',
@@ -65664,16 +65699,17 @@ var Game2 = function (_Component) {
                         { className: 'form-group row' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'label',
-                            { htmlFor: 'colFormLabelSm', className: 'col-sm-2 col-form-label col-form-label-sm' },
+                            { htmlFor: 'colFormLabelSm', className: 'col-sm-2 col-form-label col-form-label-sm', style: styles.wrapper },
+                            ButtonTeam1,
+                            ' ',
                             chipT1P1,
                             ' ',
                             chipT1P2
                         ),
-                        ButtonTeam1,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'col-sm-10' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'email', className: 'form-control form-control-sm input-sm', id: 'colFormLabelSm', placeholder: 'score team 1' })
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'email', className: 'form-control form-control-sm input-sm', id: 'colFormLabelSm', placeholder: placeHolder1 })
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -65681,16 +65717,18 @@ var Game2 = function (_Component) {
                         { className: 'form-group row' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'label',
-                            { htmlFor: 'colFormLabelSm', className: 'col-sm-2 col-form-label col-form-label-sm' },
+                            { htmlFor: 'colFormLabelSm', className: 'col-sm-2 col-form-label col-form-label-sm', style: styles.wrapper },
+                            ' ',
+                            ButtonTeam2,
+                            ' ',
                             chipT2P1,
                             ' ',
                             chipT2P2
                         ),
-                        ButtonTeam2,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'col-sm-10' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'email', className: 'form-control form-control-sm input-sm', id: 'colFormLabelSm', placeholder: 'score team 1' })
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'email', className: 'form-control form-control-sm input-sm', id: 'colFormLabelSm', placeholder: placeHolder2 })
                         )
                     )
                 )

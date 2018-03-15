@@ -52,6 +52,7 @@ class Main extends Component {
         array.splice(index, 1);
         this.setState({players: array });
         this.setState({currentPlayer: null});
+        PubSub.publish('currentPlayer', null);
     }
 
     componentWillMount() {
@@ -102,13 +103,16 @@ class Main extends Component {
     })
     }
 
+    // player selected
     handleClick(player) {
         //handleClick is used to set the state
         this.setState({currentPlayer:player});
+        PubSub.publish('currentPlayer', player);
     }
 
     // get team counts to decide what to display @todo move to array for teams
     setTeamCount(teamId){
+        console.log('setTeamCount ' + teamId);
         let count = 0;
         if(teamId === 1){
             if(this.state.team1P1 !== null){
@@ -136,7 +140,6 @@ class Main extends Component {
     // team 1 selectors
     handleTeamClick(player) {
     this.checkIfPlayerInAnotherTeam(player,1);
-        console.log({player});
         if(this.state.team1P1 === null){
             this.setState({
                 team1P1: player
@@ -160,7 +163,6 @@ class Main extends Component {
     // team 2 selectors
     handleTeamClick2(player) {
         this.checkIfPlayerInAnotherTeam(player,2);
-        console.log({player});
         //this.setState({team2P1:player});
         if(this.state.team2P1 === null){
             this.setState({
@@ -179,6 +181,7 @@ class Main extends Component {
                 });
             }
         }
+        this.setTeamCount(2);
     }
 
     // check if a player is already in another team and remove them
@@ -270,20 +273,23 @@ class Main extends Component {
 
         }
 
+        // <Player2 currentPlayer={this.state.currentPlayer} onTeam1Select={this.handleTeamClick} onTeam2Select={this.handleTeamClick2} />
         return (
             <MuiThemeProvider>
-            <div>
+            <div className="container">
                 <Game2 team1Display={this.state.team1Display} team2Display={this.state.team2Display} team1P1={this.state.team1P1} team1P2={this.state.team1P2} team2P1={this.state.team2P1} team2P2={this.state.team2P2}/>
-                <div style= {mainDivStyle}>
+                <div className="row">
+                    <div className="col"><AddPlayer onAdd={this.handleAddPlayer} /></div>
+                </div>
+                <div style= {mainDivStyle} className="row">
+                    <div className="col">
                     <div style={divStyle}>
-
-                        <h3> players </h3>
+                        players
                         <ul>
                             { this.renderPlayers() }
                         </ul>
                      </div>
-                    <Player2 currentPlayer={this.state.currentPlayer} onTeam1Select={this.handleTeamClick} onTeam2Select={this.handleTeamClick2} />
-                    <AddPlayer onAdd={this.handleAddPlayer} />
+                    </div>
                 </div>
             </div>
             </MuiThemeProvider>

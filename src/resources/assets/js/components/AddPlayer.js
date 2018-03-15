@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 class AddPlayer extends Component {
 
@@ -22,8 +22,9 @@ class AddPlayer extends Component {
         /*Duplicating and updating the state */
         var state = Object.assign({}, this.state.newPlayer);
         state[key] = e.target.value;
-        this.setState({newPlayer: state });
+        this.setState({newPlayer: state});
     }
+
     /* This method is invoked when submit button is pressed */
     handleSubmit(e) {
         //preventDefault prevents page reload
@@ -49,24 +50,23 @@ class AddPlayer extends Component {
         const inputStyle = {
             margin: '0px 10px 0px 10px'
         }
-        return(
+        return (
             <div>
-
-            <div style={divStyle}>
-            <h2> Add new player </h2>
-        {/*when Submit button is pressed, the control is passed to
+                <div>
+                    <h2> Add new player </h2>
+                    {/*when Submit button is pressed, the control is passed to
          *handleSubmit method
          */}
-    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit}>
 
-    <label>
-        name:
-        {/*On every keystroke, the handeInput method is invoked */}
-    <input style={inputStyle} type="text" onChange={(e)=>this.handleInput('name',e)} />
-        </label>
-        <input style={inputStyle}  type="submit" value="Submit" />
-            </form>
-            </div>
+                        <label>
+                            name:
+                            {/*On every keystroke, the handeInput method is invoked */}
+                            <input style={inputStyle} type="text" onChange={(e) => this.handleInput('name', e)}/>
+                        </label>
+                        <input style={inputStyle} type="submit" value="Submit"/>
+                    </form>
+                </div>
             </div>
         )
     }

@@ -20,7 +20,7 @@ const paperStyle = {
     width: 100,
     margin: 20,
     textAlign: 'center',
-    display: 'inline-block',
+    display: 'inline-block'
 };
 
 
@@ -31,12 +31,14 @@ export default class Game2 extends Component {
         this.state = {
             "team1Full": false,
             "team2Full": false,
+            "currentPlayer": null,
         }
     }
 
     componentWillMount() {
         console.log('game 2componentWillMount');
         this.token = PubSub.subscribe('TeamFull', this.subscriber.bind(this));
+        this.token = PubSub.subscribe('currentPlayer', this.subscriber.bind(this));
     }
 
     componentWillUnmount() {
@@ -56,14 +58,15 @@ export default class Game2 extends Component {
     // The function that is subscribed to the publisher
     subscriber(EventName, data){
         console.log("game2 subscriber fired " + EventName + ", data " +data);
-        //console.log(EventName);
-        //console.log(data);
         if(EventName === "TeamFull"){
             if(data===1){
                 this.setState({"team1Full" : true});
             }else{
                 this.setState({"team2Full" : true});
             }
+        }
+        if(EventName === "currentPlayer"){
+            this.setState({"currentPlayer" : data});
         }
     }
 
@@ -78,10 +81,18 @@ export default class Game2 extends Component {
      * @returns {*}
      */
      getButton(teamId){
-        if(this.state.team1Full === false){
-            return <ButtonTeamSelect2 teamId={teamId} />;
+        if(teamId === 1 ){
+            if(this.state.team1Full === false && this.state.currentPlayer !== null){
+                return <ButtonTeamSelect2 teamId={teamId} />;
+            }else{
+                return <button type="button" className="btn btn-secondary btn-sm">Team 1</button>
+            }
         }else{
-
+            if(this.state.team2Full === false && this.state.currentPlayer !== null){
+                return <ButtonTeamSelect2 teamId={teamId} />;
+            }else{
+                return <button type="button" className="btn btn-secondary btn-sm">Team 2</button>
+            }
         }
     }
 
@@ -123,24 +134,19 @@ export default class Game2 extends Component {
             placeHolder2 = "score for " + this.props.team2Display;
         }
 
-
-
         return (
             <div className="container">
                 <form>
                     <div className="form-group row">
-                        <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm">{chipT1P1} {chipT1P2}</label>
-                        {ButtonTeam1}
+                        <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}>{ButtonTeam1} {chipT1P1} {chipT1P2}</label>
                         <div className="col-sm-10">
-                            <input type="email" className="form-control form-control-sm input-sm" id="colFormLabelSm" placeholder="score team 1"/>
+                            <input type="email" className="form-control form-control-sm input-sm" id="colFormLabelSm" placeholder={placeHolder1}/>
                         </div>
                     </div>
-
                     <div className="form-group row">
-                        <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm">{chipT2P1} {chipT2P2}</label>
-                        {ButtonTeam2}
+                        <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}> {ButtonTeam2} {chipT2P1} {chipT2P2}</label>
                         <div className="col-sm-10">
-                            <input type="email" className="form-control form-control-sm input-sm" id="colFormLabelSm" placeholder="score team 1"/>
+                            <input type="email" className="form-control form-control-sm input-sm" id="colFormLabelSm" placeholder={placeHolder2}/>
                         </div>
                     </div>
                 </form>
