@@ -14,25 +14,7 @@ export default class ButtonScoreSave extends Component {
             team2P2: null,
             team1Score: 0,
             team2Score: 0,
-            payload: {
-                team_1_player_1: null,
-                team_1_player_2: null,
-                team_2_player_1: null,
-                team_2_player_2: null,
-                team_1_score: 0,
-                team_2_score: 0,
-                game_type: "not set",
-            },
         }
-        /*
-           team_1_player_1` bigint(20) NOT NULL,
-         `team_1_player_2` bigint(20) DEFAULT NULL,
-         `team_2_player_1` bigint(20) NOT NULL,
-         `team_2_player_2` bigint(20) DEFAULT NULL,
-         `team_1_score` int(11) NOT NULL DEFAULT '0',
-         `team_2_score` int(11) NOT NULL DEFAULT '0',
-         `game_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'single',
-        */
     }
 
     handleSubmit(e){
@@ -80,56 +62,7 @@ export default class ButtonScoreSave extends Component {
         this.setState(obj);
     }
 
-    getPayload(){
-        var gameType = 'single';
-        /*
-            team_1_player_1` bigint(20) NOT NULL,
-          `team_1_player_2` bigint(20) DEFAULT NULL,
-          `team_2_player_1` bigint(20) NOT NULL,
-          `team_2_player_2` bigint(20) DEFAULT NULL,
-          `team_1_score` int(11) NOT NULL DEFAULT '0',
-          `team_2_score` int(11) NOT NULL DEFAULT '0',
-          `game_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'single',
-         */
-        //var payload = [];
-        var obj = new Object();
-        obj.team_1_player_1 = this.state.team1P1.id;
-        //this.setState({payload: {team_1_player_1: this.state.team1P1.id}});
-        //payload['team_1_player_1'] = this.state.team1P1.id;
-        if(this.state.team1P2 !== null){
-            obj.team_1_player_2 = this.state.team1P2.id;
-          //  this.setState({team_1_player_2: this.state.team1P2.id});
-          //  payload['team_1_player_2'] = this.state.team1P2.id;
-            gameType = 'doubles';
-
-        }
-        obj.team_2_player_1 = this.state.team2P1.id;
-       // this.setState({team_2_player_1: this.state.team2P1.id});
-        //payload['team_2_player_1'] = this.state.team2P1.id;
-        if(this.state.team2P2 !== null){
-            obj.team_2_player_2 = this.state.team2P2.id;
-            //this.setState({team_2_player_2: this.state.team2P2.id});
-           // payload['team_2_player_2'] = this.state.team2P2.id;
-            gameType = 'doubles';
-        }
-        obj.team_1_score = this.state.team1Score;
-      //  this.setState({team_1_score: this.state.team1Score});
-      //  payload['team_1_score'] = this.state.team1Score;
-        obj.team_2_score = this.state.team2Score;
-     //   this.setState({team_2_score: this.state.team2Score});
-      //  payload['team_2_score'] = this.state.team2Score;
-        obj.game_type = gameType;
-        this.setState({payload: obj});
-        console.log('getPayload');
-        console.log(obj);
-        console.log(this.state.payload);
-     //   payload['game_type'] = gameType;
-        //return payload;
-    }
-
-
     handleSave() {
-
         //prep payload
         var obj = new Object();
         obj.game_type = "unnknown"
@@ -151,7 +84,6 @@ export default class ButtonScoreSave extends Component {
         console.log(JSON.stringify(obj));
 
         //post
-        //player.price = Number(player.price);
         /*Fetch API for post request */
         fetch( 'api/game/', {
             method:'post',
