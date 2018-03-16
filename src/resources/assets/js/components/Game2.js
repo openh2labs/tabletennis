@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ButtonTest from './ButtonTest';
-import InputTeamScore from './form/InputTeamScore';
+//import InputTeamScore from './form/InputTeamScore';
 import ButtonTeamSelect2 from "./form/ButtonTeamSelect2";
 import PubSub from "pubsub-js";
+import ButtonScoreSave from "./form/ButtonScoreSave";
+import InputTeamScore2 from "./form/InputTeamScore2";
 
 const styles = {
     chip: {
@@ -32,13 +34,16 @@ export default class Game2 extends Component {
             "team1Full": false,
             "team2Full": false,
             "currentPlayer": null,
+            "team1Score": 0,
+            "team2Score": 0,
         }
     }
 
     componentWillMount() {
-        console.log('game 2componentWillMount');
         this.token = PubSub.subscribe('TeamFull', this.subscriber.bind(this));
         this.token = PubSub.subscribe('currentPlayer', this.subscriber.bind(this));
+        this.token = PubSub.subscribe('team1Score', this.subscriberScore.bind(this));
+        this.token = PubSub.subscribe('team2Score', this.subscriberScore.bind(this));
     }
 
     componentWillUnmount() {
@@ -53,6 +58,10 @@ export default class Game2 extends Component {
     componentDidMount() {
        // PubSub.publish('TeamFull', this.token);
         console.log('game2 componentDidMount');
+    }
+
+    subscriberScore(EventName, data){
+        this.setState({EventName : data});
     }
 
     // The function that is subscribed to the publisher
@@ -96,14 +105,7 @@ export default class Game2 extends Component {
         }
     }
 
-    getTeamHeading(teamId){
-
-    }
-
-
     render() {
-
-
         let chipT1P1, chipT1P2, chipT2P1, chipT2P2, ButtonTeam1, ButtonTeam2, teamHeading =  null;
         let placeHolder1 = "select players to get started!";
         let placeHolder2 = "select players to get started!";
@@ -117,15 +119,15 @@ export default class Game2 extends Component {
         }
         if(this.props.team1P2 !== null){
             console.log('Game2.team1P2');
-            chipT1P2 = this.getCheap(this.props.team1P2); //<MuiThemeProvider><ButtonTest player={this.props.team1P2}/></MuiThemeProvider>;
+            chipT1P2 = this.getCheap(this.props.team1P2);
         }
         if(this.props.team2P1 !== null){
             console.log('Game2.team2P1');
-            chipT2P1 = this.getCheap(this.props.team2P1); //<MuiThemeProvider><ButtonTest player={this.props.team2P1}/></MuiThemeProvider>;
+            chipT2P1 = this.getCheap(this.props.team2P1);
         }
         if(this.props.team2P2 !== null){
             console.log('Game2.team2P2');
-            chipT2P2 = this.getCheap(this.props.team2P2); //<MuiThemeProvider><ButtonTest player={this.props.team2P2}/></MuiThemeProvider>;
+            chipT2P2 = this.getCheap(this.props.team2P2);
         }
         if(this.props.team1Display !== ""){
             placeHolder1 = "score for " + this.props.team1Display;
@@ -140,20 +142,29 @@ export default class Game2 extends Component {
                     <div className="form-group row">
                         <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}>{ButtonTeam1} {chipT1P1} {chipT1P2}</label>
                         <div className="col-sm-10">
-                            <input type="email" className="form-control form-control-sm input-sm" id="colFormLabelSm" placeholder={placeHolder1}/>
+                            <InputTeamScore2 teamId={1}placeholder={placeHolder1} />
+
                         </div>
                     </div>
                     <div className="form-group row">
                         <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}> {ButtonTeam2} {chipT2P1} {chipT2P2}</label>
                         <div className="col-sm-10">
-                            <input type="email" className="form-control form-control-sm input-sm" id="colFormLabelSm" placeholder={placeHolder2}/>
+                            <InputTeamScore2 teamId={2} placeholder={placeHolder2} />
                         </div>
                     </div>
+
+                        <ButtonScoreSave />
                 </form>
             </div>
         );
     }
 
+    oldelements(){
+         /*
+        <input type="email" className="form-control form-control-sm input-sm" id="colFormLabelSm" placeholder={placeHolder2}/>
+        <input type="email" className="form-control form-control-sm input-sm" id="colFormLabelSm" placeholder={placeHolder1}/>
+        */
+    }
 }
 
 if (document.getElementById('Game2')) {

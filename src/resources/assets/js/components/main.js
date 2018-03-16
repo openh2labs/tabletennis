@@ -146,6 +146,7 @@ class Main extends Component {
             }, () => {
                 this.updateTeamName(1);
                 this.removePlayer(player);
+                PubSub.publish('team1P1', player);
             });
         }else{
             if(this.state.team1P2 === null){
@@ -154,6 +155,7 @@ class Main extends Component {
                 }, () => {
                     this.updateTeamName(1);
                     this.removePlayer(player);
+                    PubSub.publish('team1P2', player);
                 });
             }
         }
@@ -170,6 +172,7 @@ class Main extends Component {
             }, () => {
                 this.updateTeamName(2);
                 this.removePlayer(player);
+                PubSub.publish('team2P1', player);
             });
         }else{
             if(this.state.team2P2 === null){
@@ -178,6 +181,7 @@ class Main extends Component {
                 }, () => {
                     this.updateTeamName(2);
                     this.removePlayer(player);
+                    PubSub.publish('team2P2', player);
                 });
             }
         }

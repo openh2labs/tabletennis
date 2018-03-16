@@ -68,8 +68,7 @@ class AddPlayer extends Component {
         )
     }
 
-    oldcontainer(){
-
+    oldcontainer() {
         <div>
             <div>
                 <strong> Add new player </strong>

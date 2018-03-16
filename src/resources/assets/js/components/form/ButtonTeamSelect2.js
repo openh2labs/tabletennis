@@ -18,7 +18,6 @@ export default class ButtonTeamSelect2 extends Component {
     handleSubmit(e, teamId){
         //preventDefault prevents page reload
         e.preventDefault();
-        console.log('emit sending !!! ');
         PubSub.publish('TeamSelected', teamId);
     }
 
