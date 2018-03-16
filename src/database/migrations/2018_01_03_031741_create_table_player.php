@@ -27,6 +27,7 @@ class CreateTablePlayer extends Migration
             $table->bigInteger('team_2_player_2')->nullable();
             $table->integer('team_1_score')->default(0);
             $table->integer('team_2_score')->default(0);
+            $table->string('game_type', 20)->default('single');
             $table->timestamps();
         });
     }

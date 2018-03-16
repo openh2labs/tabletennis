@@ -35,8 +35,8 @@ services:
     environment:
       MYSQL_DATABASE: tabletennis
       MYSQL_ROOT_PASSWORD: "<YourStrong!Passw0rd>"
-    #ports:
-    #  - "3306:3306"
+    ports:
+      - "3306:3306"
     logging:
       driver: none
 

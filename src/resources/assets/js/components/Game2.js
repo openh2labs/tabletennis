@@ -143,7 +143,6 @@ export default class Game2 extends Component {
                         <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}>{ButtonTeam1} {chipT1P1} {chipT1P2}</label>
                         <div className="col-sm-10">
                             <InputTeamScore2 teamId={1}placeholder={placeHolder1} />
-
                         </div>
                     </div>
                     <div className="form-group row">
@@ -152,18 +151,10 @@ export default class Game2 extends Component {
                             <InputTeamScore2 teamId={2} placeholder={placeHolder2} />
                         </div>
                     </div>
-
                         <ButtonScoreSave />
                 </form>
             </div>
         );
-    }
-
-    oldelements(){
-         /*
-        <input type="email" className="form-control form-control-sm input-sm" id="colFormLabelSm" placeholder={placeHolder2}/>
-        <input type="email" className="form-control form-control-sm input-sm" id="colFormLabelSm" placeholder={placeHolder1}/>
-        */
     }
 }
 
