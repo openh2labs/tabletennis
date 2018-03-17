@@ -20,15 +20,11 @@ export default class ButtonScoreSave extends Component {
     handleSubmit(e){
         //preventDefault prevents page reload
         e.preventDefault();
-        console.log('score save clicked');
-        console.log(this.state.team1P1);
-        console.log(this.state.team1P2);
-        console.log(this.state.team2P1);
-        console.log(this.state.team2P2);
-        console.log(this.state.team1Score);
-        console.log(this.state.team2Score);
         PubSub.publish('ScoreSave');
-        console.log(this.handleSave());
+        this.handleSave();
+        // clear values
+        document.getElementById('InputScore2').value="";
+        document.getElementById('InputScore1').value="";
     }
 
     componentWillMount() {
@@ -62,10 +58,14 @@ export default class ButtonScoreSave extends Component {
         this.setState(obj);
     }
 
+
+    /**
+     * save the score to the micro service
+     */
     handleSave() {
         //prep payload
         var obj = new Object();
-        obj.game_type = "unnknown"
+        obj.game_type = "single"
         obj.team_1_player_1 = this.state.team1P1.id;
         if(this.state.team1P2 !== null){
             obj.team_1_player_2 = this.state.team1P2.id;
@@ -74,14 +74,14 @@ export default class ButtonScoreSave extends Component {
         obj.team_2_player_1 = this.state.team2P1.id;
         if(this.state.team2P2 !== null){
             obj.team_2_player_2 = this.state.team2P2.id;
-            bj.game_type = 'doubles';
+            obj.game_type = 'doubles';
         }
         obj.team_1_score = this.state.team1Score;
         obj.team_2_score = this.state.team2Score;
 
         console.log('handleSave')
-        console.log(obj);
-        console.log(JSON.stringify(obj));
+        //console.log(obj);
+        //console.log(JSON.stringify(obj));
 
         //post
         /*Fetch API for post request */

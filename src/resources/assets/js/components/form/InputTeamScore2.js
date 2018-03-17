@@ -18,24 +18,48 @@ export default class InputTeamScore2 extends Component {
     }
 
     handleSubmit(e){
-        //console.log('score save changes for team ' + this.props.teamId + ' is ' + e.target.value);
         PubSub.publish('team'+this.props.teamId+'Score', e.target.value);
     }
 
     render() {
-       // let placeholder = ;
-       // console.log("here " + e);
-        //<input type="email" className="" id="colFormLabelSm" placeholder={placeHolder1}/>
         return (
             <input
                 type="text"
-                id={this.props.teamId}
+                id={"InputScore"+this.props.teamId}
                 name={this.props.teamId}
                 placeholder={this.state.placeholder}
                 className="form-control form-control-sm input-sm"
-                onChange={this.handleSubmit} //{(e) =>  this.handleSubmit(e, '', '', '', '')}
+                onChange={this.handleSubmit}
             />
         )
+    }
+
+    componentWillMount() {
+        this.token = PubSub.subscribe('ScoreSaveComplete', this.subscriber.bind(this));
+    }
+
+    componentWillUnmount() {
+        console.log('game2 componentWillUnmount');
+        // React removed me from the DOM, I have to unsubscribe from the system using my token
+        //PubSub.unsubscribe(this.token);
+    }
+
+    /*componentDidMount() is a lifecycle method
+  * that gets called after the component is rendered
+  */
+    componentDidMount() {
+        console.log('game2 componentDidMount');
+    }
+
+    subscriber(EventName, data){
+        var key = EventName
+        var val = data
+        var obj  = {}
+        obj[key] = val
+        this.setState(obj);
+        if(event === "ScoreSaveComplete"){
+            this.setState({value:""});
+        }
     }
 }
 

@@ -66121,15 +66121,11 @@ var ButtonScoreSave = function (_Component) {
         value: function handleSubmit(e) {
             //preventDefault prevents page reload
             e.preventDefault();
-            console.log('score save clicked');
-            console.log(this.state.team1P1);
-            console.log(this.state.team1P2);
-            console.log(this.state.team2P1);
-            console.log(this.state.team2P2);
-            console.log(this.state.team1Score);
-            console.log(this.state.team2Score);
             __WEBPACK_IMPORTED_MODULE_2_pubsub_js___default.a.publish('ScoreSave');
-            console.log(this.handleSave());
+            this.handleSave();
+            // clear values
+            document.getElementById('InputScore2').value = "";
+            document.getElementById('InputScore1').value = "";
         }
     }, {
         key: 'componentWillMount',
@@ -66168,12 +66164,17 @@ var ButtonScoreSave = function (_Component) {
             obj[key] = val;
             this.setState(obj);
         }
+
+        /**
+         * save the score to the micro service
+         */
+
     }, {
         key: 'handleSave',
         value: function handleSave() {
             //prep payload
             var obj = new Object();
-            obj.game_type = "unnknown";
+            obj.game_type = "single";
             obj.team_1_player_1 = this.state.team1P1.id;
             if (this.state.team1P2 !== null) {
                 obj.team_1_player_2 = this.state.team1P2.id;
@@ -66182,14 +66183,14 @@ var ButtonScoreSave = function (_Component) {
             obj.team_2_player_1 = this.state.team2P1.id;
             if (this.state.team2P2 !== null) {
                 obj.team_2_player_2 = this.state.team2P2.id;
-                bj.game_type = 'doubles';
+                obj.game_type = 'doubles';
             }
             obj.team_1_score = this.state.team1Score;
             obj.team_2_score = this.state.team2Score;
 
             console.log('handleSave');
-            console.log(obj);
-            console.log(JSON.stringify(obj));
+            //console.log(obj);
+            //console.log(JSON.stringify(obj));
 
             //post
             /*Fetch API for post request */
@@ -66280,23 +66281,53 @@ var InputTeamScore2 = function (_Component) {
     _createClass(InputTeamScore2, [{
         key: 'handleSubmit',
         value: function handleSubmit(e) {
-            //console.log('score save changes for team ' + this.props.teamId + ' is ' + e.target.value);
             __WEBPACK_IMPORTED_MODULE_2_pubsub_js___default.a.publish('team' + this.props.teamId + 'Score', e.target.value);
         }
     }, {
         key: 'render',
         value: function render() {
-            // let placeholder = ;
-            // console.log("here " + e);
-            //<input type="email" className="" id="colFormLabelSm" placeholder={placeHolder1}/>
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', {
                 type: 'text',
-                id: this.props.teamId,
+                id: "InputScore" + this.props.teamId,
                 name: this.props.teamId,
                 placeholder: this.state.placeholder,
                 className: 'form-control form-control-sm input-sm',
-                onChange: this.handleSubmit //{(e) =>  this.handleSubmit(e, '', '', '', '')}
+                onChange: this.handleSubmit
             });
+        }
+    }, {
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            this.token = __WEBPACK_IMPORTED_MODULE_2_pubsub_js___default.a.subscribe('ScoreSaveComplete', this.subscriber.bind(this));
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            console.log('game2 componentWillUnmount');
+            // React removed me from the DOM, I have to unsubscribe from the system using my token
+            //PubSub.unsubscribe(this.token);
+        }
+
+        /*componentDidMount() is a lifecycle method
+        * that gets called after the component is rendered
+        */
+
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            console.log('game2 componentDidMount');
+        }
+    }, {
+        key: 'subscriber',
+        value: function subscriber(EventName, data) {
+            var key = EventName;
+            var val = data;
+            var obj = {};
+            obj[key] = val;
+            this.setState(obj);
+            if (event === "ScoreSaveComplete") {
+                this.setState({ value: "" });
+            }
         }
     }]);
 
