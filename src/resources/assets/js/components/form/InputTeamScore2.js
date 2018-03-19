@@ -24,7 +24,7 @@ export default class InputTeamScore2 extends Component {
     render() {
         return (
             <input
-                type="text"
+                type="number"
                 id={"InputScore"+this.props.teamId}
                 name={this.props.teamId}
                 placeholder={this.state.placeholder}

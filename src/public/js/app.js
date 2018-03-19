@@ -66287,7 +66287,7 @@ var InputTeamScore2 = function (_Component) {
         key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', {
-                type: 'text',
+                type: 'number',
                 id: "InputScore" + this.props.teamId,
                 name: this.props.teamId,
                 placeholder: this.state.placeholder,
