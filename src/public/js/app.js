@@ -44782,26 +44782,23 @@ var Main = function (_Component) {
     }, {
         key: 'removePlayerFromTeam',
         value: function removePlayerFromTeam(player) {
-            var teamId = 0;
             if (this.state.team1P1 === player) {
                 this.setState({ team1P1: null });
-                teamId = 1;
             }
             if (this.state.team1P2 === player) {
                 this.setState({ team1P2: null });
-                teamId = 1;
             }
             if (this.state.team2P1 === player) {
                 this.setState({ team2P1: null });
-                teamId = 2;
             }
             if (this.state.team2P2 === player) {
                 this.setState({ team2P2: null });
-                teamId = 2;
             }
-
             this.updateTeamName();
         }
+    }, {
+        key: 'removePlayerFromTeamState',
+        value: function removePlayerFromTeamState(player) {}
 
         // if a player is removed from a team they need to be added here
 
@@ -44900,30 +44897,36 @@ var Main = function (_Component) {
 
     }, {
         key: 'setTeamCount',
-        value: function setTeamCount(teamId) {
-            console.log('setTeamCount ' + teamId);
+        value: function setTeamCount() {
+            //team 1
             var count = 0;
-            if (teamId === 1) {
-                if (this.state.team1P1 !== null) {
-                    count = count + 1;
-                }
-                if (this.state.team1P2 !== null) {
-                    count = count + 1;
-                }
-                this.setState({ team1Count: count });
-            } else {
-                if (this.state.team2P1 !== null) {
-                    count = count + 1;
-                }
-                if (this.state.team2P2 !== null) {
-                    count = count + 1;
-                }
-                this.setState({ team2Count: count });
+            var teamFull = { team1: false, team2: false };
+
+            if (this.state.team1P1 !== null) {
+                count = count + 1;
             }
+            if (this.state.team1P2 !== null) {
+                count = count + 1;
+            }
+            this.setState({ team1Count: count });
             if (count === 2) {
-                console.log('main team full publish ' + teamId);
-                __WEBPACK_IMPORTED_MODULE_7_pubsub_js___default.a.publish('TeamFull', teamId);
+                teamFull.team1 = true;
             }
+
+            //team 2
+            count = 0;
+            if (this.state.team2P1 !== null) {
+                count = count + 1;
+            }
+            if (this.state.team2P2 !== null) {
+                count = count + 1;
+            }
+            this.setState({ team2Count: count });
+            if (count === 2) {
+                teamFull.team2 = true;
+            }
+            // notify subsccribers
+            __WEBPACK_IMPORTED_MODULE_7_pubsub_js___default.a.publish('TeamFull', teamFull);
         }
 
         // team 1 selectors
@@ -44953,7 +44956,7 @@ var Main = function (_Component) {
                     });
                 }
             }
-            this.setTeamCount(1);
+            this.setTeamCount();
         }
 
         // team 2 selectors
@@ -44984,7 +44987,7 @@ var Main = function (_Component) {
                     });
                 }
             }
-            this.setTeamCount(2);
+            this.setTeamCount();
         }
 
         // check if a player is already in another team and remove them
@@ -45010,33 +45013,33 @@ var Main = function (_Component) {
         }
 
         /**
-         * provide team name to display
+         * provide team name to display and update team counts
          * @param team
          */
 
     }, {
         key: 'updateTeamName',
         value: function updateTeamName() {
-            this.setState({ team1Display: null });
-            this.setState({ team2Display: null });
+            var team1Display = [];
+            var team2Display = [];
 
-            console.log('update team 1' + this.state.team1P1);
-            //    if(team === 1){
-            //this.setState({team1Display: ""})
             if (this.state.team1P1 !== null) {
-                this.setState({ team1Display: this.state.team1P1.name });
+                team1Display.push(this.state.team1P1.name);
             }
             if (this.state.team1P2 !== null) {
-                this.setState({ team1Display: this.state.team1P1.name + " - " + this.state.team1P2.name });
+                team1Display.push(this.state.team1P2.name);
             }
-            //     }else{
             if (this.state.team2P1 !== null) {
-                this.setState({ team2Display: this.state.team2P1.name });
+                team2Display.push(this.state.team2P1.name);
             }
             if (this.state.team2P2 !== null) {
-                this.setState({ team2Display: this.state.team2P1.name + " - " + this.state.team2P2.name });
+                team2Display.push(this.state.team2P2.name);
             }
-            //     }
+            this.setState({ team1Display: team1Display.join("-") });
+            this.setState({ team2Display: team2Display.join("-") });
+            this.setState({ team1Count: team1Display.length });
+            this.setState({ team2Count: team2Display.length });
+            this.setTeamCount();
         }
 
         // post to the ms to save the player
@@ -65014,12 +65017,18 @@ var Game2 = function (_Component) {
         key: 'subscriber',
         value: function subscriber(EventName, data) {
             console.log("game2 subscriber fired " + EventName + ", data " + data);
+            console.log(data);
             if (EventName === "TeamFull") {
-                if (data === 1) {
-                    this.setState({ "team1Full": true });
-                } else {
-                    this.setState({ "team2Full": true });
+
+                this.setState({ "team1Full": data.team1 });
+                this.setState({ "team2Full": data.team2 });
+
+                /*
+                if(data===1){
+                 }else{
+                    this.setState({"team2Full" : true});
                 }
+                */
             }
             if (EventName === "currentPlayer") {
                 this.setState({ "currentPlayer": data });
