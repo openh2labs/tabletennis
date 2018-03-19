@@ -37,7 +37,6 @@ class GameController extends Controller
     public function store(Request $request)
     {
         $game = Game::create($request->all());
-        Log::debug( __CLASS__ );
         return response()->json($game, 201);
     }
 

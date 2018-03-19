@@ -15,7 +15,6 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        Log::debug( __CLASS__ );
         return Player::all();
     }
 
@@ -39,7 +38,6 @@ class PlayerController extends Controller
     public function store(Request $request)
     {
         $player = Player::create($request->all());
-        Log::debug( __CLASS__ );
         return response()->json($player, 201);
     }
 
@@ -52,7 +50,6 @@ class PlayerController extends Controller
     public function show($id)
     {
         //
-        Log::debug( __CLASS__ );
     }
 
     /**
@@ -64,7 +61,6 @@ class PlayerController extends Controller
     public function edit($id)
     {
         //
-        Log::debug( __CLASS__ );
     }
 
     /**
@@ -88,6 +84,5 @@ class PlayerController extends Controller
     public function destroy($id)
     {
         //
-        Log::debug( __CLASS__ );
     }
 }
