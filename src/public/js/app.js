@@ -66286,13 +66286,16 @@ var InputTeamScore2 = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
+            //<input type="number" pattern="[0-9]*" inputmode="numeric">
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', {
                 type: 'number',
                 id: "InputScore" + this.props.teamId,
                 name: this.props.teamId,
                 placeholder: this.state.placeholder,
                 className: 'form-control form-control-sm input-sm',
-                onChange: this.handleSubmit
+                onChange: this.handleSubmit,
+                pattern: '[0-9]*',
+                inputMode: 'numeric'
             });
         }
     }, {
