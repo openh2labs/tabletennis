@@ -44755,20 +44755,71 @@ var Main = function (_Component) {
     _createClass(Main, [{
         key: 'subscriber',
         value: function subscriber(EventName, data) {
-            if (data === 1) {
-                this.handleTeamClick(this.state.currentPlayer);
-            } else {
-                this.handleTeamClick2(this.state.currentPlayer);
+            console.log(EventName);
+            if (EventName === "playerRemovedFromTeam") {
+                this.subscriberPlayerRemovedFromTeam(EventName, data);
             }
+            if (EventName === "TeamSelected") {
+                if (data === 1) {
+                    this.handleTeamClick(this.state.currentPlayer);
+                } else {
+                    this.handleTeamClick2(this.state.currentPlayer);
+                }
+            }
+        }
+    }, {
+        key: 'subscriberPlayerRemovedFromTeam',
+        value: function subscriberPlayerRemovedFromTeam(EventName, data) {
+            console.log('subscriberPlayerRemovedFromTeam');
+            // add back to array
+            this.addPlayerToArray(data);
+            // remove from player settings @todo we need to reissue web service request and remove current player selection
+            this.removePlayerFromTeam(data);
+        }
+
+        // remove a player from any team
+
+    }, {
+        key: 'removePlayerFromTeam',
+        value: function removePlayerFromTeam(player) {
+            var teamId = 0;
+            if (this.state.team1P1 === player) {
+                this.setState({ team1P1: null });
+                teamId = 1;
+            }
+            if (this.state.team1P2 === player) {
+                this.setState({ team1P2: null });
+                teamId = 1;
+            }
+            if (this.state.team2P1 === player) {
+                this.setState({ team2P1: null });
+                teamId = 2;
+            }
+            if (this.state.team2P2 === player) {
+                this.setState({ team2P2: null });
+                teamId = 2;
+            }
+
+            this.updateTeamName();
+        }
+
+        // if a player is removed from a team they need to be added here
+
+    }, {
+        key: 'addPlayerToArray',
+        value: function addPlayerToArray(player) {
+            var array = this.state.players;
+            array.push(player);
+            this.setState({ players: array });
         }
 
         // once a player is assigned to a team needs to be removed
 
     }, {
         key: 'removePlayer',
-        value: function removePlayer(Player) {
+        value: function removePlayer(player) {
             var array = this.state.players;
-            var index = array.indexOf(Player);
+            var index = array.indexOf(player);
             array.splice(index, 1);
             this.setState({ players: array });
             this.setState({ currentPlayer: null });
@@ -44779,6 +44830,7 @@ var Main = function (_Component) {
         value: function componentWillMount() {
             // console.log('main componentWillMount');
             this.token = __WEBPACK_IMPORTED_MODULE_7_pubsub_js___default.a.subscribe('TeamSelected', this.subscriber.bind(this));
+            this.token = __WEBPACK_IMPORTED_MODULE_7_pubsub_js___default.a.subscribe('playerRemovedFromTeam', this.subscriber.bind(this));
         }
     }, {
         key: 'componentWillUnmount',
@@ -44886,7 +44938,7 @@ var Main = function (_Component) {
                 this.setState({
                     team1P1: player
                 }, function () {
-                    _this4.updateTeamName(1);
+                    _this4.updateTeamName();
                     _this4.removePlayer(player);
                     __WEBPACK_IMPORTED_MODULE_7_pubsub_js___default.a.publish('team1P1', player);
                 });
@@ -44895,7 +44947,7 @@ var Main = function (_Component) {
                     this.setState({
                         team1P2: player
                     }, function () {
-                        _this4.updateTeamName(1);
+                        _this4.updateTeamName();
                         _this4.removePlayer(player);
                         __WEBPACK_IMPORTED_MODULE_7_pubsub_js___default.a.publish('team1P2', player);
                     });
@@ -44917,7 +44969,7 @@ var Main = function (_Component) {
                 this.setState({
                     team2P1: player
                 }, function () {
-                    _this5.updateTeamName(2);
+                    _this5.updateTeamName();
                     _this5.removePlayer(player);
                     __WEBPACK_IMPORTED_MODULE_7_pubsub_js___default.a.publish('team2P1', player);
                 });
@@ -44926,7 +44978,7 @@ var Main = function (_Component) {
                     this.setState({
                         team2P2: player
                     }, function () {
-                        _this5.updateTeamName(2);
+                        _this5.updateTeamName();
                         _this5.removePlayer(player);
                         __WEBPACK_IMPORTED_MODULE_7_pubsub_js___default.a.publish('team2P2', player);
                     });
@@ -44964,24 +45016,27 @@ var Main = function (_Component) {
 
     }, {
         key: 'updateTeamName',
-        value: function updateTeamName(team) {
+        value: function updateTeamName() {
+            this.setState({ team1Display: null });
+            this.setState({ team2Display: null });
+
             console.log('update team 1' + this.state.team1P1);
-            if (team === 1) {
-                //this.setState({team1Display: ""})
-                if (this.state.team1P1 !== null) {
-                    this.setState({ team1Display: this.state.team1P1.name });
-                }
-                if (this.state.team1P2 !== null) {
-                    this.setState({ team1Display: this.state.team1P1.name + " - " + this.state.team1P2.name });
-                }
-            } else {
-                if (this.state.team2P1 !== null) {
-                    this.setState({ team2Display: this.state.team2P1.name });
-                }
-                if (this.state.team2P2 !== null) {
-                    this.setState({ team2Display: this.state.team2P1.name + " - " + this.state.team2P2.name });
-                }
+            //    if(team === 1){
+            //this.setState({team1Display: ""})
+            if (this.state.team1P1 !== null) {
+                this.setState({ team1Display: this.state.team1P1.name });
             }
+            if (this.state.team1P2 !== null) {
+                this.setState({ team1Display: this.state.team1P1.name + " - " + this.state.team1P2.name });
+            }
+            //     }else{
+            if (this.state.team2P1 !== null) {
+                this.setState({ team2Display: this.state.team2P1.name });
+            }
+            if (this.state.team2P2 !== null) {
+                this.setState({ team2Display: this.state.team2P1.name + " - " + this.state.team2P2.name });
+            }
+            //     }
         }
 
         // post to the ms to save the player
@@ -64863,12 +64918,12 @@ var AddPlayer = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ButtonTest__ = __webpack_require__(400);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__form_ButtonTeamSelect2__ = __webpack_require__(166);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pubsub_js__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_pubsub_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__form_ButtonScoreSave__ = __webpack_require__(411);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__form_InputTeamScore2__ = __webpack_require__(412);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__form_ButtonTeamSelect2__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_pubsub_js__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_pubsub_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__form_ButtonScoreSave__ = __webpack_require__(411);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__form_InputTeamScore2__ = __webpack_require__(412);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__form_ChipPlayer__ = __webpack_require__(424);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -64880,7 +64935,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-//import InputTeamScore from './form/InputTeamScore';
 
 
 
@@ -64925,10 +64979,10 @@ var Game2 = function (_Component) {
     _createClass(Game2, [{
         key: 'componentWillMount',
         value: function componentWillMount() {
-            this.token = __WEBPACK_IMPORTED_MODULE_4_pubsub_js___default.a.subscribe('TeamFull', this.subscriber.bind(this));
-            this.token = __WEBPACK_IMPORTED_MODULE_4_pubsub_js___default.a.subscribe('currentPlayer', this.subscriber.bind(this));
-            this.token = __WEBPACK_IMPORTED_MODULE_4_pubsub_js___default.a.subscribe('team1Score', this.subscriberScore.bind(this));
-            this.token = __WEBPACK_IMPORTED_MODULE_4_pubsub_js___default.a.subscribe('team2Score', this.subscriberScore.bind(this));
+            this.token = __WEBPACK_IMPORTED_MODULE_3_pubsub_js___default.a.subscribe('TeamFull', this.subscriber.bind(this));
+            this.token = __WEBPACK_IMPORTED_MODULE_3_pubsub_js___default.a.subscribe('currentPlayer', this.subscriber.bind(this));
+            this.token = __WEBPACK_IMPORTED_MODULE_3_pubsub_js___default.a.subscribe('team1Score', this.subscriberScore.bind(this));
+            this.token = __WEBPACK_IMPORTED_MODULE_3_pubsub_js___default.a.subscribe('team2Score', this.subscriberScore.bind(this));
         }
     }, {
         key: 'componentWillUnmount',
@@ -64974,7 +65028,7 @@ var Game2 = function (_Component) {
     }, {
         key: 'getCheap',
         value: function getCheap(player) {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__ButtonTest__["a" /* default */], { player: player });
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__form_ChipPlayer__["a" /* default */], { player: player });
         }
 
         /**
@@ -64989,7 +65043,7 @@ var Game2 = function (_Component) {
         value: function getButton(teamId) {
             if (teamId === 1) {
                 if (this.state.team1Full === false && this.state.currentPlayer !== null) {
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__form_ButtonTeamSelect2__["a" /* default */], { teamId: teamId });
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__form_ButtonTeamSelect2__["a" /* default */], { teamId: teamId });
                 } else {
                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'button',
@@ -64999,7 +65053,7 @@ var Game2 = function (_Component) {
                 }
             } else {
                 if (this.state.team2Full === false && this.state.currentPlayer !== null) {
-                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__form_ButtonTeamSelect2__["a" /* default */], { teamId: teamId });
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__form_ButtonTeamSelect2__["a" /* default */], { teamId: teamId });
                 } else {
                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'button',
@@ -65069,7 +65123,7 @@ var Game2 = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'col-sm-10' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__form_InputTeamScore2__["a" /* default */], { teamId: 1, placeholder: placeHolder1 })
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__form_InputTeamScore2__["a" /* default */], { teamId: 1, placeholder: placeHolder1 })
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -65088,10 +65142,10 @@ var Game2 = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'col-sm-10' },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__form_InputTeamScore2__["a" /* default */], { teamId: 2, placeholder: placeHolder2 })
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__form_InputTeamScore2__["a" /* default */], { teamId: 2, placeholder: placeHolder2 })
                         )
                     ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__form_ButtonScoreSave__["a" /* default */], null)
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__form_ButtonScoreSave__["a" /* default */], null)
                 )
             );
         }
@@ -65108,63 +65162,7 @@ if (document.getElementById('Game2')) {
 }
 
 /***/ }),
-/* 400 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_material_ui_styles_colors__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_material_ui_styles_colors___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_material_ui_styles_colors__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_material_ui_svg_icons_action_delete__ = __webpack_require__(401);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_material_ui_svg_icons_action_delete___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_material_ui_svg_icons_action_delete__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_material_ui_FontIcon__ = __webpack_require__(406);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_material_ui_FontIcon___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_material_ui_FontIcon__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_material_ui_Chip__ = __webpack_require__(408);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_material_ui_Chip___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_material_ui_Chip__);
-
-
-
-
-
-
-var styles = {
-    chip: {
-        margin: 4
-    },
-    wrapper: {
-        display: 'flex',
-        flexWrap: 'wrap'
-    }
-};
-
-function handleRequestDelete() {
-    alert('You clicked the delete button.');
-}
-
-function handleClick() {
-    alert('You clicked the Chip.');
-}
-
-var ButtonTest = function ButtonTest(props) {
-    console.log('now in last component');
-    console.log(props);
-
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_4_material_ui_Chip___default.a,
-        {
-            onRequestDelete: handleRequestDelete,
-            onClick: handleClick,
-            style: styles.chip,
-            className: 'small'
-        },
-        props.player.name
-    );
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (ButtonTest);
-
-/***/ }),
+/* 400 */,
 /* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -66121,7 +66119,7 @@ var ButtonScoreSave = function (_Component) {
         value: function handleSubmit(e) {
             //preventDefault prevents page reload
             e.preventDefault();
-            __WEBPACK_IMPORTED_MODULE_2_pubsub_js___default.a.publish('ScoreSave');
+            __WEBPACK_IMPORTED_MODULE_2_pubsub_js___default.a.publish('ScoreSave'); // needed?
             this.handleSave();
             // clear values
             document.getElementById('InputScore2').value = "";
@@ -66421,6 +66419,146 @@ if (document.getElementById('example')) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 415 */,
+/* 416 */,
+/* 417 */,
+/* 418 */,
+/* 419 */,
+/* 420 */,
+/* 421 */,
+/* 422 */,
+/* 423 */,
+/* 424 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_pubsub_js__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_pubsub_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_pubsub_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_material_ui_styles_colors__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_material_ui_styles_colors___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_material_ui_styles_colors__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_material_ui_svg_icons_action_delete__ = __webpack_require__(401);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_material_ui_svg_icons_action_delete___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_material_ui_svg_icons_action_delete__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_material_ui_FontIcon__ = __webpack_require__(406);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_material_ui_FontIcon___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_material_ui_FontIcon__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_material_ui_Chip__ = __webpack_require__(408);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_material_ui_Chip___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_material_ui_Chip__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+
+
+
+var styles = {
+    chip: {
+        margin: 4
+    },
+    wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap'
+    }
+};
+
+var ChipPlayer = function (_Component) {
+    _inherits(ChipPlayer, _Component);
+
+    function ChipPlayer(props) {
+        _classCallCheck(this, ChipPlayer);
+
+        var _this = _possibleConstructorReturn(this, (ChipPlayer.__proto__ || Object.getPrototypeOf(ChipPlayer)).call(this, props));
+
+        _this.state = {};
+        // bind component methods
+        _this.handleRequestDelete = _this.handleRequestDelete.bind(_this);
+        _this.handleClick = _this.handleClick.bind(_this);
+        return _this;
+    }
+
+    _createClass(ChipPlayer, [{
+        key: 'handleRequestDelete',
+        value: function handleRequestDelete() {
+            console.log(" ****** state player delete **********");
+            __WEBPACK_IMPORTED_MODULE_2_pubsub_js___default.a.publish('playerRemovedFromTeam', this.props.player);
+        }
+    }, {
+        key: 'handleClick',
+        value: function handleClick() {
+            //document.getElementById('InputScore2').value="";
+
+            // alert('You clicked the Chip.');
+        }
+    }, {
+        key: 'componentWillMount',
+        value: function componentWillMount() {}
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            console.log('ChipPlayer componentWillUnmount');
+            // React removed me from the DOM, I have to unsubscribe from the system using my token
+            //PubSub.unsubscribe(this.token);
+        }
+
+        /*componentDidMount() is a lifecycle method
+        * that gets called after the component is rendered
+        */
+
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            // PubSub.publish('TeamFull', this.token);
+            console.log('ChipPlayer componentDidMount');
+        }
+    }, {
+        key: 'subscriber',
+        value: function subscriber(EventName, data) {
+            var key = EventName;
+            var val = data;
+            var obj = {};
+            obj[key] = val;
+            this.setState(obj);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            console.log(this.props);
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_6_material_ui_Chip___default.a,
+                {
+                    onRequestDelete: this.handleRequestDelete,
+                    onClick: this.thishandleClick,
+                    style: styles.chip,
+                    className: 'small',
+                    value: this.props.player.id
+                },
+                this.props.player.name
+            );
+        }
+    }]);
+
+    return ChipPlayer;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (ChipPlayer);
+
+
+if (document.getElementById('ChipPlayer')) {
+    __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ChipPlayer, null), document.getElementById('ChipPlayer'));
+}
 
 /***/ })
 /******/ ]);

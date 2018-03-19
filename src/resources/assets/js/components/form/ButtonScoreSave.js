@@ -20,7 +20,7 @@ export default class ButtonScoreSave extends Component {
     handleSubmit(e){
         //preventDefault prevents page reload
         e.preventDefault();
-        PubSub.publish('ScoreSave');
+        PubSub.publish('ScoreSave'); // needed?
         this.handleSave();
         // clear values
         document.getElementById('InputScore2').value="";

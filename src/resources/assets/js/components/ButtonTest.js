@@ -17,22 +17,27 @@ const styles = {
 
 function handleRequestDelete() {
     alert('You clicked the delete button.');
+    console.log(e);
 }
 
 function handleClick() {
+    //document.getElementById('InputScore2').value="";
+
     alert('You clicked the Chip.');
 }
 
+// @deprecated
 const ButtonTest = (props) => {
     console.log('now in last component');
     console.log(props);
-
+    var chipId = "chipDelete" + props.player.id;
     return(
         <Chip
             onRequestDelete={handleRequestDelete}
-            onClick={handleClick}
+            onClick={handleClick}>{props.player.id}
             style={styles.chip}
             className="small"
+            value={props.player.id}
         >
             {props.player.name}
         </Chip>

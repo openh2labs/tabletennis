@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import ButtonTest from './ButtonTest';
-//import InputTeamScore from './form/InputTeamScore';
 import ButtonTeamSelect2 from "./form/ButtonTeamSelect2";
 import PubSub from "pubsub-js";
 import ButtonScoreSave from "./form/ButtonScoreSave";
 import InputTeamScore2 from "./form/InputTeamScore2";
+import ChipPlayer from "./form/ChipPlayer";
 
 const styles = {
     chip: {
@@ -80,7 +79,7 @@ export default class Game2 extends Component {
     }
 
     getCheap(player){
-        return <ButtonTest player={player}/>;
+        return <ChipPlayer player={player}/>;
     }
 
     /**
