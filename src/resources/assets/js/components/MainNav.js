@@ -7,13 +7,14 @@ class MainNav extends Component {
 
     constructor() {
         super()
+        this.handleClick = this.handleClick.bind(this);
     }
 
         render() {
             return(
                 <ul className="nav nav-tabs">
                 <li className="nav-item">
-                <a className="nav-link active" href="#">Team 1</a>
+                <a className="nav-link active" href="#" onClick={(e) => this.handleClick(e)}>Team 1</a>
             </li>
             <li className="nav-item">
                 <a className="nav-link" href="#">Team 2</a>
@@ -29,6 +30,11 @@ class MainNav extends Component {
             </li>
             </ul>
             )
+        }
+
+         handleClick(e) {
+            e.preventDefault();
+            console.log('The link was clicked.');
         }
 
 }

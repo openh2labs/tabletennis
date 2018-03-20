@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Game;
+use Illuminate\Support\Facades\Log;
 
 class GameController extends Controller
 {
@@ -34,7 +36,8 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $game = Game::create($request->all());
+        return response()->json($game, 201);
     }
 
     /**

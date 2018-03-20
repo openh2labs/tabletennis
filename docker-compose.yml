@@ -9,6 +9,7 @@ services:
     image: quay.io/cashrewards/tabletennis:local
     volumes:
      - ./src:/var/www/html
+     - ./node:/home/node/app
 #    ports:
 #     - "9001:9001"
     links:
@@ -33,20 +34,30 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: tabletennis
-      MYSQL_ROOT_PASSWORD: "passwordhere"
-    #ports:
-    #  - "3306:3306"
+      MYSQL_ROOT_PASSWORD: "<YourStrong!Passw0rd>"
+    ports:
+      - "3306:3306"
     logging:
       driver: none
 
  node:
+    container_name: tabletennis-node
     image: "node:9"
-    user: "node"
+#    user: "node"
+#    volumes:
+#     - ./src:/var/www/html
+#    working_dir: /var/www/html
     working_dir: /home/node/app
     environment:
-      - NODE_ENV=production
-    volumes:
-      - ./:/home/node/app
-    expose:
-      - "8081"
+      - NODE_ENV=dev
+#    volumes:
+#      - ./src-node/:/home/node/app
+    links:
+      - php-fpm
+    volumes_from:
+      - php-fpm:rw
+    ports:
+      - "8081:8081"
+#    expose:
+#      - "8081"
     command: "npm start"

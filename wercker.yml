@@ -63,6 +63,13 @@ build:
         name: copy source code
         code: |
            cp -Rp $WERCKER_SOURCE_DIR/src/* /var/www/html
+
+    - script:
+        name: copy nodejs code
+        code: |
+           mkdir -p /home/node/app
+           cp -Rp $WERCKER_SOURCE_DIR/node/* /home/node/app
+
     - script:
         name: update dependencies
         code: |
@@ -83,13 +90,9 @@ build:
         working-dir: /var/www/html
         cmd: php-fpm
         disable-sync: false
-        volumes: /etc/nginx/conf.d/,/var/www/html/
+        volumes: /etc/nginx/conf.d/,/var/www/html/,/home/node/app/
 
   after-steps:
-      - slack-notifier:
-          url: $SLACK_WEBHOOK_URL
-          channel: releases
-          username: wercker
 
 push-to-quayio:
   steps:
@@ -107,12 +110,8 @@ push-to-quayio:
   after-steps:
       - install-packages:
           packages: curl
-      - slack-notifier:
-          url: $SLACK_WEBHOOK_URL
-          channel: releases
-          username: wercker
 
-#      - install-packages:
+#      - install-packages: 
 #          packages: ruby
 #      - wantedly/pretty-slack-notify:
 #          webhook_url: $SLACK_WEBHOOK_URL
@@ -153,10 +152,6 @@ deploy-to-ecs-task-definition:
   after-steps:
       - install-packages:
           packages: curl
-      - slack-notifier:
-          url: $SLACK_WEBHOOK_URL
-          channel: releases
-          username: wercker
 
 depoy-to-ecs-migrate:
   box: quay.io/steven_rho/aws-cli
@@ -188,10 +183,6 @@ depoy-to-ecs-migrate:
   after-steps:
       - install-packages:
           packages: curl
-      - slack-notifier:
-          url: $SLACK_WEBHOOK_URL
-          channel: releases
-          username: wercker
 
 
 #####
@@ -218,7 +209,3 @@ deploy-to-ecs-service:
   after-steps:
       - install-packages:
           packages: curl
-      - slack-notifier:
-          url: $SLACK_WEBHOOK_URL
-          channel: releases
-          username: wercker

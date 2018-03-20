@@ -2,7 +2,7 @@ FROM php:7.1-fpm
 
 RUN pecl install redis-3.1.2 \
     && pecl install xdebug-2.5.5 \
-    && docker-php-ext-enable redis xdebug \
+    && docker-php-ext-enable redis xdebug
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
             curl \
@@ -49,8 +49,9 @@ COPY ./docker-config/nginx/conf.d/ /etc/nginx/conf.d/
 # SOURCE CODE  ----------------------------------------------------------------------------------------------
 COPY ./src/ /var/www/html/
 
-# SOURCE CODE COPY----------------------------------------------------------------------------------------------
-COPY ./src/ /var/www/html/
+# NODE SOURCE CODE COPY----------------------------------------------------------------------------------------------
+COPY ./node/ /home/node/app/
+
 # COMPOSER ----------------------------------------------------------------------------------------------
 ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN /usr/local/bin/composer self-update \
@@ -61,4 +62,4 @@ RUN /usr/local/bin/composer self-update \
 RUN chown -R :www-data /var/www/html \
  && chmod -R ug+rwx /var/www/html/storage /var/www/html/bootstrap/cache
 # THESE VOLUMES are shares with nginx container using "volumes_from"
-VOLUME ["/etc/nginx/conf.d/", "/var/www/html/"]
+VOLUME ["/etc/nginx/conf.d/", "/var/www/html/", "/home/node/app/"]
