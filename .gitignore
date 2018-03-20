@@ -2,6 +2,7 @@
 ### Node template
 
 node/
+node.old/
 
 # Logs
 logs

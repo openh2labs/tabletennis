@@ -80,6 +80,16 @@ build:
         code: |
            chown -R :www-data /var/www/html
            chmod -R ug+rwx /var/www/html/storage /var/www/html/bootstrap/cache
+    - script:
+        name: set permission
+        code: |
+           cd ~
+           curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh
+           bash nodesource_setup.sh
+           apt-get install nodejs
+           cd /var/www/html/
+           npm install
+           npm run development
 
     - internal/docker-push:
         username: $QUAYIO_USERNAME
