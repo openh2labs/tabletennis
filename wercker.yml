@@ -111,7 +111,7 @@ push-to-quayio:
       - install-packages:
           packages: curl
 
-#      - install-packages:
+#      - install-packages: 
 #          packages: ruby
 #      - wantedly/pretty-slack-notify:
 #          webhook_url: $SLACK_WEBHOOK_URL
