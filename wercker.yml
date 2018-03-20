@@ -64,22 +64,24 @@ build:
         code: |
            cp -Rp $WERCKER_SOURCE_DIR/src/* /var/www/html
 
-    - script:
-        name: copy nodejs code
-        code: |
-           mkdir -p /home/node/app
-           cp -Rp $WERCKER_SOURCE_DIR/node/* /home/node/app
+#    - script:
+#        name: copy nodejs code
+#        code: |
+#           mkdir -p /home/node/app
+#          cp -Rp $WERCKER_SOURCE_DIR/node/* /home/node/app
 
     - script:
         name: update dependencies
         code: |
           export COMPOSER_ALLOW_SUPERUSER=1
           composer update --no-interaction -d /var/www/html
+
     - script:
         name: set permission
         code: |
            chown -R :www-data /var/www/html
            chmod -R ug+rwx /var/www/html/storage /var/www/html/bootstrap/cache
+
     - script:
         name: set permission
         code: |
