@@ -50,7 +50,7 @@ COPY ./docker-config/nginx/conf.d/ /etc/nginx/conf.d/
 COPY ./src/ /var/www/html/
 
 # NODE SOURCE CODE COPY----------------------------------------------------------------------------------------------
-COPY ./node/ /home/node/app/
+# COPY ./node/ /home/node/app/
 
 # COMPOSER ----------------------------------------------------------------------------------------------
 ENV COMPOSER_ALLOW_SUPERUSER 1
@@ -64,11 +64,11 @@ RUN chown -R :www-data /var/www/html \
 # THESE VOLUMES are shares with nginx container using "volumes_from"
 
 RUN cd ~ \
-    && curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh \
+    && curl -sL https://deb.nodesource.com/setup_9.x -o nodesource_setup.sh \
     && bash nodesource_setup.sh \
     && apt-get install nodejs \
     && cd /var/www/html/ \
     && npm install \
     && npm run development
 
-VOLUME ["/etc/nginx/conf.d/", "/var/www/html/", "/home/node/app/"]
+VOLUME ["/etc/nginx/conf.d/", "/var/www/html/"]

@@ -40,24 +40,24 @@ services:
     logging:
       driver: none
 
- node:
-    container_name: tabletennis-node
-    image: "node:9"
+# node:
+#    container_name: tabletennis-node
+#    image: "node:9"
 #    user: "node"
 #    volumes:
 #     - ./src:/var/www/html
 #    working_dir: /var/www/html
-    working_dir: /home/node/app
-    environment:
-      - NODE_ENV=dev
+#    working_dir: /home/node/app
+#    environment:
+#      - NODE_ENV=dev
 #    volumes:
 #      - ./src-node/:/home/node/app
-    links:
-      - php-fpm
-    volumes_from:
-      - php-fpm:rw
-    ports:
-      - "8081:8081"
+#    links:
+#      - php-fpm
+#    volumes_from:
+#      - php-fpm:rw
+#    ports:
+#      - "8081:8081"
 #    expose:
 #      - "8081"
-    command: "npm start"
+#    command: "npm start"

@@ -86,7 +86,7 @@ build:
         name: set permission
         code: |
            cd ~
-           curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh
+           curl -sL https://deb.nodesource.com/setup_9.x -o nodesource_setup.sh
            bash nodesource_setup.sh
            apt-get install nodejs
            cd /var/www/html/
