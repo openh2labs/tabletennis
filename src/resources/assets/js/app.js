@@ -6,7 +6,7 @@
  */
 
 require('./bootstrap');
-import Main from './components/Main';
+import Main from './components/main.js';
 
 
 /**
