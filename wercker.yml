@@ -102,7 +102,7 @@ build:
         working-dir: /var/www/html
         cmd: php-fpm
         disable-sync: false
-        volumes: /etc/nginx/conf.d/,/var/www/html/,/home/node/app/
+        volumes: /etc/nginx/conf.d/,/var/www/html/
 
   after-steps:
 
