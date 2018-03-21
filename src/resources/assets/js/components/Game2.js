@@ -46,7 +46,7 @@ export default class Game2 extends Component {
     }
 
     componentWillUnmount() {
-        console.log('game2 componentWillUnmount');
+      //  console.log('game2 componentWillUnmount');
         // React removed me from the DOM, I have to unsubscribe from the system using my token
         //PubSub.unsubscribe(this.token);
     }
@@ -56,7 +56,7 @@ export default class Game2 extends Component {
   */
     componentDidMount() {
        // PubSub.publish('TeamFull', this.token);
-        console.log('game2 componentDidMount');
+      //  console.log('game2 componentDidMount');
     }
 
     subscriberScore(EventName, data){

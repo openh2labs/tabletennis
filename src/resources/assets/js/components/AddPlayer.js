@@ -21,12 +21,12 @@ class AddPlayer extends Component {
     }
 
     componentWillMount() {
-        console.log('ListPlayers componentWillMount');
+      //  console.log('ListPlayers componentWillMount');
         this.token = PubSub.subscribe('players', this.subscriberState.bind(this));
     }
 
     componentWillUnmount() {
-        console.log('ListPlayers componentWillUnmount');
+     //   console.log('ListPlayers componentWillUnmount');
         // React removed me from the DOM, I have to unsubscribe from the system using my token
         //PubSub.unsubscribe(this.token);
     }
@@ -87,10 +87,10 @@ class AddPlayer extends Component {
                     players: prevState.players.concat(data),
                     currentPlayer : data
                 }))
+                // update subscribers
                 PubSub.publish('players', this.state.players);
+                PubSub.publish('newPlayer', data);
             })
-
-
     }
 
 

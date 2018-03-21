@@ -26,8 +26,9 @@ export default class ListPlayers extends Component {
     handleClick(player) {
         this.setState({currentPlayer:player});
         PubSub.publish('currentPlayer', player);
-        PubSub.publish('players', this.state.players);
+      //  PubSub.publish('players', this.state.players);
     }
+
 
     /**
      *
@@ -41,28 +42,62 @@ export default class ListPlayers extends Component {
         let val = data
         let obj  = {}
         obj[key] = val
-        console.log('players in ListPlayers class');
-        console.log(this.state.players);
+        //console.log('players in ListPlayers class');
+        //console.log(this.state.players);
         this.setState(obj);
     }
 
     /**
-     * add new player
+     * add player back to the list
      *
      * @param EventName
      * @param data
      */
     subscriberNewPlayer(EventName, data){
-        this.handleAddPlayer(data);
+        this.setState((prevState)=> ({
+            players: prevState.players.concat(data),
+            currentPlayer : data
+        }))
     }
 
+    /**
+     *
+     * remove a player from the list
+     *
+     * @param EventName
+     * @param data
+     */
+    subscriberPlayerRemove(EventName, player){
+        let array = this.state.players;
+        let index = array.indexOf(player.player)
+        array.splice(index, 1);
+        this.setState({players: array });
+        this.setState({currentPlayer: null});
+        PubSub.publish('currentPlayer', null);
+    }
+
+    /**
+     *  add a player to the list
+     * @param EventName
+     * @param data
+     */
+    subscriberPlayerAdd(EventName, player){
+        let array = this.state.players;
+        array.push(player);
+        this.setState({players: array });
+    }
+
+    /**
+     * Subscriptions biding
+     */
     componentWillMount() {
-        console.log('ListPlayers componentWillMount');
         this.token = PubSub.subscribe('newPlayer', this.subscriberNewPlayer.bind(this));
+        this.token = PubSub.subscribe('playerRemove', this.subscriberPlayerRemove.bind(this));
+        this.token = PubSub.subscribe('playerRemovedFromTeam', this.subscriberPlayerAdd.bind(this));
     }
 
     componentWillUnmount() {
-        console.log('ListPlayers componentWillUnmount');
+        //console.log('ListPlayers componentWillUnmount');
         // React removed me from the DOM, I have to unsubscribe from the system using my token
         //PubSub.unsubscribe(this.token);
     }
@@ -81,9 +116,10 @@ export default class ListPlayers extends Component {
             .then(players => {
                 //Fetched player is stored in the state
                 this.setState({ players });
+                PubSub.publish('players', players);
             });
-    }
 
+    }
 
     renderPlayers() {
         const listStyle = {
@@ -107,7 +143,6 @@ export default class ListPlayers extends Component {
 
 
     render() {
-        console.log(this.props);
         return(
             <div>
                 <p><strong>Available players</strong></p>

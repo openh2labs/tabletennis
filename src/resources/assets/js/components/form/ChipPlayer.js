@@ -31,7 +31,6 @@ export default class ChipPlayer extends Component {
     }
 
     handleRequestDelete() {
-        console.log(" ****** state player delete **********");
         PubSub.publish('playerRemovedFromTeam', this.props.player);
     }
 

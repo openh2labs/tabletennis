@@ -53,25 +53,11 @@ class Main extends Component {
         this.updateTeamName();
     }
 
-    // if a player is removed from a team they need to be added here
-    addPlayerToArray(player){
-        let array = this.state.players;
-        array.push(player);
-        this.setState({players: array });
-    }
 
-    // once a player is assigned to a team needs to be removed
-    removePlayer(player) {
-        let array = this.state.players;
-        let index = array.indexOf(player)
-        array.splice(index, 1);
-        this.setState({players: array });
-        this.setState({currentPlayer: null});
-        PubSub.publish('currentPlayer', null);
-    }
-
+    /**
+     * subscription bindings
+     */
     componentWillMount() {
-       // console.log('main componentWillMount');
         this.token = PubSub.subscribe('TeamSelected', this.subscriber.bind(this));
         this.token = PubSub.subscribe('playerRemovedFromTeam', this.subscriber.bind(this));
         this.token = PubSub.subscribe('players', this.subscriberGeneric.bind(this));
@@ -90,17 +76,14 @@ class Main extends Component {
         let val = data
         let obj  = {}
         obj[key] = val
-        console.log('players in ListPlayers class');
-        console.log(this.state.players);
+        //console.log('players in ListPlayers class');
+       // console.log(this.state.players);
         this.setState(obj);
     }
 
     // The function that is subscribed to the publisher
     subscriber(EventName, data){
         console.log(EventName);
-        if(EventName === "playerRemovedFromTeam"){
-            this.subscriberPlayerRemovedFromTeam(EventName, data);
-        }
         if(EventName === "TeamSelected"){
             if(data===1){
                 this.handleTeamClick(this.state.currentPlayer);
@@ -111,18 +94,13 @@ class Main extends Component {
         if(EventName === 'players'){
             this.setState({players: data});
         }
-    }
-
-    subscriberPlayerRemovedFromTeam(EventName, data){
-        console.log('subscriberPlayerRemovedFromTeam');
-        // add back to array
-        this.addPlayerToArray(data);
-        // remove from player settings @todo we need to reissue web service request and remove current player selection
-        this.removePlayerFromTeam(data);
+        if(EventName === 'playerRemovedFromTeam'){
+            this.removePlayerFromTeam(data);
+        }
     }
 
     componentWillUnmount() {
-        console.log('main componentWillUnmount');
+        //console.log('main componentWillUnmount');
         // React removed me from the DOM, I have to unsubscribe from the system using my token
         //PubSub.unsubscribe(this.token);
     }
@@ -132,16 +110,7 @@ class Main extends Component {
      */
     componentDidMount() {
        // PubSub.publish('TeamSelected', this.token);
-        console.log(this.token);
-
-
-    }
-
-    // player selected
-    handleClick(player) {
-        //handleClick is used to set the state
-        this.setState({currentPlayer:player});
-        PubSub.publish('currentPlayer', player);
+        //console.log(this.token);
     }
 
     // get team counts to decide what to display @todo move to array for teams
@@ -185,7 +154,8 @@ class Main extends Component {
                 team1P1: player
             }, () => {
                 this.updateTeamName();
-                this.removePlayer(player);
+                //this.removePlayer(player);
+                PubSub.publish('playerRemove', {teamId: 1, player:player});
                 PubSub.publish('team1P1', player);
             });
         }else{
@@ -194,7 +164,8 @@ class Main extends Component {
                     team1P2: player
                 }, () => {
                     this.updateTeamName();
-                    this.removePlayer(player);
+                    //this.removePlayer(player);
+                    PubSub.publish('playerRemove', {teamId: 1, player:player});
                     PubSub.publish('team1P2', player);
                 });
             }
@@ -211,7 +182,8 @@ class Main extends Component {
                 team2P1: player
             }, () => {
                 this.updateTeamName();
-                this.removePlayer(player);
+                //this.removePlayer(player);
+                PubSub.publish('playerRemove', {teamId: 2, player:player});
                 PubSub.publish('team2P1', player);
             });
         }else{
@@ -220,7 +192,8 @@ class Main extends Component {
                     team2P2: player
                 }, () => {
                     this.updateTeamName();
-                    this.removePlayer(player);
+                    //this.removePlayer(player);
+                    PubSub.publish('playerRemove', {teamId: 2, player:player});
                     PubSub.publish('team2P2', player);
                 });
             }
