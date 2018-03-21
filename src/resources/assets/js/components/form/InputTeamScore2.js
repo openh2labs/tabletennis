@@ -11,14 +11,29 @@ export default class InputTeamScore2 extends Component {
 
         let placeholder = 'score for team ';
         placeholder = placeholder + props.teamId;
-        //this.props = props;
         this.state = {
             placeholder: placeholder,
+            teamId: this.props.teamId,
+            disabled: true,
+            team1Count: 0,
+            team2Count: 0,
         }
+
+
+
+      //  this.handleSave = this.handleSave.bind(this);
     }
 
+    /**
+     * publish the score if not null
+     * @param e
+     */
     handleSubmit(e){
-        PubSub.publish('team'+this.props.teamId+'Score', e.target.value);
+        if(e.target.value !== ""){
+            PubSub.publish('team'+this.props.teamId+'Score', e.target.value);
+        }else{
+            PubSub.publish('team'+this.props.teamId+'Score', -1);
+        }
     }
 
     render() {
@@ -31,17 +46,24 @@ export default class InputTeamScore2 extends Component {
                 onChange={this.handleSubmit}
                 pattern="[0-9]*"
                 inputMode="numeric"
-                underlineShow={false}
+                underlineShow={true}
+                disabled={this.state.disabled}
             />
         )
     }
 
     componentWillMount() {
         this.token = PubSub.subscribe('ScoreSaveComplete', this.subscriber.bind(this));
+        if(this.state.teamId===1){
+            this.token = PubSub.subscribe('team1Count', this.subscriber.bind(this));
+        }
+        if(this.state.teamId===2) {
+            this.token = PubSub.subscribe('team2Count', this.subscriber.bind(this));
+        }
+
     }
 
     componentWillUnmount() {
-        console.log('game2 componentWillUnmount');
         // React removed me from the DOM, I have to unsubscribe from the system using my token
         //PubSub.unsubscribe(this.token);
     }
@@ -50,17 +72,45 @@ export default class InputTeamScore2 extends Component {
   * that gets called after the component is rendered
   */
     componentDidMount() {
-        console.log('game2 componentDidMount');
+
     }
 
     subscriber(EventName, data){
-        var key = EventName
-        var val = data
-        var obj  = {}
-        obj[key] = val
+
+
+        let key = EventName;
+        let val = data;
+        let obj  = {};
+        obj[key] = val;
         this.setState(obj);
+
         if(event === "ScoreSaveComplete"){
-            this.setState({value:""});
+            this.setState({
+                value: ""
+            });
+        }
+        if(this.state.teamId === 1){
+            if(EventName === "team1Count" && data > 0){
+                this.setState({
+                    disabled: false
+                });
+            }else{
+                this.setState({
+                    disabled: true
+                });
+            }
+        }
+
+        if(this.state.teamId === 2){
+            if(EventName === "team2Count" && data > 0){
+                this.setState({
+                    disabled: false
+                });
+            }else{
+                this.setState({
+                    disabled: true
+                });
+            }
         }
     }
 }

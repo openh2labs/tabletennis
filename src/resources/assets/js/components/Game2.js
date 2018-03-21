@@ -36,18 +36,21 @@ export default class Game2 extends Component {
             "currentPlayer": null,
             "team1Score": 0,
             "team2Score": 0,
+            "team1Count": 0,
+            "team2Count": 0,
         }
     }
 
     componentWillMount() {
         this.token = PubSub.subscribe('TeamFull', this.subscriber.bind(this));
         this.token = PubSub.subscribe('currentPlayer', this.subscriber.bind(this));
-        this.token = PubSub.subscribe('team1Score', this.subscriberScore.bind(this));
-        this.token = PubSub.subscribe('team2Score', this.subscriberScore.bind(this));
+        this.token = PubSub.subscribe('team1Score', this.subscriberState.bind(this));
+        this.token = PubSub.subscribe('team2Score', this.subscriberState.bind(this));
+        this.token = PubSub.subscribe('team1Count', this.subscriberState.bind(this));
+        this.token = PubSub.subscribe('team2Count', this.subscriberState.bind(this));
     }
 
     componentWillUnmount() {
-      //  console.log('game2 componentWillUnmount');
         // React removed me from the DOM, I have to unsubscribe from the system using my token
         //PubSub.unsubscribe(this.token);
     }
@@ -57,10 +60,9 @@ export default class Game2 extends Component {
   */
     componentDidMount() {
        // PubSub.publish('TeamFull', this.token);
-      //  console.log('game2 componentDidMount');
     }
 
-    subscriberScore(EventName, data){
+    subscriberState(EventName, data){
         this.setState({EventName : data});
     }
 
@@ -110,19 +112,15 @@ export default class Game2 extends Component {
         ButtonTeam2 = this.getButton(2);
         
         if(this.props.team1P1 !== null){
-            console.log('Game2.team1P1');
             chipT1P1 = this.getCheap(this.props.team1P1);
         }
         if(this.props.team1P2 !== null){
-            console.log('Game2.team1P2');
             chipT1P2 = this.getCheap(this.props.team1P2);
         }
         if(this.props.team2P1 !== null){
-            console.log('Game2.team2P1');
             chipT2P1 = this.getCheap(this.props.team2P1);
         }
         if(this.props.team2P2 !== null){
-            console.log('Game2.team2P2');
             chipT2P2 = this.getCheap(this.props.team2P2);
         }
         if(this.props.team1Display !== ""){
@@ -143,7 +141,7 @@ export default class Game2 extends Component {
                         <div className="form-row">
                             <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}>{ButtonTeam1} {chipT1P1} {chipT1P2}</label>
                             <div className="col-sm-10">
-                                <InputTeamScore2 teamId={1}placeholder={placeHolder1} />
+                                <InputTeamScore2 teamId={1}placeholder={placeHolder1} teamCount={this.state.team1Count} />
                             </div>
                         </div>
                         <div className="form-row" style={styles.wrapper}>
@@ -154,7 +152,7 @@ export default class Game2 extends Component {
                                 <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}> </label>
                                 <InputTeamScore2 teamId={2} placeholder={placeHolder2} />
                             </div>
-                            <div className="col"> here
+                            <div className="col">
                             </div>
                         </div>
                         <div className="form-row">

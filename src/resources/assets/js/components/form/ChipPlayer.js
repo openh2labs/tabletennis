@@ -46,7 +46,6 @@ export default class ChipPlayer extends Component {
     }
 
     componentWillUnmount() {
-        console.log('ChipPlayer componentWillUnmount');
         // React removed me from the DOM, I have to unsubscribe from the system using my token
         //PubSub.unsubscribe(this.token);
     }
@@ -56,7 +55,6 @@ export default class ChipPlayer extends Component {
   */
     componentDidMount() {
         // PubSub.publish('TeamFull', this.token);
-        console.log('ChipPlayer componentDidMount');
     }
 
     subscriber(EventName, data){

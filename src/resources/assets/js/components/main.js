@@ -143,6 +143,8 @@ class Main extends Component {
             }
         // notify subsccribers
         PubSub.publish('TeamFull', teamFull);
+        PubSub.publish('team1Count', this.state.team1Count);
+        PubSub.publish('team2Count', this.state.team2Count);
     }
 
     // team 1 selectors

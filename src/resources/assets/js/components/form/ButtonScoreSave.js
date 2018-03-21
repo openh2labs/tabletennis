@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
 import Snackbar from 'material-ui/Snackbar';
+import RaisedButton from 'material-ui/RaisedButton';
 
 export default class ButtonScoreSave extends Component {
 
@@ -16,6 +17,7 @@ export default class ButtonScoreSave extends Component {
             team2Score: 0,
             open: false,
             snackBarText: "score saved",
+            saveDisabled: true,
         }
         this.handleSave = this.handleSave.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
@@ -42,7 +44,6 @@ export default class ButtonScoreSave extends Component {
     }
 
     componentWillUnmount() {
-        console.log('game2 componentWillUnmount');
         // React removed me from the DOM, I have to unsubscribe from the system using my token
         //PubSub.unsubscribe(this.token);
     }
@@ -52,7 +53,6 @@ export default class ButtonScoreSave extends Component {
   */
     componentDidMount() {
         // PubSub.publish('TeamFull', this.token);
-        console.log('game2 componentDidMount');
     }
 
     subscriber(EventName, data){
@@ -61,6 +61,19 @@ export default class ButtonScoreSave extends Component {
         var obj  = {}
         obj[key] = val
         this.setState(obj);
+        // enable score if we got a team
+        let saveDisabled=true;
+        if(this.state.team1Score > -1 && this.state.team2Score > -1){
+            saveDisabled=false;
+
+        }
+        this.setState(
+            {
+                saveDisabled:saveDisabled,
+            }
+        )
+        console.log(EventName);
+        console.log(data);
     }
 
 
@@ -83,10 +96,6 @@ export default class ButtonScoreSave extends Component {
         }
         obj.team_1_score = this.state.team1Score;
         obj.team_2_score = this.state.team2Score;
-
-        console.log('handleSave')
-        //console.log(obj);
-        //console.log(JSON.stringify(obj));
 
         //post
         /*Fetch API for post request */
@@ -119,15 +128,14 @@ export default class ButtonScoreSave extends Component {
     };
 
     render() {
-        console.log(this.props);
         return (
             <div>
-            <button
-                type="submit"
-                className="btn btn-primary btn-sm"
-                onClick={(e) =>  this.handleSubmit(e, '', '', '', '')}
-            >{"save scores"}
-            </button>
+            <RaisedButton
+                label="save scores"
+                primary={true}
+                onClick={(e) =>  this.handleSubmit(e)}
+                disabled={this.state.saveDisabled}
+                />
             <Snackbar
                 open={this.state.open}
                 message={this.state.snackBarText}
