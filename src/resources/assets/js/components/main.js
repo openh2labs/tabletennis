@@ -5,7 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MyAwesomeReactComponent from './MyAwesomeReactComponent';
 import Player2 from './Player2';
 import AddPlayer from './AddPlayer';
-//import MainNav from './MainNav';
+//import MainNav from './MainNav'; 
 import Game2 from './Game2';
 import PubSub from 'pubsub-js'; // example https://anthonymineo.com/communication-between-independent-components-in-react-using-pubsubjs/
 
