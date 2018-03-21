@@ -5,9 +5,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MyAwesomeReactComponent from './MyAwesomeReactComponent';
 import Player2 from './Player2';
 import AddPlayer from './AddPlayer';
-//import MainNav from './MainNav'; 
 import Game2 from './Game2';
 import PubSub from 'pubsub-js'; // example https://anthonymineo.com/communication-between-independent-components-in-react-using-pubsubjs/
+import ListPlayers from "./form/ListPlayers";
 
 
 /* Main Component */
@@ -18,7 +18,7 @@ class Main extends Component {
         //Initialize the state in the constructor
         this.state = {
             players: [],
-            currentPlayer: null,
+            currentPlayer: null, // can be removed ?
             team1P1: null,
             team1P2: null,
             team2P1: null,
@@ -30,33 +30,10 @@ class Main extends Component {
 
         }
        // this.client = new BaseClient();
-        this.handleAddPlayer = this.handleAddPlayer.bind(this);
+       // this.handleAddPlayer = this.handleAddPlayer.bind(this);
         this.handleTeamClick = this.handleTeamClick.bind(this); //team 1 selection
         this.handleTeamClick2 = this.handleTeamClick2.bind(this); //team 2 selection
 
-    }
-
-    // The function that is subscribed to the publisher
-    subscriber(EventName, data){
-        console.log(EventName);
-        if(EventName === "playerRemovedFromTeam"){
-            this.subscriberPlayerRemovedFromTeam(EventName, data);
-        }
-        if(EventName === "TeamSelected"){
-            if(data===1){
-                this.handleTeamClick(this.state.currentPlayer);
-            }else{
-                this.handleTeamClick2(this.state.currentPlayer);
-            }
-        }
-    }
-
-    subscriberPlayerRemovedFromTeam(EventName, data){
-        console.log('subscriberPlayerRemovedFromTeam');
-        // add back to array
-        this.addPlayerToArray(data);
-        // remove from player settings @todo we need to reissue web service request and remove current player selection
-        this.removePlayerFromTeam(data);
     }
 
     // remove a player from any team
@@ -75,12 +52,6 @@ class Main extends Component {
         }
         this.updateTeamName();
     }
-
-    removePlayerFromTeamState(player){
-
-    }
-
-
 
     // if a player is removed from a team they need to be added here
     addPlayerToArray(player){
@@ -103,6 +74,51 @@ class Main extends Component {
        // console.log('main componentWillMount');
         this.token = PubSub.subscribe('TeamSelected', this.subscriber.bind(this));
         this.token = PubSub.subscribe('playerRemovedFromTeam', this.subscriber.bind(this));
+        this.token = PubSub.subscribe('players', this.subscriberGeneric.bind(this));
+        this.token = PubSub.subscribe('currentPlayer', this.subscriberGeneric.bind(this));
+    }
+
+    /**
+     *
+     * used for setting state objects shared across components
+     *
+     * @param EventName
+     * @param data
+     */
+    subscriberGeneric(EventName, data){
+        let key = EventName
+        let val = data
+        let obj  = {}
+        obj[key] = val
+        console.log('players in ListPlayers class');
+        console.log(this.state.players);
+        this.setState(obj);
+    }
+
+    // The function that is subscribed to the publisher
+    subscriber(EventName, data){
+        console.log(EventName);
+        if(EventName === "playerRemovedFromTeam"){
+            this.subscriberPlayerRemovedFromTeam(EventName, data);
+        }
+        if(EventName === "TeamSelected"){
+            if(data===1){
+                this.handleTeamClick(this.state.currentPlayer);
+            }else{
+                this.handleTeamClick2(this.state.currentPlayer);
+            }
+        }
+        if(EventName === 'players'){
+            this.setState({players: data});
+        }
+    }
+
+    subscriberPlayerRemovedFromTeam(EventName, data){
+        console.log('subscriberPlayerRemovedFromTeam');
+        // add back to array
+        this.addPlayerToArray(data);
+        // remove from player settings @todo we need to reissue web service request and remove current player selection
+        this.removePlayerFromTeam(data);
     }
 
     componentWillUnmount() {
@@ -118,34 +134,7 @@ class Main extends Component {
        // PubSub.publish('TeamSelected', this.token);
         console.log(this.token);
 
-        /* fetch API in action */
-        fetch('/api/player')
-            .then(response => {
-            return response.json();
-        })
-        .then(players => {
-            //Fetched player is stored in the state
-            this.setState({ players });
-        });
-    }
 
-    renderPlayers() {
-        const listStyle = {
-            listStyle: 'none',
-            fontSize: '18px',
-            lineHeight: '1.8em',
-        }
-        return this.state.players.map(player => {
-                return (
-            /* When using list you need to specify a key
-             * attribute that is unique for each list item
-            */
-            <li className="list-group-item" onClick={
-        () =>this.handleClick(player)} key={player.id} >
-        { player.name }
-    </li>
-    );
-    })
     }
 
     // player selected
@@ -285,33 +274,6 @@ class Main extends Component {
         this.setTeamCount();
     }
 
-    // post to the ms to save the player
-    handleAddPlayer(player) {
-        //player.price = Number(player.price);
-        /*Fetch API for post request */
-        fetch( 'api/player/', {
-            method:'post',
-            /* headers are important*/
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-
-            body: JSON.stringify(player)
-        })
-            .then(response => {
-            return response.json();
-    })
-    .then( data => {
-
-            this.setState((prevState)=> ({
-            players: prevState.players.concat(data),
-            currentPlayer : data
-        }))
-    })
-        //update the state of players and currentPlayer
-    }
-
     // render the output
     render() {
         const mainDivStyle =  {
@@ -331,23 +293,14 @@ class Main extends Component {
 
         }
 
-        // <Player2 currentPlayer={this.state.currentPlayer} onTeam1Select={this.handleTeamClick} onTeam2Select={this.handleTeamClick2} />
         return (
             <MuiThemeProvider>
             <div className="container">
                 <Game2 team1Display={this.state.team1Display} team2Display={this.state.team2Display} team1P1={this.state.team1P1} team1P2={this.state.team1P2} team2P1={this.state.team2P1} team2P2={this.state.team2P2}/>
                 <div className="row">
-                    <div className="col"><AddPlayer onAdd={this.handleAddPlayer} /></div>
+                    <div className="col"><AddPlayer /></div>
                 </div>
-                <div className="container">
-                    <div>
-                        <hr />
-                        <p><strong>Available players</strong></p>
-                        <ul className="list-group">
-                            { this.renderPlayers() }
-                        </ul>
-                     </div>
-                </div>
+                <ListPlayers />
             </div>
             </MuiThemeProvider>
         );

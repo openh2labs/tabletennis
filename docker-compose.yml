@@ -9,7 +9,7 @@ services:
     image: quay.io/cashrewards/tabletennis:local
     volumes:
      - ./src:/var/www/html
-     - ./node:/home/node/app
+#     - ./node:/home/node/app
 #    ports:
 #     - "9001:9001"
     links:

@@ -22,7 +22,6 @@ export default class InputTeamScore2 extends Component {
     }
 
     render() {
-        //<input type="number" pattern="[0-9]*" inputmode="numeric">
         return (
             <input
                 type="number"

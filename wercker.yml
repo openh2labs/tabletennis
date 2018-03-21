@@ -182,7 +182,7 @@ depoy-to-ecs-migrate:
             export _TASK_ARN=$(aws ecs run-task \
             --profile ${STEP_AWS_PROFILE} \
             --cluster $STEP_CLUSTER \
-            --task-definition crutils-metrics-migrate \
+            --task-definition tabletennis-migrate \
             --output text --query 'tasks[].taskArn')
     - script:
          name: Run Migration-wait

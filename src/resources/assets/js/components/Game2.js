@@ -65,20 +65,9 @@ export default class Game2 extends Component {
 
     // The function that is subscribed to the publisher
     subscriber(EventName, data){
-        console.log("game2 subscriber fired " + EventName + ", data " +data);
-        console.log(data);
         if(EventName === "TeamFull"){
-
             this.setState({"team1Full" : data.team1});
             this.setState({"team2Full" : data.team2});
-
-            /*
-            if(data===1){
-
-            }else{
-                this.setState({"team2Full" : true});
-            }
-            */
         }
         if(EventName === "currentPlayer"){
             this.setState({"currentPlayer" : data});

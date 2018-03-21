@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 
+import PubSub from 'pubsub-js';
+
+
 class AddPlayer extends Component {
 
     constructor(props) {
@@ -8,13 +11,41 @@ class AddPlayer extends Component {
         this.state = {
             newPlayer: {
                 name: ''
-            }
+            },
+            players: [],
         }
 
         //Boilerplate code for binding methods with `this`
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInput = this.handleInput.bind(this);
     }
+
+    componentWillMount() {
+        console.log('ListPlayers componentWillMount');
+        this.token = PubSub.subscribe('players', this.subscriberState.bind(this));
+    }
+
+    componentWillUnmount() {
+        console.log('ListPlayers componentWillUnmount');
+        // React removed me from the DOM, I have to unsubscribe from the system using my token
+        //PubSub.unsubscribe(this.token);
+    }
+
+    /**
+     *
+     * subscriber for state events
+     *
+     * @param EventName
+     * @param data
+     */
+    subscriberState(EventName, data){
+        let key = EventName
+        let val = data
+        let obj  = {}
+        obj[key] = val
+        this.setState(obj);
+    }
+
 
     /* This method dynamically accepts inputs and stores it in the state */
     handleInput(key, e) {
@@ -23,19 +54,45 @@ class AddPlayer extends Component {
         var state = Object.assign({}, this.state.newPlayer);
         state[key] = e.target.value;
         this.setState({newPlayer: state});
+       // this.handleAddPlayer(this.state.newPlayer);
     }
 
     /* This method is invoked when submit button is pressed */
     handleSubmit(e) {
         //preventDefault prevents page reload
         e.preventDefault();
-        console.log('The button was clicked.');
-        /*A call back to the onAdd props. The control is handed over
-         *to the parent component. The current state is passed
-         *as a param
-         */
-        this.props.onAdd(this.state.newPlayer);
+       // this.props.onAdd(this.state.newPlayer);
+        this.handleAddPlayer(this.state.newPlayer);
     }
+
+    // post to the ms to save the player
+    handleAddPlayer(player) {
+        /*Fetch API for post request */
+        fetch( 'api/player/', {
+            method:'post',
+            /* headers are important*/
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify(player)
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then( data => {
+
+                this.setState((prevState)=> ({
+                    players: prevState.players.concat(data),
+                    currentPlayer : data
+                }))
+                PubSub.publish('players', this.state.players);
+            })
+
+
+    }
+
 
     render() {
         const divStyle = {

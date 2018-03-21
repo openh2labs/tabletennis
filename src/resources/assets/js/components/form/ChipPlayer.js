@@ -43,7 +43,7 @@ export default class ChipPlayer extends Component {
 
 
     componentWillMount() {
-
+        //this.token = PubSub.subscribe('event name', this.subscriber.bind(this));
     }
 
     componentWillUnmount() {
@@ -69,7 +69,7 @@ export default class ChipPlayer extends Component {
     }
 
     render() {
-        console.log(this.props);
+       // console.log(this.props);
         return(
             <Chip
                 onRequestDelete={this.handleRequestDelete}
