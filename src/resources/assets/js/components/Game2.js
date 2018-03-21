@@ -132,10 +132,7 @@ export default class Game2 extends Component {
 
         return (
             <div className="card">
-                <div className="card-header">
-                   Game
-                </div>
-
+                <p></p>
                 <div className="card-body">
                     <form>
                         <div className="form-row">
@@ -161,7 +158,6 @@ export default class Game2 extends Component {
                             </div>
                         </div>
                     </form>
-
                 </div>
             </div>
         );

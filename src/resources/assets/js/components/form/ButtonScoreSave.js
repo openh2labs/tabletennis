@@ -72,8 +72,6 @@ export default class ButtonScoreSave extends Component {
                 saveDisabled:saveDisabled,
             }
         )
-        console.log(EventName);
-        console.log(data);
     }
 
 
@@ -113,7 +111,6 @@ export default class ButtonScoreSave extends Component {
             });
             return response.json();
         }).then( data => {
-            console.log(data);
             let st = "game saved (id " + data.id + ")";
             this.setState({
                 snackBarText: st
