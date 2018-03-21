@@ -5,7 +5,7 @@
  * building robust, powerful web applications using React + Laravel.
  */
 
-require('./bootstrap');
+//require('./bootstrap');
 import Main from './components/main.js';
 
 
@@ -15,4 +15,4 @@ import Main from './components/main.js';
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-require('./components/Example');
+ require('./components/Example');

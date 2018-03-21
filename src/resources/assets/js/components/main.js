@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 
 import ReactDOM from 'react-dom';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
 import MyAwesomeReactComponent from './MyAwesomeReactComponent';
-import Player2 from './Player2';
+
+
 import AddPlayer from './AddPlayer';
 import Game2 from './Game2';
 import PubSub from 'pubsub-js'; // example https://anthonymineo.com/communication-between-independent-components-in-react-using-pubsubjs/
@@ -76,14 +80,11 @@ class Main extends Component {
         let val = data
         let obj  = {}
         obj[key] = val
-        //console.log('players in ListPlayers class');
-       // console.log(this.state.players);
         this.setState(obj);
     }
 
     // The function that is subscribed to the publisher
     subscriber(EventName, data){
-        console.log(EventName);
         if(EventName === "TeamSelected"){
             if(data===1){
                 this.handleTeamClick(this.state.currentPlayer);
@@ -100,7 +101,6 @@ class Main extends Component {
     }
 
     componentWillUnmount() {
-        //console.log('main componentWillUnmount');
         // React removed me from the DOM, I have to unsubscribe from the system using my token
         //PubSub.unsubscribe(this.token);
     }
@@ -110,7 +110,6 @@ class Main extends Component {
      */
     componentDidMount() {
        // PubSub.publish('TeamSelected', this.token);
-        //console.log(this.token);
     }
 
     // get team counts to decide what to display @todo move to array for teams
@@ -266,10 +265,13 @@ class Main extends Component {
 
         }
 
+
         return (
             <MuiThemeProvider>
-            <div className="container">
+            <div>
+
                 <Game2 team1Display={this.state.team1Display} team2Display={this.state.team2Display} team1P1={this.state.team1P1} team1P2={this.state.team1P2} team2P1={this.state.team2P1} team2P2={this.state.team2P2}/>
+                <hr />
                 <div className="row">
                     <div className="col"><AddPlayer /></div>
                 </div>

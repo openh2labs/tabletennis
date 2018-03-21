@@ -5,6 +5,7 @@ import PubSub from "pubsub-js";
 import ButtonScoreSave from "./form/ButtonScoreSave";
 import InputTeamScore2 from "./form/InputTeamScore2";
 import ChipPlayer from "./form/ChipPlayer";
+import RaisedButton from 'material-ui/RaisedButton';
 
 const styles = {
     chip: {
@@ -89,13 +90,13 @@ export default class Game2 extends Component {
             if(this.state.team1Full === false && this.state.currentPlayer !== null){
                 return <ButtonTeamSelect2 teamId={teamId} />;
             }else{
-                return <button type="button" className="btn btn-secondary btn-sm">Team 1</button>
+                return <RaisedButton label="team 1" disabled={true} />
             }
         }else{
             if(this.state.team2Full === false && this.state.currentPlayer !== null){
                 return <ButtonTeamSelect2 teamId={teamId} />;
             }else{
-                return <button type="button" className="btn btn-secondary btn-sm">Team 2</button>
+                return <RaisedButton label="team 2" disabled={true} />
             }
         }
     }
@@ -132,22 +133,38 @@ export default class Game2 extends Component {
         }
 
         return (
-            <div className="container">
-                <form>
-                    <div className="form-group row">
-                        <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}>{ButtonTeam1} {chipT1P1} {chipT1P2}</label>
-                        <div className="col-sm-10">
-                            <InputTeamScore2 teamId={1}placeholder={placeHolder1} />
+            <div className="card">
+                <div className="card-header">
+                   Game
+                </div>
+
+                <div className="card-body">
+                    <form>
+                        <div className="form-row">
+                            <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}>{ButtonTeam1} {chipT1P1} {chipT1P2}</label>
+                            <div className="col-sm-10">
+                                <InputTeamScore2 teamId={1}placeholder={placeHolder1} />
+                            </div>
                         </div>
-                    </div>
-                    <div className="form-group row">
-                        <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}> {ButtonTeam2} {chipT2P1} {chipT2P2}</label>
-                        <div className="col-sm-10">
-                            <InputTeamScore2 teamId={2} placeholder={placeHolder2} />
+                        <div className="form-row" style={styles.wrapper}>
+                            {ButtonTeam2} {chipT2P1} {chipT2P2}
                         </div>
-                    </div>
-                        <ButtonScoreSave />
-                </form>
+                        <div className="form-row">
+                            <div className="col-7">
+                                <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}> </label>
+                                <InputTeamScore2 teamId={2} placeholder={placeHolder2} />
+                            </div>
+                            <div className="col"> here
+                            </div>
+                        </div>
+                        <div className="form-row">
+                            <div className="col-sm-10">
+                            <ButtonScoreSave />
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
             </div>
         );
     }

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
 import {fullWhite} from 'material-ui/styles/colors';
+import {List, ListItem} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
 
 export default class ListPlayers extends Component {
 
@@ -133,10 +135,14 @@ export default class ListPlayers extends Component {
                 /* When using list you need to specify a key
                  * attribute that is unique for each list item
                 */
-                <li className="list-group-item" onClick={
-                    () =>this.handleClick(player)} key={player.id} >
-                    { player.name }
-                </li>
+                <ListItem onClick={
+                    () =>this.handleClick(player)}
+                          key={player.id}
+                          primaryText={player.name}
+                          secondaryText={
+                                  <span ><hr/></span>
+                          }
+                />
             );
         })
     }
@@ -146,9 +152,9 @@ export default class ListPlayers extends Component {
         return(
             <div>
                 <p><strong>Available players</strong></p>
-                <ul className="list-group">
+                <List>
                     { this.renderPlayers() }
-                </ul>
+                </List>
             </div>
         )
     }

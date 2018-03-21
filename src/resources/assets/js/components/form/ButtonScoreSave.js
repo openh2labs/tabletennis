@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
-
+import Snackbar from 'material-ui/Snackbar';
 
 export default class ButtonScoreSave extends Component {
 
@@ -14,7 +14,11 @@ export default class ButtonScoreSave extends Component {
             team2P2: null,
             team1Score: 0,
             team2Score: 0,
+            open: false,
+            snackBarText: "score saved",
         }
+        this.handleSave = this.handleSave.bind(this);
+        this.handleRequestClose = this.handleRequestClose.bind(this);
     }
 
     handleSubmit(e){
@@ -22,6 +26,7 @@ export default class ButtonScoreSave extends Component {
         e.preventDefault();
         PubSub.publish('ScoreSave'); // needed?
         this.handleSave();
+
         // clear values
         document.getElementById('InputScore2').value="";
         document.getElementById('InputScore1').value="";
@@ -94,19 +99,42 @@ export default class ButtonScoreSave extends Component {
             },
             body: JSON.stringify(obj)
         }).then(response => {
+            this.setState({
+                open: true,
+            });
             return response.json();
+        }).then( data => {
+            console.log(data);
+            let st = "game saved (id " + data.id + ")";
+            this.setState({
+                snackBarText: st
+            })
         })
     }
+
+    handleRequestClose (){
+        this.setState({
+            open: false,
+        });
+    };
 
     render() {
         console.log(this.props);
         return (
+            <div>
             <button
                 type="submit"
                 className="btn btn-primary btn-sm"
                 onClick={(e) =>  this.handleSubmit(e, '', '', '', '')}
             >{"save scores"}
             </button>
+            <Snackbar
+                open={this.state.open}
+                message={this.state.snackBarText}
+                autoHideDuration={4000}
+                onRequestClose={this.handleRequestClose}
+                />
+            </div>
         )
     }
 }

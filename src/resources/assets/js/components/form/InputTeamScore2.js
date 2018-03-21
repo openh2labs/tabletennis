@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
-
+import TextField from 'material-ui/TextField';
 
 export default class InputTeamScore2 extends Component {
 
@@ -23,15 +23,15 @@ export default class InputTeamScore2 extends Component {
 
     render() {
         return (
-            <input
+            <TextField
                 type="number"
                 id={"InputScore"+this.props.teamId}
-                name={this.props.teamId}
-                placeholder={this.state.placeholder}
-                className="form-control form-control-sm input-sm"
+                hintText={this.state.placeholder}
+                floatingLabelText={this.state.placeholder}
                 onChange={this.handleSubmit}
                 pattern="[0-9]*"
                 inputMode="numeric"
+                underlineShow={false}
             />
         )
     }

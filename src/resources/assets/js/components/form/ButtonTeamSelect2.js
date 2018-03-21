@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-//import BaseClient from '../BaseClient';
-
-//let client = new BaseClient();
+import RaisedButton from 'material-ui/RaisedButton';
 
 import PubSub from 'pubsub-js';
 
@@ -22,13 +20,13 @@ export default class ButtonTeamSelect2 extends Component {
     }
 
     render() {
-        console.log(this.props);
+        let label = "Team " + this.props.teamId;
         return (
-            <button
-                className="btn btn-primary btn-sm"
+            <RaisedButton
+                label={label}
+                primary={true}
                 onClick={(e) =>  this.handleSubmit(e, this.props.teamId)}
-            >{"Team " + this.props.teamId}
-            </button>
+                />
         )
     }
 }
