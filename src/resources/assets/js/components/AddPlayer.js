@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 
 import PubSub from 'pubsub-js';
-import Paper from 'material-ui/Paper';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import SnackBarMessage from "./Misc/SnackBarMessage";
 
 class AddPlayer extends Component {
 
@@ -16,6 +16,8 @@ class AddPlayer extends Component {
             },
             players: [],
             cardPlayerAddVisible: false,
+            SnackBarOpen: false,
+            snackBarText: "game saved"
         }
 
         //Boilerplate code for binding methods with `this`
@@ -101,13 +103,17 @@ class AddPlayer extends Component {
                 // update subscribers
                 PubSub.publish('players', this.state.players);
                 PubSub.publish('newPlayer', data);
+                PubSub.publish('snackBarText', "Player " + data.name + " (" + data.id + ") saved");
+                PubSub.publish('cardPlayerAddVisible', false);
             })
     }
 
+    /**
+     * return the card if its visible
+     */
     getCard(){
         if(this.state.cardPlayerAddVisible === true){
             return (
-                <div>
                     <Card>
                         <CardHeader
                             title="Add player"
@@ -135,7 +141,6 @@ class AddPlayer extends Component {
                             />
                         </CardActions>
                     </Card>
-                </div>
             )
         }else{
 
@@ -158,11 +163,14 @@ class AddPlayer extends Component {
             margin: '0px 10px 0px 10px'
         }
         return(
-            <div>{card}</div>
+            <div>
+                {card}
+                <SnackBarMessage />
+            </div>
         )
 
     }
-    
+
 }
 
 export default AddPlayer;

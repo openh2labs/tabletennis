@@ -4,8 +4,7 @@ import ReactDOM from 'react-dom';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-
-import MyAwesomeReactComponent from './MyAwesomeReactComponent';
+//import MyAwesomeReactComponent from './MyAwesomeReactComponent';
 
 
 import AddPlayer from './AddPlayer';

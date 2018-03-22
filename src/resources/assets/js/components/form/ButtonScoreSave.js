@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
-import Snackbar from 'material-ui/Snackbar';
 import RaisedButton from 'material-ui/RaisedButton';
+import SnackBarMessage from "../Misc/SnackBarMessage";
 
 export default class ButtonScoreSave extends Component {
 
@@ -16,7 +16,6 @@ export default class ButtonScoreSave extends Component {
             team1Score: 0,
             team2Score: 0,
             open: false,
-            snackBarText: "score saved",
             saveDisabled: true,
         }
         this.handleSave = this.handleSave.bind(this);
@@ -41,6 +40,7 @@ export default class ButtonScoreSave extends Component {
         this.token = PubSub.subscribe('team2P2', this.subscriber.bind(this));
         this.token = PubSub.subscribe('team1Score', this.subscriber.bind(this));
         this.token = PubSub.subscribe('team2Score', this.subscriber.bind(this));
+
     }
 
     componentWillUnmount() {
@@ -112,9 +112,7 @@ export default class ButtonScoreSave extends Component {
             return response.json();
         }).then( data => {
             let st = "game saved (id " + data.id + ")";
-            this.setState({
-                snackBarText: st
-            })
+            PubSub.publish('snackBarText', st);
         })
     }
 
@@ -133,12 +131,7 @@ export default class ButtonScoreSave extends Component {
                 onClick={(e) =>  this.handleSubmit(e)}
                 disabled={this.state.saveDisabled}
                 />
-            <Snackbar
-                open={this.state.open}
-                message={this.state.snackBarText}
-                autoHideDuration={4000}
-                onRequestClose={this.handleRequestClose}
-                />
+                <SnackBarMessage />
             </div>
         )
     }
