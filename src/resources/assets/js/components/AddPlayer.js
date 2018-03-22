@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 
 import PubSub from 'pubsub-js';
-
+import Paper from 'material-ui/Paper';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
 
 class AddPlayer extends Component {
 
@@ -12,6 +15,7 @@ class AddPlayer extends Component {
                 name: ''
             },
             players: [],
+            cardPlayerAddVisible: false,
         }
 
         //Boilerplate code for binding methods with `this`
@@ -20,12 +24,11 @@ class AddPlayer extends Component {
     }
 
     componentWillMount() {
-      //  console.log('ListPlayers componentWillMount');
         this.token = PubSub.subscribe('players', this.subscriberState.bind(this));
+        this.token = PubSub.subscribe('cardPlayerAddVisible', this.subscriberState.bind(this));
     }
 
     componentWillUnmount() {
-     //   console.log('ListPlayers componentWillUnmount');
         // React removed me from the DOM, I have to unsubscribe from the system using my token
         //PubSub.unsubscribe(this.token);
     }
@@ -60,8 +63,17 @@ class AddPlayer extends Component {
     handleSubmit(e) {
         //preventDefault prevents page reload
         e.preventDefault();
-       // this.props.onAdd(this.state.newPlayer);
         this.handleAddPlayer(this.state.newPlayer);
+        document.getElementById('TextFieldNewPlayer').value="";
+    }
+
+    /**
+     * close the add player card
+     */
+    handleSubmitCancel(e){
+        this.setState({
+            cardPlayerAddVisible: false
+        })
     }
 
     // post to the ms to save the player
@@ -92,8 +104,47 @@ class AddPlayer extends Component {
             })
     }
 
+    getCard(){
+        if(this.state.cardPlayerAddVisible === true){
+            return (
+                <div>
+                    <Card>
+                        <CardHeader
+                            title="Add player"
+                            subtitle="Player name must be unique"
+                            actAsExpander={false}
+                            showExpandableButton={false}
+                        />
+                        <CardText expandable={false}>
+                            <TextField
+                                id="TextFieldNewPlayer"
+                                type="name"
+                                hintText="new player name"
+                                floatingLabelText="new player name"
+                                onChange={(e) => this.handleInput('name', e)}
+                            />
+                        </CardText>
+                        <CardActions>
+                            <FlatButton
+                                label="save player"
+                                onClick={(e) =>  this.handleSubmit(e)}
+                            />
+                            <FlatButton
+                                label="cancel"
+                                onClick={(e) =>  this.handleSubmitCancel(e)}
+                            />
+                        </CardActions>
+                    </Card>
+                </div>
+            )
+        }else{
+
+        }
+
+    }
 
     render() {
+        let card = this.getCard();
         const divStyle = {
             position: 'absolute',
             left: '35%',
@@ -106,46 +157,12 @@ class AddPlayer extends Component {
         const inputStyle = {
             margin: '0px 10px 0px 10px'
         }
-        return (
-            <div className="container">
-                <div className="card">
-                    <div className="card-header">
-                        Add player
-                    </div>
-                    <div className="container card-body">
-                        <form onSubmit={this.handleSubmit}>
-                            <div className="form-group row">
-                                <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm">player</label>
-                                <div className="col-sm-8">
-                                    <input type="name" className="form-control form-control-sm input-sm" id="colFormLabelSm" placeholder="enter new player name" onChange={(e) => this.handleInput('name', e)}/>
-                                    <input className="btn btn-success" type="submit" value="Submit"/>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+        return(
+            <div>{card}</div>
         )
-    }
 
-    oldcontainer() {
-        <div>
-            <div>
-                <strong> Add new player </strong>
-                {/*when Submit button is pressed, the control is passed to
-         *handleSubmit method
-         */}
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        name:
-                        {/*On every keystroke, the handeInput method is invoked */}
-                        <input style={inputStyle} type="text" onChange={(e) => this.handleInput('name', e)}/>
-                    </label>
-                    <input style={inputStyle} type="submit" value="Submit"/>
-                </form>
-            </div>
-        </div>
     }
+    
 }
 
 export default AddPlayer;

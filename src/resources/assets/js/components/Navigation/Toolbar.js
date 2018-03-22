@@ -32,6 +32,10 @@ export default class ToolbarNav extends Component {
             );
     }
 
+    handleSubmit(e){
+        PubSub.publish('cardPlayerAddVisible', true);
+    }
+
 
     /**
      *
@@ -90,8 +94,11 @@ export default class ToolbarNav extends Component {
                             </IconButton>
                         }
                     >
-                        <MenuItem primaryText="Add player" />
-                        <MenuItem primaryText="View stats" />
+                        <MenuItem
+                            primaryText="Add a player"
+                            onClick={(e) =>  this.handleSubmit(e)}
+                        />
+                        <MenuItem primaryText="View player/team stats" />
                     </IconMenu>
                 </ToolbarGroup>
             </Toolbar>

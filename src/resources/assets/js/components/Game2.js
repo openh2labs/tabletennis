@@ -133,7 +133,7 @@ export default class Game2 extends Component {
         return (
             <div className="card">
                 <p></p>
-                <div className="card-body">
+                <div>
                     <form>
                         <div className="form-row">
                             <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}>{ButtonTeam1} {chipT1P1} {chipT1P2}</label>
