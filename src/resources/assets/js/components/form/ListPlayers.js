@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
 import {fullWhite} from 'material-ui/styles/colors';
 import {List, ListItem} from 'material-ui/List';
-import Divider from 'material-ui/Divider';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
 export default class ListPlayers extends Component {
 
@@ -30,7 +30,6 @@ export default class ListPlayers extends Component {
         PubSub.publish('currentPlayer', player);
       //  PubSub.publish('players', this.state.players);
     }
-
 
     /**
      *
@@ -150,12 +149,17 @@ export default class ListPlayers extends Component {
 
     render() {
         return(
-            <div>
-                <p><strong>Available players</strong></p>
-                <List>
+            <Card>
+                <CardHeader
+                    title="Available players"
+                    subtitle="Select a player for your teams"
+                    actAsExpander={false}
+                    showExpandableButton={false}
+                />
+                <CardText>
                     { this.renderPlayers() }
-                </List>
-            </div>
+                </CardText>
+            </Card>
         )
     }
 }

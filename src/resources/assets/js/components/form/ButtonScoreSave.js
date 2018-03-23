@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
 import FlatButton from 'material-ui/FlatButton';
 import SnackBarMessage from "../Misc/SnackBarMessage";
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
 export default class ButtonScoreSave extends Component {
 
@@ -124,15 +125,19 @@ export default class ButtonScoreSave extends Component {
 
     render() {
         return (
-            <div>
+            <CardActions>
             <FlatButton
                 label="save scores"
                 primary={true}
                 onClick={(e) =>  this.handleSubmit(e)}
                 disabled={this.state.saveDisabled}
                 />
+            <FlatButton
+        label="clear teams"
+        onClick={(e) =>  this.handleSubmitCancel(e)}
+        />
                 <SnackBarMessage />
-            </div>
+            </CardActions>
         )
     }
 }

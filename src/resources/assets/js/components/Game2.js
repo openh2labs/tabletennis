@@ -134,7 +134,6 @@ export default class Game2 extends Component {
 
         return (
             <div className="card">
-                <hr />
                 <Card>
                     <CardHeader
                         title="Game"
@@ -153,19 +152,8 @@ export default class Game2 extends Component {
                     <CardText>
                         <InputTeamScore2 teamId={2} placeholder={placeHolder2} />
                     </CardText>
-                    <CardActions>
                         <ButtonScoreSave />
-                        <FlatButton
-                            label="save player"
-                            onClick={(e) =>  this.handleSubmit(e)}
-                        />
-                        <FlatButton
-                            label="cancel"
-                            onClick={(e) =>  this.handleSubmitCancel(e)}
-                        />
-                    </CardActions>
                 </Card>
-                <hr />
             </div>
         );
     }

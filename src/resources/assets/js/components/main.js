@@ -273,7 +273,7 @@ class Main extends Component {
             <div>
                 <ToolbarNav/>
                 <Game2 team1Display={this.state.team1Display} team2Display={this.state.team2Display} team1P1={this.state.team1P1} team1P2={this.state.team1P2} team2P1={this.state.team2P1} team2P2={this.state.team2P2}/>
-                <hr />
+                <p></p>
                 <div className="row">
                     <div className="col"><AddPlayer /></div>
                 </div>

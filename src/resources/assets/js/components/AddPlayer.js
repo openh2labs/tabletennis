@@ -166,6 +166,7 @@ class AddPlayer extends Component {
             <div>
                 {card}
                 <SnackBarMessage />
+                <p></p>
             </div>
         )
 
