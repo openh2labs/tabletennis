@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import SnackBarMessage from "../Misc/SnackBarMessage";
 
 export default class ButtonScoreSave extends Component {
@@ -125,7 +125,7 @@ export default class ButtonScoreSave extends Component {
     render() {
         return (
             <div>
-            <RaisedButton
+            <FlatButton
                 label="save scores"
                 primary={true}
                 onClick={(e) =>  this.handleSubmit(e)}

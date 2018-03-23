@@ -21,13 +21,11 @@ export default class ButtonTeamSelect2 extends Component {
 
     render() {
         let label = "Team " + this.props.teamId;
-        return (
-            <RaisedButton
+        return (<RaisedButton
                 label={label}
                 primary={true}
                 onClick={(e) =>  this.handleSubmit(e, this.props.teamId)}
-                />
-        )
+                />)
     }
 }
 

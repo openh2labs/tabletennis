@@ -6,6 +6,8 @@ import ButtonScoreSave from "./form/ButtonScoreSave";
 import InputTeamScore2 from "./form/InputTeamScore2";
 import ChipPlayer from "./form/ChipPlayer";
 import RaisedButton from 'material-ui/RaisedButton';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
 
 const styles = {
     chip: {
@@ -132,11 +134,48 @@ export default class Game2 extends Component {
 
         return (
             <div className="card">
-                <p></p>
-                <div>
+                <hr />
+                <Card>
+                    <CardHeader
+                        title="Game"
+                        subtitle="Capture the score of a game"
+                        actAsExpander={false}
+                        showExpandableButton={false}
+                    />
+                    <CardText style={styles.wrapper}>
+                        {ButtonTeam1} {chipT1P1} {chipT1P2}</CardText>
+                    <CardText expandable={false}>
+                        <InputTeamScore2 teamId={1}placeholder={placeHolder1} />
+                    </CardText>
+                    <CardText style={styles.wrapper}>
+                        {ButtonTeam2} {chipT2P1} {chipT2P2}
+                    </CardText>
+                    <CardText>
+                        <InputTeamScore2 teamId={2} placeholder={placeHolder2} />
+                    </CardText>
+                    <CardActions>
+                        <ButtonScoreSave />
+                        <FlatButton
+                            label="save player"
+                            onClick={(e) =>  this.handleSubmit(e)}
+                        />
+                        <FlatButton
+                            label="cancel"
+                            onClick={(e) =>  this.handleSubmitCancel(e)}
+                        />
+                    </CardActions>
+                </Card>
+                <hr />
+            </div>
+        );
+    }
+}
+
+/* previous form for reference @todo remove
+<div>
                     <form>
                         <div className="form-row">
-                            <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}>{ButtonTeam1} {chipT1P1} {chipT1P2}</label>
+                            <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}></label>
                             <div className="col-sm-10">
                                 <InputTeamScore2 teamId={1}placeholder={placeHolder1} teamCount={this.state.team1Count} />
                             </div>
@@ -159,10 +198,7 @@ export default class Game2 extends Component {
                         </div>
                     </form>
                 </div>
-            </div>
-        );
-    }
-}
+ */
 
 if (document.getElementById('Game2')) {
     ReactDOM.render(<Game2 />, document.getElementById('Game2'));

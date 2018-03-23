@@ -81,7 +81,6 @@ export default class ToolbarNav extends Component {
 
     }
 
-
     render() {
         return (
             <Toolbar>
@@ -94,6 +93,7 @@ export default class ToolbarNav extends Component {
                             </IconButton>
                         }
                     >
+                        <MenuItem primaryText="Save game scores" />
                         <MenuItem
                             primaryText="Add a player"
                             onClick={(e) =>  this.handleSubmit(e)}
@@ -104,7 +104,6 @@ export default class ToolbarNav extends Component {
             </Toolbar>
         );
     }
-
 
 }
 
