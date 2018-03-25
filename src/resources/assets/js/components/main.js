@@ -92,7 +92,7 @@ class Main extends Component {
     }
 
     /**
-     * 
+     *
      * The function that is subscribed to the publisher
      *
      * @param EventName

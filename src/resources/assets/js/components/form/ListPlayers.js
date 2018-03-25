@@ -152,7 +152,7 @@ export default class ListPlayers extends Component {
             <Card>
                 <CardHeader
                     title="Available players"
-                    subtitle="Select a player for your teams"
+                    subtitle="Select a player to allocate to a team"
                     actAsExpander={false}
                     showExpandableButton={false}
                 />
