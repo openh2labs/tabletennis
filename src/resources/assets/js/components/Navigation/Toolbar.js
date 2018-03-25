@@ -99,6 +99,7 @@ export default class ToolbarNav extends Component {
                             onClick={(e) =>  this.handleSubmit(e)}
                         />
                         <MenuItem primaryText="View player/team stats" />
+                        <MenuItem primaryText="About TT scores" />
                     </IconMenu>
                 </ToolbarGroup>
             </Toolbar>

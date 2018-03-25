@@ -42,7 +42,7 @@ export default class ChipPlayer extends Component {
 
 
     componentWillMount() {
-        //this.token = PubSub.subscribe('event name', this.subscriber.bind(this));
+
     }
 
     componentWillUnmount() {

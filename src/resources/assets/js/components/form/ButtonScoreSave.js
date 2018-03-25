@@ -27,11 +27,12 @@ export default class ButtonScoreSave extends Component {
      * teams clear @todo get other components to listen into
      */
     handleSubmitCancel(){
-       //@todo clear teams !
+       //@todo clear teams ! playerRemovedFromTeam
         PubSub.publish('team1P1', null);
         PubSub.publish('team1P2', null);
         PubSub.publish('team2P1', null);
         PubSub.publish('team2P2', null);
+        this.clearScoreInputs();
     }
 
     handleSubmit(e){
@@ -39,8 +40,15 @@ export default class ButtonScoreSave extends Component {
         e.preventDefault();
         PubSub.publish('ScoreSave'); // needed?
         this.handleSave();
+        this.clearScoreInputs();
 
-        // clear values
+    }
+
+    /**
+     *  clear values from text boxes
+     */
+    clearScoreInputs(){
+
         document.getElementById('InputScore2').value="";
         document.getElementById('InputScore1').value="";
     }

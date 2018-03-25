@@ -66,6 +66,12 @@ class Main extends Component {
         this.token = PubSub.subscribe('playerRemovedFromTeam', this.subscriber.bind(this));
         this.token = PubSub.subscribe('players', this.subscriberGeneric.bind(this));
         this.token = PubSub.subscribe('currentPlayer', this.subscriberGeneric.bind(this));
+
+        this.token = PubSub.subscribe('team1P1', this.subscriberGeneric.bind(this));
+        this.token = PubSub.subscribe('team1P2', this.subscriberGeneric.bind(this));
+        this.token = PubSub.subscribe('team2P1', this.subscriberGeneric.bind(this));
+        this.token = PubSub.subscribe('team2P2', this.subscriberGeneric.bind(this));
+
     }
 
     /**
@@ -81,9 +87,17 @@ class Main extends Component {
         let obj  = {}
         obj[key] = val
         this.setState(obj);
+        this.updateTeamName();
+        this.setTeamCount();
     }
 
-    // The function that is subscribed to the publisher
+    /**
+     * 
+     * The function that is subscribed to the publisher
+     *
+     * @param EventName
+     * @param data
+     */
     subscriber(EventName, data){
         if(EventName === "TeamSelected"){
             if(data===1){
