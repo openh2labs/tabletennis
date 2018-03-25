@@ -23,6 +23,17 @@ export default class ButtonScoreSave extends Component {
         this.handleRequestClose = this.handleRequestClose.bind(this);
     }
 
+    /**
+     * teams clear @todo get other components to listen into
+     */
+    handleSubmitCancel(){
+       //@todo clear teams !
+        PubSub.publish('team1P1', null);
+        PubSub.publish('team1P2', null);
+        PubSub.publish('team2P1', null);
+        PubSub.publish('team2P2', null);
+    }
+
     handleSubmit(e){
         //preventDefault prevents page reload
         e.preventDefault();
@@ -134,7 +145,7 @@ export default class ButtonScoreSave extends Component {
                 />
             <FlatButton
         label="clear teams"
-        onClick={(e) =>  this.handleSubmitCancel(e)}
+        onClick={(e) =>  this.handleSubmitCancel()}
         />
                 <SnackBarMessage />
             </CardActions>
