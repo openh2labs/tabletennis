@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use \App\Player;
 use \App\Game;
+use Carbon\Carbon;
 
 class importcsv extends Command
 {
@@ -41,7 +42,6 @@ class importcsv extends Command
     public function handle()
     {
         $csv = $this->getLines(Storage::get('doubles.csv'));
-        print_r($csv);
     }
 
     private function getLines($file)
@@ -70,8 +70,8 @@ class importcsv extends Command
         }
         $data['team_1_score'] = $csvRow[3];
         $data['team_2_score'] = $csvRow[4];
-
-        $player = Game::create($data);
+        $data['created_at'] = $this->getDate($csvRow[0]);
+        Game::create($data);
     }
 
     /**
@@ -110,6 +110,19 @@ class importcsv extends Command
             die;
         }
         return $playerNameArr;
+    }
+
+    /**
+     *
+     * get mysql date
+     *
+     * @param $dateString
+     * @return string
+     */
+    private function getDate($dateString){
+        echo "'$dateString'\n";
+        $mysqlDate = Carbon::createFromFormat('d/m/Y H:i', $dateString); //19/02/201813:04
+        return $mysqlDate->toDateString();
     }
 
 }

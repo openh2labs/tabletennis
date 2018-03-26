@@ -21,7 +21,6 @@ export default class ListPlayers extends Component {
     }
 
     handleRequestDelete() {
-        //console.log(" ****** state player delete **********");
        //PubSub.publish('playerRemovedFromTeam', this.props.player);
     }
 
