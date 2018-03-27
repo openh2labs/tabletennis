@@ -20,6 +20,14 @@ class CreateTeamPlayerTable extends Migration
             $table->timestamps();
             $table->unique(['player_id', 'team_id']);
         });
+
+
+        //add the additional columns to game table
+        Schema::table('game', function (Blueprint $table) {
+            $table->integer('team_1_id')->nullable()->comment('team id 1');
+            $table->integer('team_2_id')->nullable()->comment('team id 2');
+            $table->integer('team_won')->nullable()->comment('team id that won');
+        });
     }
 
     /**
