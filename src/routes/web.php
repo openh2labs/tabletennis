@@ -17,5 +17,6 @@ Route::get('/', function () {
 
 Route::apiResources([
     'api/player' => 'PlayerController',
-    'api/game' => 'GameController'
+    'api/game' => 'GameController',
+    'api/gamestats' => 'TeamStatsController'
 ]);

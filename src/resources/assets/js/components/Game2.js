@@ -7,7 +7,7 @@ import InputTeamScore2 from "./form/InputTeamScore2";
 import ChipPlayer from "./form/ChipPlayer";
 import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+
 
 const styles = {
     chip: {
@@ -143,8 +143,8 @@ export default class Game2 extends Component {
                     />
                     <CardText style={styles.wrapper}>
                         {ButtonTeam1} {chipT1P1} {chipT1P2}</CardText>
-                    <CardText expandable={false}>
-                        <InputTeamScore2 teamId={1}placeholder={placeHolder1} />
+                    <CardText expandable={false}  >
+                        <InputTeamScore2 teamId={1} placeholder={placeHolder1}  />
                     </CardText>
                     <CardText style={styles.wrapper}>
                         {ButtonTeam2} {chipT2P1} {chipT2P2}
@@ -158,35 +158,6 @@ export default class Game2 extends Component {
         );
     }
 }
-
-/* previous form for reference @todo remove
-<div>
-                    <form>
-                        <div className="form-row">
-                            <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}></label>
-                            <div className="col-sm-10">
-                                <InputTeamScore2 teamId={1}placeholder={placeHolder1} teamCount={this.state.team1Count} />
-                            </div>
-                        </div>
-                        <div className="form-row" style={styles.wrapper}>
-                            {ButtonTeam2} {chipT2P1} {chipT2P2}
-                        </div>
-                        <div className="form-row">
-                            <div className="col-7">
-                                <label htmlFor="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm" style={styles.wrapper}> </label>
-                                <InputTeamScore2 teamId={2} placeholder={placeHolder2} />
-                            </div>
-                            <div className="col">
-                            </div>
-                        </div>
-                        <div className="form-row">
-                            <div className="col-sm-10">
-                            <ButtonScoreSave />
-                            </div>
-                        </div>
-                    </form>
-                </div>
- */
 
 if (document.getElementById('Game2')) {
     ReactDOM.render(<Game2 />, document.getElementById('Game2'));

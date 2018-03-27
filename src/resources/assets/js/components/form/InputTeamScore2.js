@@ -2,7 +2,20 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PubSub from 'pubsub-js';
 import TextField from 'material-ui/TextField';
+import Scorecard from '../Game/Scorecard.js';
 
+const styles = {
+    chip: {
+        margin: 4,
+    },
+    wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+};
+
+
+    {}
 export default class InputTeamScore2 extends Component {
 
     constructor(props) {
@@ -18,9 +31,6 @@ export default class InputTeamScore2 extends Component {
             team1Count: 0,
             team2Count: 0,
         }
-
-
-
       //  this.handleSave = this.handleSave.bind(this);
     }
 
@@ -38,6 +48,7 @@ export default class InputTeamScore2 extends Component {
 
     render() {
         return (
+            <div style={styles.wrapper}>
             <TextField
                 type="number"
                 id={"InputScore"+this.props.teamId}
@@ -48,7 +59,10 @@ export default class InputTeamScore2 extends Component {
                 inputMode="numeric"
                 underlineShow={true}
                 disabled={this.state.disabled}
+                style = {{width: 125}}
             />
+                <Scorecard />
+            </div>
         )
     }
 
