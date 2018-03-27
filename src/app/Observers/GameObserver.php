@@ -46,66 +46,11 @@ class GameObserver
         }
     }
 
-    /**
-     *
-     * get the team id
-     *
-     * @param $playersArr
-     * @param $game_type
-     * @return null
-     */
-    private function getTeam($playersArr,$game_type){
-        $playersArr = $this->getCleanPlayers($playersArr);
-        $md5 = $this->getPlayersHash($playersArr);
-        $team = Team::where('team_hash', $md5)->first();
-        if(!$team){
-            return $this->setTeam($playersArr, $game_type);
-        }else{
-            return $team->id;
-        }
-    }
 
-    /**
-     * @param $players
-     * @return string
-     */
-    private function getPlayersHash($players){
-        sort($players);
-        return md5(implode(":", $players));
-    }
 
-    /**
-     *
-     * clean the players arr
-     *
-     * @param $playersArr
-     * @return mixed
-     */
-    private function getCleanPlayers($playersArr){
-        // remove null
-        foreach($playersArr as $key=>$player){
-            if($player === null){
-                unset($playersArr[$key]);
-            }
-        }
-        return $playersArr;
-    }
 
-    /**
-     *
-     * create the team in the db
-     *
-     * @param $players
-     * @param $game_type
-     * @return mixed
-     */
-    private function setTeam($players, $game_type){
-        $team = Team::create(['team_type' => $game_type, 'team_hash' => $this->getPlayersHash($players)]);
-        foreach($players as $key=>$player){
-            TeamPlayer::create(['player_id' => $player, 'team_id' => $team->id]);
-        }
-        return $team->id;
-    }
+
+
 
     /**
      * Listen to the Game deleting event.

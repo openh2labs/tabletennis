@@ -161,6 +161,46 @@ class Main extends Component {
         PubSub.publish('team2Count', this.state.team2Count);
     }
 
+    /**
+     * get the latest team stats
+     */
+    updateTeamStats(){
+
+        let payload = {
+            team1P1: this.state.team1P1,
+            team1P2: this.state.team1P2,
+            team2P1: this.state.team2P1,
+            team2P2: this.state.team2P2
+        };
+
+        if(this.state.team1Count > 0 && this.state.team2Count >0){
+            fetch( 'api/gamestats/', {
+                method:'post',
+                /* headers are important*/
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify(payload)
+            })
+                .then(response => {
+                    return response.json();
+                })
+                .then( data => {
+                    /*
+                    this.setState((prevState)=> ({
+                        players: prevState.players.concat(data),
+                        currentPlayer : data
+                    }))
+                    */
+                    // update subscribers
+                  //  PubSub.publish('players', this.state.players);
+
+                })
+        }
+    }
+
     // team 1 selectors
     handleTeamClick(player) {
     this.checkIfPlayerInAnotherTeam(player,1);
@@ -261,6 +301,8 @@ class Main extends Component {
         this.setState({team2Count: team2Display.length});
         this.setTeamCount();
     }
+
+
 
     // render the output
     render() {

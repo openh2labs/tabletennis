@@ -35,18 +35,60 @@ class TeamStatsController extends Controller
      */
     public function store(Request $request)
     {
-        $result=$request->all();
-        print_r($request->all());
+        $payload = $request->all();
+        $result = $this->getInitial($payload);
+        return response()->json($result, 201);
+    }
 
-
-        $wins = DB::table('game')
+    private function getWins($team1, $team2){
+        return = DB::table('game')
             ->select(DB::raw('team_won, count(*) as total'))
-            ->wherein('team_won', [$result['team_1_id'], $result['team_2_id']])
+            ->wherein('team_won', [$team1, $team2])
             ->groupBy('team_won')
             ->get();
-        print_r($wins);
 
-        //return response()->json($game, 201);
+    }
+
+    //@todo move to a repo
+    private function getInitial($payload){
+        if(array_key_exists('team_1_id', $payload) && array_key_exists('team_2_id', $payload)){
+            $wins = $this->getWins($payload['team_1_id'], $payload['team_2_id']);
+        }elseif(array_key_exists('team1P1', $payload) && array_key_exists('team1P2', $payload)){
+            $team1 =
+        }
+
+
+        $result = [
+            $wins[0]->team_won => [
+                'win' => $wins[0]->total,
+                'lost' => 0,
+                'win_pct' => 0,
+                'lost_pct' => 0
+            ],
+            $wins[1]->team_won => [
+                'win' => $wins[1]->total,
+                'lost' => 0,
+                'win_pct' => 0,
+                'lost_pct' => 0
+            ],
+        ];
+        $result = $this->getPCT($result, $wins);
+        return $result;
+    }
+
+    //@todo move to a repo
+    private function getPCT($result, $wins){
+        $totalGames = $wins[0]->total + $wins[1]->total;
+        $result[$wins[1]->team_won]['lost'] = $wins[0]->total;
+        $result[$wins[0]->team_won]['lost'] = $wins[1]->total;
+
+        if($totalGames > 0){
+            $result[$wins[1]->team_won]['win_pct'] = number_format($wins[1]->total / $totalGames * 100, 0);
+            $result[$wins[0]->team_won]['win_pct'] = number_format($wins[0]->total / $totalGames * 100, 0);
+            $result[$wins[1]->team_won]['lost_pct'] = number_format($wins[0]->total / $totalGames * 100);
+            $result[$wins[0]->team_won]['lost_pct'] = number_format($wins[1]->total / $totalGames * 100);
+        }
+        return $result;
     }
 
     /**
