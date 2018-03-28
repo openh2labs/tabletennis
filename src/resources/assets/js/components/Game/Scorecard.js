@@ -10,31 +10,29 @@ export default class Scorecard extends Component {
 
     constructor(props) {
         super(props);
+
       //  this.handleSubmit = this.handleSubmit.bind(this);
-
-
-        this.state = {
-
-        }
-
         //  this.handleSave = this.handleSave.bind(this);
     }
 
 
+    getContent(){
 
+    }
 
     render() {
+        if(this.props.team1Count > 0 && this.props.team2Count > 0){
         return (
             <div>
             <Badge
-                badgeContent={4}
+                badgeContent={this.props.teamStats.win}
                 primary={true}
                 badgeStyle={{top: 24, right: 0}}
             >
                 <SocialMood />
             </Badge>
                 <Badge
-                    badgeContent={4}
+                    badgeContent={this.props.teamStats.lost}
                     primary={true}
                     badgeStyle={{top: 24, right: 0}}
                 >
@@ -42,10 +40,13 @@ export default class Scorecard extends Component {
                 </Badge>
             </div>
         )
+        }else{
+           return(<div />)
+        }
     }
 
     componentWillMount() {
-        //this.token = PubSub.subscribe('ScoreSaveComplete', this.subscriber.bind(this));
+        //this.token = PubSub.subscribe('teamStats', this.subscriber.bind(this));
     }
 
     componentWillUnmount() {
@@ -61,8 +62,6 @@ export default class Scorecard extends Component {
     }
 
     subscriber(EventName, data){
-
-
         let key = EventName;
         let val = data;
         let obj  = {};

@@ -115,11 +115,11 @@ class TeamStatsController extends Controller
      *
      * get team percentages
      *
+     * @param $wins
+     * @return array
      * @todo move to a repo
      */
     private function getPCT($wins){
-        //$result = $this->getInitialArr($wins);
-
         $result['team1'] = $this->getInitialArr();
         $result['team2'] = $this->getInitialArr();
         $result['team1']['teamId'] = $this->tr1->teamId;

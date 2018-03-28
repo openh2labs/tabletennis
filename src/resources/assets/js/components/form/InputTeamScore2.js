@@ -31,6 +31,8 @@ export default class InputTeamScore2 extends Component {
             team1Count: 0,
             team2Count: 0,
         }
+
+
       //  this.handleSave = this.handleSave.bind(this);
     }
 
@@ -46,6 +48,8 @@ export default class InputTeamScore2 extends Component {
         }
     }
 
+
+
     render() {
         return (
             <div style={styles.wrapper}>
@@ -58,10 +62,10 @@ export default class InputTeamScore2 extends Component {
                 pattern="[0-9]*"
                 inputMode="numeric"
                 underlineShow={true}
-                disabled={this.state.disabled}
+                disabled={this.getElementState()}
                 style = {{width: 125}}
             />
-                <Scorecard />
+                <Scorecard teamStats={this.props.teamStats} team2Count={this.props.team2Count} team1Count={this.props.team1Count}/>
             </div>
         )
     }
@@ -69,10 +73,10 @@ export default class InputTeamScore2 extends Component {
     componentWillMount() {
         this.token = PubSub.subscribe('ScoreSaveComplete', this.subscriber.bind(this));
         if(this.state.teamId===1){
-            this.token = PubSub.subscribe('team1Count', this.subscriber.bind(this));
+         //   this.token = PubSub.subscribe('team1Count', this.subscriber.bind(this));
         }
         if(this.state.teamId===2) {
-            this.token = PubSub.subscribe('team2Count', this.subscriber.bind(this));
+        //    this.token = PubSub.subscribe('team2Count', this.subscriber.bind(this));
         }
 
     }
@@ -87,6 +91,17 @@ export default class InputTeamScore2 extends Component {
   */
     componentDidMount() {
 
+    }
+
+    getElementState(){
+        let state = true;
+        if(this.state.teamId === 1 && this.props.team1Count > 0){
+            state = false;
+        }
+        if(this.state.teamId === 2 && this.props.team2Count > 0){
+            state = false;
+        }
+        return state;
     }
 
     subscriber(EventName, data){

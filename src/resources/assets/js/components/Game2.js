@@ -40,6 +40,20 @@ export default class Game2 extends Component {
             "team2Score": 0,
             "team1Count": 0,
             "team2Count": 0,
+            teamStats: {
+                team1: {
+                    lost: 0,
+                    lost_pct: 0,
+                    win: 0,
+                    win_pct:0
+                },
+                team2: {
+                    lost: 0,
+                    lost_pct: 0,
+                    win: 0,
+                    win_pct:0
+                }
+            }
         }
     }
 
@@ -50,6 +64,7 @@ export default class Game2 extends Component {
         this.token = PubSub.subscribe('team2Score', this.subscriberState.bind(this));
         this.token = PubSub.subscribe('team1Count', this.subscriberState.bind(this));
         this.token = PubSub.subscribe('team2Count', this.subscriberState.bind(this));
+        this.token = PubSub.subscribe('teamStats', this.subscriberState.bind(this));
     }
 
     componentWillUnmount() {
@@ -65,7 +80,12 @@ export default class Game2 extends Component {
     }
 
     subscriberState(EventName, data){
-        this.setState({EventName : data});
+        let key = EventName
+        let val = data
+        let obj  = {}
+        obj[key] = val
+
+        this.setState(obj);
     }
 
     // The function that is subscribed to the publisher
@@ -144,13 +164,13 @@ export default class Game2 extends Component {
                     <CardText style={styles.wrapper}>
                         {ButtonTeam1} {chipT1P1} {chipT1P2}</CardText>
                     <CardText expandable={false}  >
-                        <InputTeamScore2 teamId={1} placeholder={placeHolder1}  />
+                        <InputTeamScore2 teamId={1} placeholder={placeHolder1} teamStats={this.state.teamStats.team1} team1Count={this.state.team1Count} team2Count={this.state.team2Count} />
                     </CardText>
                     <CardText style={styles.wrapper}>
                         {ButtonTeam2} {chipT2P1} {chipT2P2}
                     </CardText>
                     <CardText>
-                        <InputTeamScore2 teamId={2} placeholder={placeHolder2} />
+                        <InputTeamScore2 teamId={2} placeholder={placeHolder2} teamStats={this.state.teamStats.team2} team1Count={this.state.team1Count} team2Count={this.state.team2Count} />
                     </CardText>
                         <ButtonScoreSave />
                 </Card>

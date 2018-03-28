@@ -187,7 +187,6 @@ class Main extends Component {
      * get the latest team stats
      */
     updateTeamStats(){
-        console.log(JSON.stringify(this.state.payloadTeamStats));
         if(this.state.team1Count > 0 && this.state.team2Count >0){
             fetch( 'api/gamestats/', {
                 method:'post',
@@ -206,6 +205,7 @@ class Main extends Component {
                     this.setState({
                        teamStats: data
                     });
+                    PubSub.publish('teamStats', this.state.teamStats);
                     /*
                     this.setState((prevState)=> ({
                         players: prevState.players.concat(data),
@@ -213,7 +213,7 @@ class Main extends Component {
                     }))
                     */
                     // update subscribers
-                  //  PubSub.publish('players', this.state.players);
+                  //
 
                 })
         }
