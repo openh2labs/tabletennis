@@ -80,14 +80,17 @@ class TeamStatsController extends Controller
      * @return array
      */
     private function getInitial($payload){
+        $wins = [];
         if(array_key_exists('team_1_id', $payload) && array_key_exists('team_2_id', $payload)){
-            return $this->getWins($payload['team_1_id'], $payload['team_2_id']);
+            $wins = $this->getWins($payload['team_1_id'], $payload['team_2_id']);
         }elseif(array_key_exists('team1P1', $payload) && array_key_exists('team1P2', $payload) && array_key_exists('team2P1', $payload) && array_key_exists('team2P2', $payload) && array_key_exists('gameType', $payload)){
             $parr =  $this->getPlayers($payload);
             $tr1 = new TeamRepo($parr['team_1'], $payload['gameType']);
             $tr2 = new TeamRepo($parr['team_2'], $payload['gameType']);
-            return $this->getWins($tr1->teamId, $tr2->teamId);
+            $wins = $this->getWins($tr1->teamId, $tr2->teamId);
         }
+        $result = $this->getPCT($wins);
+        return $result;
     }
 
     /**
