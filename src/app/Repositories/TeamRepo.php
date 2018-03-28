@@ -12,46 +12,56 @@ use App\TeamPlayer;
 use App\Team;
 
 
+/**
+ *
+ * returns team related information like team id etc
+ *
+ * Class TeamRepo
+ * @package App\Repositories
+ */
 class TeamRepo
 {
     public $playersArr;
     public $gameType;
     public $playerHash;
+    public $teamId;
 
+    /**
+     * TeamRepo constructor.
+     * @param array $playersArr
+     * @param string $gameType
+     */
     public function __construct($playersArr, $gameType)
     {
         $this->playersArr = $playersArr;
         $this->gameType = $gameType;
+        $this->getTeam();
     }
 
     /**
      *
      * get the team id
      *
-     * @param $playersArr
-     * @param $game_type
-     * @return null
+     * @return void
      */
     private function getTeam(){
-        $this->playersArr = $this->getCleanPlayers();
-        $md5 = $this->getPlayersHash($this->playersArr);
-        $team = Team::where('team_hash', $md5)->first();
+        $this->getCleanPlayers();
+        $this->getPlayersHash();
+        $team = Team::where('team_hash', $this->playerHash)->first();
         if(!$team){
-            return $this->setTeam($this->playersArr, $this->gameType);
+            $this->teamId =  $this->setTeam();
         }else{
-            return $team->id;
+            $this->teamId =  $team->id;
         }
     }
 
     /**
      *
-     * clean the players arr
+     * clean the players arr from null values
      *
-     * @param $playersArr
-     * @return mixed
+     * @return void
      */
     private function getCleanPlayers(){
-        // remove null
         foreach($this->playersArr as $key=>$player){
             if($player === null){
                 unset($this->playersArr[$key]);
@@ -63,22 +73,19 @@ class TeamRepo
      *
      * create the team in the db
      *
-     * @param $players
-     * @param $game_type
-     * @return mixed
+     * @return integer
      */
-    private function setTeam($players, $game_type){
+    private function setTeam(){
         $this->getPlayersHash();
-        $team = Team::create(['team_type' => $game_type, 'team_hash' => $this->playerHash]);
-        foreach($players as $key=>$player){
+        $team = Team::create(['team_type' => $this->gameType, 'team_hash' => $this->playerHash]);
+        foreach($this->playersArr as $key=>$player){
             TeamPlayer::create(['player_id' => $player, 'team_id' => $team->id]);
         }
         return $team->id;
     }
 
     /**
-     * @param $players
-     * @return string
+     * @return void
      */
     private function getPlayersHash(){
         sort($this->playersArr);

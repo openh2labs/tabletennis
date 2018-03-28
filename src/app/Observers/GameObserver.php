@@ -11,6 +11,7 @@ namespace App\Observers;
 use App\Game;
 use App\Team;
 use App\TeamPlayer;
+use App\Repositories\TeamRepo;
 
 class GameObserver
 {
@@ -22,11 +23,11 @@ class GameObserver
      */
     public function created(Game $game)
     {
-        $team1Id = $this->getTeam([$game->team_1_player_1, $game->team_1_player_2], $game->game_type);
-        $team2Id =  $this->getTeam([$game->team_2_player_1, $game->team_2_player_2], $game->game_type);
+        $team1Idr = new TeamRepo([$game->team_1_player_1, $game->team_1_player_2], $game->game_type);
+        $team2Idr = new TeamRepo([$game->team_2_player_1, $game->team_2_player_2], $game->game_type);
 
-        $game->team_1_id = $team1Id;
-        $game->team_2_id = $team2Id;
+        $game->team_1_id = $team1Idr->teamId;
+        $game->team_2_id = $team2Idr->teamId;
         $game->team_won = $this->getWinningTeam($game);
         $game->save();
     }
@@ -45,11 +46,6 @@ class GameObserver
             return $game->team_2_id;
         }
     }
-
-
-
-
-
 
 
     /**
