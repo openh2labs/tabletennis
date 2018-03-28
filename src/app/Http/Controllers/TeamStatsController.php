@@ -62,6 +62,7 @@ class TeamStatsController extends Controller
         return  DB::table('game')
             ->select(DB::raw('team_won, count(*) as total'))
             ->wherein('team_won', [$team1, $team2])
+            ->wherein('team_lost', [$team1, $team2])
             ->groupBy('team_won')
             ->get();
     }
@@ -119,21 +120,24 @@ class TeamStatsController extends Controller
     private function getPCT($wins){
         //$result = $this->getInitialArr($wins);
 
-        $result[$this->tr1->teamId] = $this->getInitialArr();
-        $result[$this->tr2->teamId] = $this->getInitialArr();
+        $result['team1'] = $this->getInitialArr();
+        $result['team2'] = $this->getInitialArr();
+        $result['team1']['teamId'] = $this->tr1->teamId;
+        $result['team2']['teamId'] = $this->tr2->teamId;
         if(count($wins)===2){ // only return result if the teams have played each other
             $totalGames = $wins[0]->total + $wins[1]->total;
             //wins
-            $result[$wins[1]->team_won]['win'] = $wins[1]->total;
-            $result[$wins[0]->team_won]['win'] = $wins[0]->total;
+            $result['team1']['win'] = $wins[0]->total;
+            $result['team2']['win'] = $wins[1]->total;
+
             // losses
-            $result[$wins[1]->team_won]['lost'] = $wins[0]->total;
-            $result[$wins[0]->team_won]['lost'] = $wins[1]->total;
+            $result['team1']['lost'] = $wins[1]->total;
+            $result['team2']['lost'] = $wins[0]->total;
             if($totalGames > 0){
-                $result[$wins[1]->team_won]['win_pct'] = number_format($wins[1]->total / $totalGames * 100, 0);
-                $result[$wins[0]->team_won]['win_pct'] = number_format($wins[0]->total / $totalGames * 100, 0);
-                $result[$wins[1]->team_won]['lost_pct'] = number_format($wins[0]->total / $totalGames * 100, 0);
-                $result[$wins[0]->team_won]['lost_pct'] = number_format($wins[1]->total / $totalGames * 100, 0);
+                $result['team1']['win_pct'] = number_format($wins[0]->total / $totalGames * 100, 0);
+                $result['team2']['win_pct'] = number_format($wins[1]->total / $totalGames * 100, 0);
+                $result['team1']['lost_pct'] = number_format($wins[1]->total / $totalGames * 100, 0);
+                $result['team2']['lost_pct'] = number_format($wins[0]->total / $totalGames * 100, 0);
             }
         }
         return $result;
@@ -147,8 +151,8 @@ class TeamStatsController extends Controller
      * @return mixed
      */
     private function getTeamPlayers($result){
-        $result[$this->tr1->teamId]['players'] = $this->tr1->teamPlayers;
-        $result[$this->tr2->teamId]['players'] = $this->tr2->teamPlayers;
+        $result['team1']['players'] = $this->tr1->teamPlayers;
+        $result['team2']['players'] = $this->tr2->teamPlayers;
         return $result;
     }
 

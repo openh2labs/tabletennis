@@ -15,6 +15,9 @@ use App\Repositories\TeamRepo;
 
 class GameObserver
 {
+    private $team_won;
+    private $team_lost;
+
     /**
      * Listen to the Game created event.
      *
@@ -28,7 +31,9 @@ class GameObserver
 
         $game->team_1_id = $team1Idr->teamId;
         $game->team_2_id = $team2Idr->teamId;
-        $game->team_won = $this->getWinningTeam($game);
+        $this->getWinningTeam($game);
+        $game->team_won = $this->team_won;
+        $game->team_lost = $this->team_lost;
         $game->save();
     }
 
@@ -37,16 +42,16 @@ class GameObserver
      * get the winning team
      *
      * @param $game
-     * @return mixed
      */
-    private function getWinningTeam($game){
+    private function getWinningTeam(Game $game){
         if($game->team_1_score > $game->team_2_score){
-            return $game->team_1_id;
+            $this->team_won = $game->team_1_id;
+            $this->team_lost = $game->team_2_id;
         }else{
-            return $game->team_2_id;
+            $this->team_won =  $game->team_2_id;
+            $this->team_lost = $game->team_1_id;
         }
     }
-
 
     /**
      * Listen to the Game deleting event.
