@@ -31,6 +31,9 @@ class Main extends Component {
             team2Count: 0,
             team1Display: "",
             team2Display: "",
+            gameType: "single",
+            teamStats: null,
+            payloadTeamStats: {}
 
         }
        // this.client = new BaseClient();
@@ -64,14 +67,13 @@ class Main extends Component {
     componentWillMount() {
         this.token = PubSub.subscribe('TeamSelected', this.subscriber.bind(this));
         this.token = PubSub.subscribe('playerRemovedFromTeam', this.subscriber.bind(this));
+        // generic subscriber publishes to the state
         this.token = PubSub.subscribe('players', this.subscriberGeneric.bind(this));
         this.token = PubSub.subscribe('currentPlayer', this.subscriberGeneric.bind(this));
-
         this.token = PubSub.subscribe('team1P1', this.subscriberGeneric.bind(this));
         this.token = PubSub.subscribe('team1P2', this.subscriberGeneric.bind(this));
         this.token = PubSub.subscribe('team2P1', this.subscriberGeneric.bind(this));
         this.token = PubSub.subscribe('team2P2', this.subscriberGeneric.bind(this));
-
     }
 
     /**
@@ -159,20 +161,33 @@ class Main extends Component {
         PubSub.publish('TeamFull', teamFull);
         PubSub.publish('team1Count', this.state.team1Count);
         PubSub.publish('team2Count', this.state.team2Count);
+        this.setGameType();
+        this.updateTeamStats();
+    }
+
+    /**
+     *
+     * set the game type
+     *
+     */
+    setGameType(){
+        if(this.state.team1Count > 1 || this.state.team12ount > 1){
+            this.setState({
+                gameType: "doubles"
+            });
+        }else{
+            this.setState({
+                gameType: "single"
+            });
+        }
+        PubSub.publish('gameType', this.state.gameType);
     }
 
     /**
      * get the latest team stats
      */
     updateTeamStats(){
-
-        let payload = {
-            team1P1: this.state.team1P1,
-            team1P2: this.state.team1P2,
-            team2P1: this.state.team2P1,
-            team2P2: this.state.team2P2
-        };
-
+        console.log(JSON.stringify(this.state.payloadTeamStats));
         if(this.state.team1Count > 0 && this.state.team2Count >0){
             fetch( 'api/gamestats/', {
                 method:'post',
@@ -182,12 +197,15 @@ class Main extends Component {
                     'Content-Type': 'application/json'
                 },
 
-                body: JSON.stringify(payload)
+                body: JSON.stringify(this.state.payloadTeamStats)
             })
                 .then(response => {
                     return response.json();
                 })
                 .then( data => {
+                    this.setState({
+                       teamStats: data
+                    });
                     /*
                     this.setState((prevState)=> ({
                         players: prevState.players.concat(data),
@@ -282,23 +300,30 @@ class Main extends Component {
     updateTeamName() {
         let team1Display = [];
         let team2Display = [];
+        let payload = {};
 
         if (this.state.team1P1 !== null) {
             team1Display.push(this.state.team1P1.name);
+            payload.team1P1 = this.state.team1P1.id;
         }
         if (this.state.team1P2 !== null) {
             team1Display.push(this.state.team1P2.name);
+            payload.team1P2 = this.state.team1P2.id;
         }
         if (this.state.team2P1 !== null) {
             team2Display.push(this.state.team2P1.name);
+            payload.team2P1 = this.state.team2P1.id;
         }
         if (this.state.team2P2 !== null) {
             team2Display.push(this.state.team2P2.name);
+            payload.team2P2 = this.state.team2P2.id;
         }
+        payload.gameType = this.state.gameType;
         this.setState({team1Display: team1Display.join("-")});
         this.setState({team2Display: team2Display.join("-")});
         this.setState({team1Count: team1Display.length});
         this.setState({team2Count: team2Display.length});
+        this.setState({payloadTeamStats: payload});
         this.setTeamCount();
     }
 

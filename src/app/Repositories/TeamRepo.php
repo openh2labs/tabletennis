@@ -25,6 +25,7 @@ class TeamRepo
     public $gameType;
     public $playerHash;
     public $teamId;
+    public $teamPlayers;
 
     /**
      * TeamRepo constructor.
@@ -35,7 +36,20 @@ class TeamRepo
     {
         $this->playersArr = $playersArr;
         $this->gameType = $gameType;
+        $this->teamPlayers = [];
         $this->getTeam();
+        $this->getTeamPlayers();
+    }
+
+    /**
+     * populate the team players
+     */
+    private function getTeamPlayers(){
+        $tp = TeamPlayer::where('team_id', $this->teamId)->get();
+        //print_r($tp);die;
+        foreach($tp as $key=>$player){
+           $this->teamPlayers[] = $player->player_id;
+        }
     }
 
     /**
@@ -89,7 +103,9 @@ class TeamRepo
      */
     private function getPlayersHash(){
         sort($this->playersArr);
+       // print_r($this->playersArr);
         $this->playerHash = md5(implode(":", $this->playersArr));
+       // echo $this->playerHash."\n";
     }
 
 }

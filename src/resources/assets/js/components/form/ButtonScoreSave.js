@@ -18,6 +18,7 @@ export default class ButtonScoreSave extends Component {
             team2Score: 0,
             open: false,
             saveDisabled: true,
+            gameType: "single"
         }
         this.handleSave = this.handleSave.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
@@ -60,7 +61,7 @@ export default class ButtonScoreSave extends Component {
         this.token = PubSub.subscribe('team2P2', this.subscriber.bind(this));
         this.token = PubSub.subscribe('team1Score', this.subscriber.bind(this));
         this.token = PubSub.subscribe('team2Score', this.subscriber.bind(this));
-
+        this.token = PubSub.subscribe('gameType', this.subscriber.bind(this));
     }
 
     componentWillUnmount() {
@@ -75,6 +76,11 @@ export default class ButtonScoreSave extends Component {
         // PubSub.publish('TeamFull', this.token);
     }
 
+    /**
+     * handles data for subscriptions
+     * @param EventName
+     * @param data
+     */
     subscriber(EventName, data){
         var key = EventName
         var val = data
@@ -85,7 +91,6 @@ export default class ButtonScoreSave extends Component {
         let saveDisabled=true;
         if(this.state.team1Score > -1 && this.state.team2Score > -1){
             saveDisabled=false;
-
         }
         this.setState(
             {
@@ -101,17 +106,18 @@ export default class ButtonScoreSave extends Component {
     handleSave() {
         //prep payload
         var obj = new Object();
-        obj.game_type = "single"
+        //obj.game_type = "single"
         obj.team_1_player_1 = this.state.team1P1.id;
         if(this.state.team1P2 !== null){
             obj.team_1_player_2 = this.state.team1P2.id;
-            obj.game_type = 'doubles';
+           // obj.game_type = 'doubles';
         }
         obj.team_2_player_1 = this.state.team2P1.id;
         if(this.state.team2P2 !== null){
             obj.team_2_player_2 = this.state.team2P2.id;
-            obj.game_type = 'doubles';
+           // obj.game_type = 'doubles';
         }
+        obj.game_type = this.state.gameType;
         obj.team_1_score = this.state.team1Score;
         obj.team_2_score = this.state.team2Score;
 
