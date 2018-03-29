@@ -184,6 +184,8 @@ depoy-to-ecs-migrate:
             --cluster $STEP_CLUSTER \
             --task-definition tabletennis-migrate \
             --output text --query 'tasks[].taskArn')
+            echo "_TASK_ARN=${_TASK_ARN}"
+
     - script:
          name: Run Migration-wait
          code: |

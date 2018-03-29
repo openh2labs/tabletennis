@@ -8,7 +8,7 @@
         "logConfiguration": {
           "logDriver": "awslogs",
           "options": {
-            "awslogs-group": "${STEP_TASK_DEFINITION_NAME}",
+            "awslogs-group": "${APP_NAME}",
             "awslogs-region": "${STEP_AWS_DEFAULT_REGION}",
             "awslogs-stream-prefix": "${STEP_TASK_DEFINITION_NAME}-php-fpm"
           }
