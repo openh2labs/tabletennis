@@ -12,6 +12,7 @@ import Game2 from './Game2';
 import PubSub from 'pubsub-js'; // example https://anthonymineo.com/communication-between-independent-components-in-react-using-pubsubjs/
 import ListPlayers from "./form/ListPlayers";
 import ToolbarNav from './Navigation/Toolbar';
+import GoogleLogin from './misc/googleButton';
 
 
 /* Main Component */
@@ -327,8 +328,6 @@ class Main extends Component {
         this.setTeamCount();
     }
 
-
-
     // render the output
     render() {
         const mainDivStyle =  {
@@ -340,7 +339,7 @@ class Main extends Component {
         const divStyle = {
 
             justifyContent: "flex-start",
-            padding: '10px',
+           // padding: '10px',
             width: '35%',
             background: '#f0f0f0',
             padding: '20px 20px 20px 20px',
@@ -354,7 +353,7 @@ class Main extends Component {
             <div>
                 <ToolbarNav/>
                 <Game2 team1Display={this.state.team1Display} team2Display={this.state.team2Display} team1P1={this.state.team1P1} team1P2={this.state.team1P2} team2P1={this.state.team2P1} team2P2={this.state.team2P2}/>
-                <p></p>
+                <GoogleLogin />
                 <div className="row">
                     <div className="col"><AddPlayer /></div>
                 </div>
