@@ -13,6 +13,7 @@ import PubSub from 'pubsub-js'; // example https://anthonymineo.com/communicatio
 import ListPlayers from "./form/ListPlayers";
 import ToolbarNav from './Navigation/Toolbar';
 import GoogleLogin from './misc/googleButton';
+import Settings from './Helpers/Settings';
 
 
 /* Main Component */
